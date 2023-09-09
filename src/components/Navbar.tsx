@@ -56,7 +56,7 @@ const Navbar = () => {
 
       <div className='flex justify-center items-center gap-4 relative'>
         <Button
-          onClick={() => setSearchModal(true)}
+          // onClick={() => setSearchModal(true)}
           icon={<Image src={search} width={25} height={25} alt='icon' />}
           buttonClass=''
         />
