@@ -15,6 +15,7 @@ import Modal from '@/types/Modal'
 
 const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [searchModal, setSearchModal] = useState(false)
   const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
 
   const openModal = () => {
@@ -30,7 +31,7 @@ const Navbar = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        modalClass='w-[90%] mx-auto top-5 left-4 p-5  '
+        modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-10 '
         contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
       >
         {NavItems.map((items, key) => {
@@ -40,6 +41,19 @@ const Navbar = () => {
             </Link>
           )
         })}
+      </Modal>
+
+      <Modal
+        isOpen={searchModal}
+        onClose={() => setSearchModal(false)}
+        modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-10 '
+        contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
+      >
+        <InputField
+          type='text'
+          placeholder='Search for products...'
+          inputClass='rounded-full px-3 text-sm bg-[#F0F0F0] outline-none border-2 h-[45px] w-full xl:hidden md:flex sm:flex '
+        />
       </Modal>
 
       <div className='flex justify-center items-center gap-3'>
@@ -69,8 +83,9 @@ const Navbar = () => {
         inputClass='rounded-full px-3 text-sm bg-[#F0F0F0] outline-none border-2 h-[45px] xl:w-[30rem] xl:flex md:hidden sm:hidden '
       />
 
-      <div className='flex justify-center items-center gap-4'>
+      <div className='flex justify-center items-center gap-4 relative'>
         <Button
+          onClick={() => setSearchModal(true)}
           icon={<Image src={search} width={25} height={25} alt='icon' />}
           buttonClass=''
         />
