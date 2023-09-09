@@ -71,22 +71,24 @@ const Navbar = () => {
         />
       </div>
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-20 '
-        contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
-      >
-        {NavItems.map((items, key) => {
-          return (
-            <Link href={items} key={key}>
-              {items}
-            </Link>
-          )
-        })}
-      </Modal>
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-20 '
+          contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
+        >
+          {NavItems.map((items, key) => {
+            return (
+              <Link href={items} key={key}>
+                {items}
+              </Link>
+            )
+          })}
+        </Modal>
+      )}
 
-      <Modal
+      {/* <Modal
         isOpen={searchModal}
         onClose={() => setSearchModal(false)}
         modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-10 '
@@ -97,7 +99,7 @@ const Navbar = () => {
           placeholder='Search for products...'
           inputClass='rounded-full px-3 text-sm bg-[#F0F0F0] outline-none border-2 h-[45px] w-full xl:hidden md:flex sm:flex '
         />
-      </Modal>
+      </Modal> */}
     </nav>
   )
 }
