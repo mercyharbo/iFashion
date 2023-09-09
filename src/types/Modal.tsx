@@ -3,6 +3,7 @@ import React from 'react'
 
 import close from '@/assets/cross.svg'
 import Image from 'next/image'
+import ReactDOM from 'react-dom'
 
 type ModalProps = {
   isOpen: boolean
@@ -23,26 +24,19 @@ const Modal = ({
     return null
   }
 
-  return (
+  return ReactDOM.createPortal(
     <div
       className={clsx(
-        'xl:hidden md:flex sm:flex absolute bg-white top-0 left-0 shadow-2xl rounded-xl justify-between items-start ',
+        'xl:hidden md:flex sm:flex absolute bg-white top-0 left-0 shadow-2xl rounded-xl justify-between items-start',
         modalClass
       )}
     >
-      <div className={clsx('', contentClass)}>{children}</div>
-      <button
-        onClick={onClose}
-        // style={{
-        //   display: 'flex',
-        //   marginLeft: 'auto',
-        //   justifyContent: 'flex-end',
-        //   alignItems: 'flex-end',
-        // }}
-      >
+      <div className={contentClass}>{children}</div>
+      <button type='button' onClick={onClose}>
         <Image src={close} width={20} height={20} alt='close' />
       </button>
-    </div>
+    </div>,
+    document.body
   )
 }
 
