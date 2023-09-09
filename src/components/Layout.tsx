@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <section>
+    <section className='relative'>
       <Navbar />
       {children}
     </section>
