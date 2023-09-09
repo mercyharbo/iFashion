@@ -13,7 +13,8 @@ export default function Home() {
       <Hero />
 
       <Modal
-        modalClass='w-[80%] mx-auto top-0 left-0 p-5 z-20 rounded-xl h-screen absolute bg-white '
+        showLogo={true}
+        modalClass='w-[80%] mx-auto top-0 left-0 p-5 z-20 rounded-r-xl h-screen absolute bg-white '
         contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
       >
         {NavItems.map((items, key) => {
