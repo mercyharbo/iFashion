@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useDispatch } from 'react-redux'
 
 import Button from '@/types/Button'
 import InputField from '@/types/InputField'
@@ -12,25 +13,23 @@ import cart from '@/assets/shopping-cart.svg'
 import user from '@/assets/circle-user.svg'
 import search from '@/assets/search.svg'
 import Modal from '@/types/Modal'
+import { AppDispatch, useAppSelector } from '@/redux/Store'
+import { openModal } from '@/redux/Slice/ModalSlice'
 
 const Navbar = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [searchModal, setSearchModal] = useState(false)
+  const dispatch = useDispatch<AppDispatch>()
+
   const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
 
-  const openModal = () => {
-    setIsModalOpen(true)
-  }
-
-  const closeModal = () => {
-    setIsModalOpen(false)
+  const handleOpenModal = () => {
+    dispatch(openModal())
   }
 
   return (
     <nav className='relative z-10 flex flex-row justify-between items-center gap-5 w-full xl:p-5 sm:p-5'>
       <div className='flex justify-center items-center gap-3'>
         <Button
-          onClick={openModal}
+          onClick={handleOpenModal}
           icon={<Image src={hamburger} width={25} height={25} alt='icon' />}
           buttonClass='xl:hidden md:hidden sm:flex '
         />
@@ -70,23 +69,6 @@ const Navbar = () => {
           buttonClass=''
         />
       </div>
-
-      {isModalOpen && (
-        <Modal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-20 '
-          contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
-        >
-          {NavItems.map((items, key) => {
-            return (
-              <Link href={items} key={key}>
-                {items}
-              </Link>
-            )
-          })}
-        </Modal>
-      )}
 
       {/* <Modal
         isOpen={searchModal}
