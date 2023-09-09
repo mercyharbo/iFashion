@@ -27,35 +27,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className='relative flex flex-row justify-between items-center gap-5 w-full xl:p-5 sm:p-5'>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-20 '
-        contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
-      >
-        {NavItems.map((items, key) => {
-          return (
-            <Link href={items} key={key}>
-              {items}
-            </Link>
-          )
-        })}
-      </Modal>
-
-      <Modal
-        isOpen={searchModal}
-        onClose={() => setSearchModal(false)}
-        modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-10 '
-        contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
-      >
-        <InputField
-          type='text'
-          placeholder='Search for products...'
-          inputClass='rounded-full px-3 text-sm bg-[#F0F0F0] outline-none border-2 h-[45px] w-full xl:hidden md:flex sm:flex '
-        />
-      </Modal>
-
+    <nav className='relative z-10 flex flex-row justify-between items-center gap-5 w-full xl:p-5 sm:p-5'>
       <div className='flex justify-center items-center gap-3'>
         <Button
           onClick={openModal}
@@ -98,6 +70,34 @@ const Navbar = () => {
           buttonClass=''
         />
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-20 '
+        contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
+      >
+        {NavItems.map((items, key) => {
+          return (
+            <Link href={items} key={key}>
+              {items}
+            </Link>
+          )
+        })}
+      </Modal>
+
+      <Modal
+        isOpen={searchModal}
+        onClose={() => setSearchModal(false)}
+        modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-10 '
+        contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
+      >
+        <InputField
+          type='text'
+          placeholder='Search for products...'
+          inputClass='rounded-full px-3 text-sm bg-[#F0F0F0] outline-none border-2 h-[45px] w-full xl:hidden md:flex sm:flex '
+        />
+      </Modal>
     </nav>
   )
 }
