@@ -31,7 +31,7 @@ const Navbar = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-10 '
+        modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-20 '
         contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
       >
         {NavItems.map((items, key) => {
