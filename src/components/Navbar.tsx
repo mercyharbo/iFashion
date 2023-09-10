@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
@@ -8,17 +8,18 @@ import { useDispatch } from 'react-redux'
 import Button from '@/types/Button'
 import InputField from '@/types/InputField'
 
+// Icons
 import hamburger from '@/assets/menu-burger.svg'
 import cart from '@/assets/shopping-cart.svg'
 import user from '@/assets/circle-user.svg'
 import search from '@/assets/search.svg'
-import Modal from '@/types/Modal'
-import { AppDispatch, useAppSelector } from '@/redux/Store'
+
+import { AppDispatch } from '@/redux/Store'
 import { openModal } from '@/redux/Slice/ModalSlice'
+import { openSearchModal } from '@/redux/Slice/SearchModalSlice'
 
 const Navbar = () => {
   const dispatch = useDispatch<AppDispatch>()
-
   const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
 
   const handleOpenModal = () => {
@@ -51,12 +52,12 @@ const Navbar = () => {
       <InputField
         type='text'
         placeholder='Search for products...'
-        inputClass='rounded-full px-3 text-sm bg-[#F0F0F0] outline-none border-2 h-[45px] xl:w-[30rem] xl:flex md:hidden sm:hidden '
+        inputClass='xl:flex xl:w-[30rem] md:hidden sm:hidden  '
       />
 
       <div className='flex justify-center items-center gap-4 relative'>
         <Button
-          // onClick={() => setSearchModal(true)}
+          onClick={() => dispatch(openSearchModal())}
           icon={<Image src={search} width={25} height={25} alt='icon' />}
           buttonClass=''
         />
@@ -69,19 +70,6 @@ const Navbar = () => {
           buttonClass=''
         />
       </div>
-
-      {/* <Modal
-        isOpen={searchModal}
-        onClose={() => setSearchModal(false)}
-        modalClass='w-[90%] mx-auto top-5 left-4 p-5 z-10 '
-        contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold'
-      >
-        <InputField
-          type='text'
-          placeholder='Search for products...'
-          inputClass='rounded-full px-3 text-sm bg-[#F0F0F0] outline-none border-2 h-[45px] w-full xl:hidden md:flex sm:flex '
-        />
-      </Modal> */}
     </nav>
   )
 }

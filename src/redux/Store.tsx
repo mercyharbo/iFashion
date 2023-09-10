@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { TypedUseSelectorHook, useSelector } from 'react-redux'
 
 import modalReducer from '@/redux/Slice/ModalSlice'
-import { TypedUseSelectorHook, useSelector } from 'react-redux'
+import searchModalReducer from '@/redux/Slice/SearchModalSlice'
 
 export const store = configureStore({
   reducer: {
     modalReducer,
+    searchModalReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 })

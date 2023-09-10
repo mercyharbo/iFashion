@@ -14,18 +14,18 @@ const initialState = {
   } as ModalState
 } as InitialState;
 
-const modalSlice = createSlice({
+const searchModal = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    openModal: (state) => {
+    openSearchModal: (state) => {
       state.modal.isOpen = true;
     },
-    closeModal: (state) => {
+    closeSearchModal: (state) => {
       state.modal.isOpen = false;
     },
   },
 });
 
-export const { openModal, closeModal } = modalSlice.actions;
-export default modalSlice.reducer;
+export const { openSearchModal, closeSearchModal } = searchModal.actions;
+export default searchModal.reducer;
