@@ -1,9 +1,10 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
+import gsap from 'gsap'
 
 import Button from '@/types/Button'
 import InputField from '@/types/InputField'
@@ -26,8 +27,19 @@ const Navbar = () => {
     dispatch(openModal())
   }
 
+  useEffect(() => {
+    const header = document.querySelector('.fixed-header')
+
+    gsap.from(header, {
+      duration: 1,
+      y: -100,
+      opacity: 0,
+      ease: 'power2.out',
+    })
+  }, [])
+
   return (
-    <nav className='relative z-10 flex flex-row justify-between items-center gap-5 w-full xl:p-5 sm:p-5'>
+    <nav className='fixed-header relative z-10 flex flex-row justify-between items-center gap-5 w-full xl:p-5 sm:p-5'>
       <div className='flex justify-center items-center gap-3'>
         <Button
           onClick={handleOpenModal}
