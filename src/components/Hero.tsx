@@ -1,7 +1,8 @@
-import LinkButton from '@/types/LinkButton'
-import gsap from 'gsap'
-import Image from 'next/image'
 import React, { useEffect } from 'react'
+import Image from 'next/image'
+import gsap from 'gsap'
+
+import LinkButton from '@/types/LinkButton'
 
 const Hero = () => {
   useEffect(() => {
@@ -9,39 +10,25 @@ const Hero = () => {
 
     tl.from('.content-container h1', {
       opacity: 0,
-      y: 50,
+      x: -100,
       duration: 1,
     })
       .from('.content-container p', {
         opacity: 0,
-        y: 50,
+        x: -100,
         duration: 1,
       })
-      .from('.content-container .LinkButton', {
+      .from('.content-container .btn', {
         opacity: 0,
-        y: 50,
+        x: -100,
+        duration: 1,
+      })
+      .from('.heroImg', {
+        x: 100,
+        opacity: 0,
         duration: 1,
       })
   }, [])
-
-    useEffect(() => {
-      const animateLeft = document.querySelector('.animate-left')
-      const animateRight = document.querySelector('.animate-right')
-
-      gsap.to(animateLeft, {
-        duration: 1,
-        x: 0,
-        opacity: 1,
-        ease: 'power2.out',
-      })
-
-      gsap.to(animateRight, {
-        duration: 1,
-        x: 0,
-        opacity: 1,
-        ease: 'power2.out',
-      })
-    }, [])
 
   return (
     <section className='xl:h-[40rem] md:h-[30rem] bg-[#F2F0F1] '>
@@ -58,11 +45,11 @@ const Hero = () => {
           <LinkButton
             title='shop now'
             href='clothing'
-            linkClass='.LinkButton bg-black text-white h-[50px] capitalize p-3 flex justify-center items-center hover: bg-[] xl:w-[150px] md:w-[150px] sm:w-full '
+            linkClass='bg-black text-white h-[50px] capitalize p-3 flex justify-center items-center hover: bg-[] xl:w-[150px] md:w-[150px] sm:w-full '
           />
         </div>
 
-        <div className='mt-auto md:w-[40%] '>
+        <div className='heroImg mt-auto md:w-[40%] '>
           <Image
             src='/model1.png'
             width={1000}

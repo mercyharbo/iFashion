@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Link from 'next/link'
 import React from 'react'
 
@@ -9,7 +10,7 @@ type LinkProps = {
 
 const LinkButton = ({ title, href, linkClass }: LinkProps) => {
   return (
-    <Link href={`/${href}`} className={`rounded-full ${linkClass}`}>
+    <Link href={`/${href}`} className={clsx('btn rounded-full', linkClass)}>
       {title}
     </Link>
   )
