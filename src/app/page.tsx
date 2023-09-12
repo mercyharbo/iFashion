@@ -67,6 +67,30 @@ export default function Home() {
         ease: 'power2.inOut',
       })
     }
+
+    gsap.from('new_arrivals', {
+      opacity: 0,
+      x: 100,
+      duration: 1,
+      scrollTrigger: {
+        trigger: '.new_arrivals',
+        start: 'top 80%',
+        end: 'bottom 20%',
+        scrub: 1,
+      },
+    })
+
+    gsap.from('.product', {
+      opacity: 0,
+      x: -100, // Adjust the distance
+      duration: 1,
+      scrollTrigger: {
+        trigger: '.your-product',
+        start: 'top 80%',
+        end: 'bottom 20%',
+        scrub: 1,
+      },
+    })
   }, [isOpen, isSearchOpen])
 
   return (
@@ -88,14 +112,14 @@ export default function Home() {
       </section>
 
       <section
-        className='xl:py-10 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-2 sm:w-[100%] flex flex-col justify-center 
+        className='new_arrivals xl:py-10 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-2 sm:w-[100%] flex flex-col justify-center 
       items-center gap-10 mx-auto '
       >
         <h1 className='xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '>
           {' '}
           new arrivals{' '}
         </h1>
-        <div className='w-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '>
+        <div className='w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '>
           {ProductJSON.products.map((item, index) => (
             <Product
               key={index}
@@ -104,7 +128,31 @@ export default function Home() {
               discount={item.discount}
               productImage={item.productImage}
               ratings={item.ratings}
-              productClass={`inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer
+              productClass={`product inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer
+              hover:scale-105 ease-in-out duration-300 `}
+            />
+          ))}
+        </div>
+      </section>
+      <hr />
+      <section
+        className='new_arrivals xl:py-10 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-2 sm:w-[100%] flex flex-col justify-center 
+      items-center gap-10 mx-auto '
+      >
+        <h1 className='xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '>
+          {' '}
+          top selling{' '}
+        </h1>
+        <div className='w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '>
+          {ProductJSON.products.map((item, index) => (
+            <Product
+              key={index}
+              title={item.title}
+              price={item.price}
+              discount={item.discount}
+              productImage={item.productImage}
+              ratings={item.ratings}
+              productClass={`product inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer
               hover:scale-105 ease-in-out duration-300 `}
             />
           ))}
