@@ -27,6 +27,7 @@ const Modal = ({
     <>
       <div
         onClick={handleCloseModal}
+        className='xl:hidden md:flex sm:flex'
         style={{
           position: 'fixed',
           backgroundColor: '#000000be',

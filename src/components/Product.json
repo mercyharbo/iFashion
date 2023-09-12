@@ -1,0 +1,56 @@
+{
+  "products": [
+    {
+      "productImage": "cloth1.jpg",
+      "title": "Product 1",
+      "ratings": 4.2,
+      "price": 49.99,
+      "discount": 15
+    },
+    {
+      "productImage": "cloth2.jpg",
+      "title": "Product 2",
+      "ratings": 4.8,
+      "price": 39.99
+    },
+    {
+      "productImage": "cloth3.jpg",
+      "title": "Product 3",
+      "ratings": 4.5,
+      "price": 59.99,
+      "discount": 10
+    },
+    {
+      "productImage": "cloth3.jpg",
+      "title": "Product 4",
+      "ratings": 4.0,
+      "price": 29.99
+    },
+    {
+      "productImage": "cloth3.jpg",
+      "title": "Product 3",
+      "ratings": 4.5,
+      "price": 59.99,
+      "discount": 10
+    },
+    {
+      "productImage": "cloth3.jpg",
+      "title": "Product 4",
+      "ratings": 4.0,
+      "price": 29.99
+    },
+    {
+      "productImage": "cloth3.jpg",
+      "title": "Product 3",
+      "ratings": 4.5,
+      "price": 59.99,
+      "discount": 10
+    },
+    {
+      "productImage": "cloth3.jpg",
+      "title": "Product 4",
+      "ratings": 4.0,
+      "price": 29.99
+    }
+  ]
+}

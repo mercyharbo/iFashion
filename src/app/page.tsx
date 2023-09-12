@@ -1,7 +1,10 @@
 'use client'
 
-import Link from 'next/link'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import Link from 'next/link'
+import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger' // Import ScrollTrigger
 
 import { AppDispatch, useAppSelector } from '@/redux/Store'
 
@@ -12,8 +15,12 @@ import InputField from '@/types/InputField'
 
 import { closeModal } from '@/redux/Slice/ModalSlice'
 import { closeSearchModal } from '@/redux/Slice/SearchModalSlice'
-import { useEffect } from 'react'
-import gsap from 'gsap'
+
+import Button from '@/types/Button'
+import Product from '@/types/Product'
+import ProductJSON from '@/components/Product.json'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>()
@@ -23,6 +30,7 @@ export default function Home() {
   )
 
   const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
+  const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
 
   const handleNavClose = () => {
     dispatch(closeModal())
@@ -64,6 +72,44 @@ export default function Home() {
   return (
     <Layout>
       <Hero />
+      <section className='bg-black text-white flex flex-col justify-center items-center  xl:h-[10rem] xl:mb-10 md:h-[8rem] sm:h-[8rem] '>
+        <div className='flex xl:gap-10 xl:w-[80%] xl:justify-between xl:items-center md:justify-center md:items-center md:gap-5 sm:justify-center sm:items-center sm:gap-5 flex-wrap '>
+          {brands.map((brandName, index) => {
+            return (
+              <Button
+                key={index}
+                type='button'
+                title={brandName}
+                buttonClass=' xl:text-6xl md:text-3xl sm:text-2xl '
+              />
+            )
+          })}
+        </div>
+      </section>
+
+      <section
+        className='xl:py-10 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-2 sm:w-[100%] flex flex-col justify-center 
+      items-center gap-10 mx-auto '
+      >
+        <h1 className='xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '>
+          {' '}
+          new arrivals{' '}
+        </h1>
+        <div className='w-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '>
+          {ProductJSON.products.map((item, index) => (
+            <Product
+              key={index}
+              title={item.title}
+              price={item.price}
+              discount={item.discount}
+              productImage={item.productImage}
+              ratings={item.ratings}
+              productClass={`inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer
+              hover:scale-105 ease-in-out duration-300 `}
+            />
+          ))}
+        </div>
+      </section>
 
       {isOpen && (
         <Modal
@@ -75,7 +121,11 @@ export default function Home() {
         >
           {NavItems.map((items, key) => {
             return (
-              <Link href={items} key={key} className='nav-link'>
+              <Link
+                href={`/${items.replace(/\s+/g, '-')}`}
+                key={key}
+                className='nav-link'
+              >
                 {items}
               </Link>
             )
@@ -88,8 +138,8 @@ export default function Home() {
           handleCloseModal={handleSearchModal}
           showLogo={false}
           showHeader={false}
-          modalClass='search-container w-[95%] mx-auto top-2 right-0 p-5 z-10 absolute rounded-xl'
-          contentClass='flex flex-col justify-center items-center gap-5 w-full capitalize font-semibold'
+          modalClass='search-container 2xl:hidden xl:hidden md:flex sm:flex w-[95%] mx-auto top-2 right-0 p-5 z-10 absolute rounded-xl'
+          contentClass='flex-col justify-center items-center gap-5 w-full capitalize font-semibold'
         >
           <InputField
             type='text'

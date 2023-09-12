@@ -54,7 +54,7 @@ const Navbar = () => {
       <div className='xl:flex md:flex sm:hidden justify-center items-center gap-5 capitalize'>
         {NavItems.map((items, key) => {
           return (
-            <Link href={items} key={key}>
+            <Link href={`/${items.replace(/\s+/g, '-')}`} key={key}>
               {items}
             </Link>
           )
@@ -71,7 +71,7 @@ const Navbar = () => {
         <Button
           onClick={() => dispatch(openSearchModal())}
           icon={<Image src={search} width={25} height={25} alt='icon' />}
-          buttonClass=''
+          buttonClass='xl:hidden md:flex sm:flex '
         />
         <Button
           icon={<Image src={cart} width={25} height={25} alt='icon' />}

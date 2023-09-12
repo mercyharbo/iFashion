@@ -31,10 +31,13 @@ const Hero = () => {
   }, [])
 
   return (
-    <section className='xl:h-[40rem] md:h-[30rem] bg-[#F2F0F1] '>
-      <div className='flex gap-10 mx-auto h-full 3xl:w-[80%] 2xl:w-full 2xl:px-16 xl:w-full xl:flex-row md:flex-row md:w-full md:px-10 sm:flex-col sm:px-5   '>
-        <div className='2xl:w-[60%] md:w-[50%] sm:pt-10 m-auto flex flex-col justify-center items-start gap-5 content-container '>
-          <h1 className='3xl:text-7xl 2xl:text-6xl xl:text-4xl xl:leading-[80px] md:text-4xl sm:text-4xl font-extrabold '>
+    <section className='bg-[#F2F0F1] '>
+      <div
+        className='grid w-full xl:grid-cols-2 xl:px-14 xl:content-center xl:place-items-center md:grid-cols-2 md:content-center md:place-items-center md:px-0 sm:grid-cols-1
+      sm:content-center sm:place-items-center sm:gap-5   '
+      >
+        <div className='content-container flex flex-col justify-start items-start gap-5 xl:pl-0 md:py-14 md:pl-10 sm:px-5 sm:py-10 '>
+          <h1 className='3xl:text-7xl 3xl:leading-[80px] 2xl:text-5xl 2xl:leading-[70px] xl:text-4xl xl:leading-[40px] md:text-3xl sm:text-2xl font-extrabold '>
             FIND CLOTHES THAT MATCHES YOUR STYLE
           </h1>
           <p className='xl:w-[80%] md:w-full text-[#00000099] '>
@@ -49,15 +52,13 @@ const Hero = () => {
           />
         </div>
 
-        <div className='heroImg mt-auto md:w-[40%] '>
-          <Image
-            src='/model1.png'
-            width={1000}
-            height={1000}
-            alt='model'
-            className='object-cover object-center md:w-full md:h-full '
-          />
-        </div>
+        <Image
+          src='/model1.png'
+          width={1000}
+          height={1000}
+          alt='model'
+          className='heroImage heroImg object-cover mr-[8rem] h-full '
+        />
       </div>
     </section>
   )

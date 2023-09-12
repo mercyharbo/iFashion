@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 
 type ButtonProps = {
@@ -16,7 +17,11 @@ const Button = ({
   onClick,
 }: ButtonProps) => {
   return (
-    <button type={type} onClick={onClick} className={`${buttonClass}`}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={clsx('capitalize', buttonClass)}
+    >
       {icon && <span>{icon}</span>}
       {title && <span>{title}</span>}
     </button>
