@@ -271,7 +271,7 @@ export default function Home() {
       </section>
 
       <section
-        className='bg-black text-white flex mx-auto rounded-2xl xl:relative xl:top-[5rem] xl:z-10 xl:h-[10rem] xl:flex-row xl:justify-between xl:w-[80%] 
+        className='bg-black text-white flex rounded-2xl xl:mx-auto xl:relative xl:top-[5rem] xl:z-10 xl:h-[10rem] xl:flex-row xl:justify-between xl:w-[80%] 
         xl:items-center xl:px-16 md:flex-col md:justify-center md:items-center md:gap-5 md:relative md:top-[5rem] md:z-10 sm:static sm:flex-col sm:justify-center 
         sm:items-center sm:gap-5 sm:mx-5 sm:p-4 '
       >
