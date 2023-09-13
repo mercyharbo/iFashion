@@ -126,7 +126,7 @@ export default function Home() {
     })
   }, [isOpen, isSearchOpen])
 
-  const addToRefs = (el) => {
+  const addToRefs = (el: HTMLElement | null) => {
     if (el && !revealRefs.current.includes(el)) {
       revealRefs.current.push(el)
     }
