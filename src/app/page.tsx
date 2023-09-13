@@ -143,7 +143,7 @@ export default function Home() {
           {' '}
           top selling{' '}
         </h1>
-        <div className='w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '>
+        <div className='product w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '>
           {ProductJSON.products.map((item, index) => (
             <Product
               key={index}
@@ -152,7 +152,7 @@ export default function Home() {
               discount={item.discount}
               productImage={item.productImage}
               ratings={item.ratings}
-              productClass={`product inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer
+              productClass={` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer
               hover:scale-105 ease-in-out duration-300 `}
             />
           ))}
