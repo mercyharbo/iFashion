@@ -19,7 +19,16 @@ const InputField = ({
 }: InputFieldProps) => {
   return (
     <div className={clsx('relative w-auto', inputWrapper)}>
-      {icon && <Image src={`/${icon}`} width={20} height={20} alt='icon' />}
+      {icon && (
+        <Image
+          src={`/${icon}`}
+          width={20}
+          height={20}
+          alt='icon'
+          className={clsx('left-4 top-7 absolute')}
+          style={{ top: '13px', left: '12px' }}
+        />
+      )}
       <input
         type={type}
         placeholder={placeholder}
