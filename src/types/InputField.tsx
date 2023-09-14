@@ -5,7 +5,7 @@ import clsx from 'clsx'
 type InputFieldProps = {
   placeholder?: string
   type?: string
-  icon?: string
+  icon?: React.ReactNode
   inputClass?: string
   inputWrapper?: string
 }
@@ -20,14 +20,20 @@ const InputField = ({
   return (
     <div className={clsx('relative w-auto', inputWrapper)}>
       {icon && (
-        <Image
-          src={`/${icon}`}
-          width={20}
-          height={20}
-          alt='icon'
-          className={clsx('left-4 top-7 absolute')}
-          style={{ top: '13px', left: '12px' }}
-        />
+        // <Image
+        //   src={`/${icon}`}
+        //   width={20}
+        //   height={20}
+        //   alt='icon'
+        //   className={clsx('left-4 top-7 absolute')}
+        //   style={{ top: '13px', left: '12px' }}
+        // />
+        <span
+          className='absolute '
+          style={{ top: '12px', left: '12px' }}
+        >
+          {icon}
+        </span>
       )}
       <input
         type={type}

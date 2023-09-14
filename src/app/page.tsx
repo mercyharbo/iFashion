@@ -22,6 +22,15 @@ import Product from '@/types/Product'
 import ProductJSON from '@/components/Product.json'
 
 import inbox from '@/assets/envelope.svg'
+import facebook from '@/assets/facebook.png'
+import twitter from '@/assets/twitter.png'
+import github from '@/assets/github.png'
+import instagram from '@/assets/instagram.png'
+
+import paypal from '@/assets/paypal_196566.png'
+import visa from '@/assets/visa.png'
+import applepay from '@/assets/cc-apple-pay_6422266.png'
+
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -143,7 +152,7 @@ export default function Home() {
                 key={index}
                 type='button'
                 title={brandName}
-                buttonClass=' xl:text-6xl md:text-3xl sm:text-2xl '
+                buttonClass='2xl:text-6xl xl:text-5xl md:text-3xl sm:text-2xl '
               />
             )
           })}
@@ -233,7 +242,7 @@ export default function Home() {
                   width={1000}
                   height={1000}
                   alt={style.style}
-                  className='rounded-2xl object-cover w-full 2xl:h-[350px] '
+                  className='rounded-2xl object-cover w-full 2xl:h-[350px] xl:h-[350px] '
                 />
                 <span className='font-bold capitalize absolute top-5 left-5 2xl:text-4xl xl:text-4xl md:text-3xl sm:text-3xl '>
                   {style.style}
@@ -271,7 +280,7 @@ export default function Home() {
       </section>
 
       <section
-        ref={addToRefs}
+        // ref={addToRefs}
         className='bg-black text-white flex rounded-2xl xl:mx-auto xl:relative xl:top-[5rem] xl:z-10 xl:h-[10rem] xl:flex-row xl:justify-between xl:w-[80%] 
         xl:items-center xl:px-16 md:flex-col md:justify-center md:items-center md:gap-5 md:relative md:top-[5rem] md:z-10 sm:static sm:flex-col sm:justify-center 
         sm:items-center sm:gap-5 sm:mx-5 sm:p-4 '
@@ -284,7 +293,9 @@ export default function Home() {
           <InputField
             placeholder='Enter your email address'
             type='email'
-            icon={inbox}
+            icon={
+              <Image src={inbox} width={20} height={20} alt='Envelope icon' />
+            }
             inputClass='pl-10 text-black'
             inputWrapper='w-full relative'
           />
@@ -297,7 +308,7 @@ export default function Home() {
       </section>
 
       <footer
-        ref={addToRefs}
+        // ref={addToRefs}
         className='bg-[#F0F0F0] w-full relative flex flex-col justify-center items-center gap-10 '
       >
         <div className='w-full xl:pt-[8rem] md:pt-[8rem] md:w-full md:px-10 sm:w-full sm:py-10 sm:px-5 flex flex-col justify-center items-center gap-10 '>
@@ -312,8 +323,38 @@ export default function Home() {
                 wear. From women to men.
               </p>
               <div className='flex justify-start items-center gap-5'>
-                {' '}
-                social logos{' '}
+                <Link href={'/'}>
+                  <Image
+                    src={facebook}
+                    width={25}
+                    height={25}
+                    alt='facebook icon'
+                  />
+                </Link>
+                <Link href={'/'}>
+                  <Image
+                    src={twitter}
+                    width={25}
+                    height={25}
+                    alt='twitter icon'
+                  />
+                </Link>
+                <Link href={'/'}>
+                  <Image
+                    src={instagram}
+                    width={25}
+                    height={25}
+                    alt='instagram icon'
+                  />
+                </Link>
+                <Link href={'/'}>
+                  <Image
+                    src={github}
+                    width={25}
+                    height={25}
+                    alt='github icon'
+                  />
+                </Link>
               </div>
             </div>
             <div className='flex flex-col justify-start items-start gap-3 '>
@@ -345,14 +386,16 @@ export default function Home() {
               <p className='capitalize text-[#858282]'>youtube playlist</p>
             </div>
           </div>
-          <hr />
+          <hr className='w-full' />
           <div
             className='flex w-full xl:flex-row xl:justify-between xl:items-center md:flex-col-reverse md:justify-center md:items-center sm:flex-col-reverse 
             sm:justify-center sm:items-center sm:gap-5 '
           >
             <span className=''>Shop.co © 2000-2023, All Rights Reserved</span>
             <div className='flex justify-center items-center gap-5'>
-              credit cards
+              <Image src={visa} width={30} height={30} alt='github icon' />
+              <Image src={applepay} width={30} height={30} alt='github icon' />
+              <Image src={paypal} width={30} height={30} alt='github icon' />
             </div>
           </div>
         </div>
