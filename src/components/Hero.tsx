@@ -8,20 +8,27 @@ const Hero = () => {
   useEffect(() => {
     const tl = gsap.timeline()
 
-    tl.from('.content-container h1', {
+    tl.from('hero-container', {
       opacity: 0,
-      x: -100,
       duration: 1,
     })
+      .from('.content-container h1', {
+        opacity: 0,
+        scale: 0,
+        duration: 1,
+        ease: 'back',
+      })
       .from('.content-container p', {
         opacity: 0,
-        x: -100,
+        scale: 0,
         duration: 1,
+        ease: 'back',
       })
       .from('.content-container .btn', {
         opacity: 0,
-        x: -100,
+        scale: 0,
         duration: 1,
+        ease: 'back',
       })
       .from('.heroImg', {
         x: 100,
@@ -31,7 +38,7 @@ const Hero = () => {
   }, [])
 
   return (
-    <section className='bg-[#F2F0F1] '>
+    <section className='hero-container bg-[#F2F0F1] '>
       <div
         className='grid w-full xl:grid-cols-2 xl:px-14 xl:content-center xl:place-items-center md:grid-cols-2 md:content-center md:place-items-center md:px-0 sm:grid-cols-1
       sm:content-center sm:place-items-center sm:gap-5   '

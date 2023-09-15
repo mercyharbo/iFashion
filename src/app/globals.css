@@ -5,3 +5,26 @@
 body {
   background-color: #fff;
 }
+
+.testy-card::before,
+.testy-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px; /* Adjust the width of the fade-out */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1)
+  );
+  pointer-events: none;
+}
+
+.testy-card::before {
+  left: 0;
+}
+
+.testy-card::after {
+  right: 0;
+}

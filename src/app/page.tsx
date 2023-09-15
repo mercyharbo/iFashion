@@ -31,7 +31,6 @@ import paypal from '@/assets/paypal_196566.png'
 import visa from '@/assets/visa.png'
 import applepay from '@/assets/cc-apple-pay_6422266.png'
 
-
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
@@ -76,6 +75,24 @@ export default function Home() {
       ratings: 4,
       paragraph: `As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.`,
     },
+    {
+      id: 5,
+      name: 'code with mercy',
+      ratings: 4,
+      paragraph: `As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.`,
+    },
+    {
+      id: 6,
+      name: 'code with mercy',
+      ratings: 4,
+      paragraph: `As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.`,
+    },
+    {
+      id: 7,
+      name: 'code with mercy',
+      ratings: 4,
+      paragraph: `As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.`,
+    },
   ]
 
   const handleNavClose = () => {
@@ -92,7 +109,7 @@ export default function Home() {
         opacity: 0,
         x: -100,
         duration: 1,
-        ease: 'circ.out',
+        ease: 'power2.out',
       })
 
       gsap.from('.nav-link', {
@@ -110,7 +127,7 @@ export default function Home() {
         y: -50,
         stagger: 0.2,
         duration: 0.5,
-        ease: 'power2.inOut',
+        ease: 'sine.inOut',
       })
     }
 
@@ -123,7 +140,7 @@ export default function Home() {
         {
           duration: 1,
           autoAlpha: 1,
-          ease: 'none',
+          ease: 'back',
           scrollTrigger: {
             id: `section-${index + 1}`,
             trigger: el,
@@ -133,6 +150,19 @@ export default function Home() {
         }
       )
     })
+
+    gsap
+      .timeline()
+      .from('.brand-container', {
+        opacity: 0,
+        duration: 5,
+      })
+      .from('.brands', {
+        opacity: 0,
+        duration: 1,
+        scale: 0,
+        ease: 'back',
+      })
   }, [isOpen, isSearchOpen])
 
   const addToRefs = (el: HTMLElement | null) => {
@@ -144,7 +174,7 @@ export default function Home() {
   return (
     <Layout>
       <Hero />
-      <section className='bg-black text-white flex flex-col justify-center items-center  xl:h-[10rem] xl:mb-10 md:h-[8rem] sm:h-[8rem] '>
+      <section className='brands-container bg-black text-white flex flex-col justify-center items-center  xl:h-[10rem] xl:mb-10 md:h-[8rem] sm:h-[8rem] '>
         <div className='flex xl:gap-10 xl:w-[80%] xl:justify-between xl:items-center md:justify-center md:items-center md:gap-5 sm:justify-center sm:items-center sm:gap-5 flex-wrap '>
           {brands.map((brandName, index) => {
             return (
@@ -152,7 +182,7 @@ export default function Home() {
                 key={index}
                 type='button'
                 title={brandName}
-                buttonClass='2xl:text-6xl xl:text-5xl md:text-3xl sm:text-2xl '
+                buttonClass='brands 2xl:text-6xl xl:text-5xl md:text-3xl sm:text-2xl '
               />
             )
           })}
@@ -255,19 +285,19 @@ export default function Home() {
 
       <section
         ref={addToRefs}
-        className=' xl:py-14 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-5 sm:w-[100%] flex flex-col justify-start 
+        className=' xl:py-14 xl:my-10 md:py-10 md:px-10 sm:py-10 sm:px-5 flex flex-col justify-start 
       items-start gap-10 mx-auto '
       >
         <h1 className='2xl:text-5xl xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '>
           our happy customers
         </h1>
-        <div className='w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide xl:flex '>
+        <div className='w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide  '>
           {testymonie.map((testy) => {
             return (
               <div
                 key={testy.id}
-                className='xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 inline-block whitespace-normal p-4 border-[1px] 
-                rounded-xl cursor-pointer hover:scale-105 ease-in-out duration-300 '
+                className='testy-card xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 inline-block whitespace-normal p-4 border-[1px] 
+                rounded-xl cursor-pointer hover:scale-105 ease-in-out duration-300 h-full '
               >
                 <h3 className='text-base font-semibold capitalize'>
                   {testy.name}
@@ -280,7 +310,7 @@ export default function Home() {
       </section>
 
       <section
-        // ref={addToRefs}
+        ref={addToRefs}
         className='bg-black text-white flex rounded-2xl xl:mx-auto xl:relative xl:top-[5rem] xl:z-10 xl:h-[10rem] xl:flex-row xl:justify-between xl:w-[80%] 
         xl:items-center xl:px-16 md:flex-col md:justify-center md:items-center md:gap-5 md:relative md:top-[5rem] md:z-10 sm:static sm:flex-col sm:justify-center 
         sm:items-center sm:gap-5 sm:mx-5 sm:p-4 '
@@ -289,7 +319,7 @@ export default function Home() {
           STAY UPTO DATE ABOUT OUR LATEST OFFERS
         </h1>
 
-        <div className='flex flex-col justify-center items-center gap-3 3xl:w-[30%] 2xl:w-[40%] xl:w-[40%] md:w-full sm:w-full '>
+        <div className='newsletter-form flex flex-col justify-center items-center gap-3 3xl:w-[30%] 2xl:w-[40%] xl:w-[40%] md:w-full sm:w-full '>
           <InputField
             placeholder='Enter your email address'
             type='email'
