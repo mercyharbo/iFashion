@@ -1,7 +1,8 @@
-import { useDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
-import clsx from 'clsx'
-import Image from 'next/image'
 import React from 'react'
+import Image from 'next/image'
+import clsx from 'clsx'
+
+import { UseDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
 
 type ProductProps = {
   productImage: React.ReactNode
@@ -20,7 +21,7 @@ const Product = ({
   productClass,
 }: ProductProps) => {
   const { calculateDiscountedPrice, calculateRoundedPrice } =
-    useDiscountCalculator()
+    UseDiscountCalculator()
 
   // Calculate discounted price if discount is provided
   const discountedPrice =

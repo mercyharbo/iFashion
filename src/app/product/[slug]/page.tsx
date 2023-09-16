@@ -12,6 +12,8 @@ import { UseDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
 import { CalculateAverageRating } from '@/app/utils/avarageRatings'
 import StarRating from '@/components/Rating'
 
+import productJSON from '@/app/product/[slug]/product.json'
+
 interface ProductPageProps {
   params: {
     slug: string
@@ -19,108 +21,16 @@ interface ProductPageProps {
 }
 
 export default function page({ params }: ProductPageProps) {
-  const { slug } = params
+  const [selectedImage, setSelectedImage] = useState<string>(
+    productJSON.images[0]
+  )
+  const [selectedSize, setSelectedSize] = useState<string | null>(null)
+  const averageRating = CalculateAverageRating(productJSON?.reviews)
   const { count, increment, decrement } = UseCounter()
   const { calculateDiscountedPrice, calculateRoundedPrice } =
     UseDiscountCalculator()
 
   const sizesBtn = ['small', 'medium', 'large', 'x-large']
-
-  const productJSON = {
-    id: 1,
-    productName: 'one life graphic t-shirt',
-    description:
-      'This graphic t-shirt, perfect for any occasion, is crafted from a soft and breathable fabric, offering superior comfort and style.',
-    rating: 4,
-    colors: ['#31344F', '#314F4A', '#4F4631'],
-    available_sizes: ['small', 'medium', 'large', 'x-large'],
-    quantity: 10,
-    price: 206,
-    discount: 5,
-    images: [
-      '/132.jpg', // Add actual image URLs
-      '/135.jpg',
-      '/130.jpg',
-      '/122.jpg',
-      '/122.jpg',
-    ],
-    reviews: [
-      {
-        id: 1,
-        user: 'John Doe',
-        rating: 4,
-        comment: 'Great product!',
-      },
-      {
-        id: 2,
-        user: 'Jane Smith',
-        rating: 3,
-        comment: 'Good quality shirt. I want more color.',
-      },
-      {
-        id: 3,
-        user: 'Henry Smith',
-        rating: 1,
-        comment: 'Good quality shirt.',
-      },
-      {
-        id: 4,
-        user: 'James Smith',
-        rating: 5,
-        comment: 'Good quality shirt.',
-      },
-      
-    ],
-    related: [
-      {
-        id: 2,
-        name: 'Cool Graphic Hoodie',
-        image: '/59.jpg', // Add actual image URL
-        rating: 4.5,
-        discount: 10, // 10% discount
-      },
-      {
-        id: 3,
-        name: 'Casual Denim Jeans',
-        image: '/94.jpg', // Add actual image URL
-        rating: 4.2,
-        discount: 15, // 15% discount
-      },
-      {
-        id: 4,
-        name: 'Sneaker Shoes',
-        image: '/188.jpg', // Add actual image URL
-        rating: 4.0,
-        discount: 0, // No discount
-      },
-      {
-        id: 5,
-        name: 'Stylish Sunglasses',
-        image: '/193.jpg', // Add actual image URL
-        rating: 4.8,
-        discount: 20, // 20% discount
-      },
-    ],
-    faq: [
-      {
-        id: 1,
-        question: 'What is the material of the shirt?',
-        answer: 'The shirt is made of 100% cotton.',
-      },
-      {
-        id: 2,
-        question: 'Is this shirt machine washable?',
-        answer: 'Yes, it is machine washable.',
-      },
-      // Add more FAQ objects as needed
-    ],
-  }
-
-  const [selectedImage, setSelectedImage] = useState<string>(
-    productJSON.images[0]
-  )
-  const [selectedSize, setSelectedSize] = useState<string | null>(null)
-  const averageRating = CalculateAverageRating(productJSON?.reviews) // Calculate the average rating
 
   const handleSizeClick = (size: string) => {
     setSelectedSize(size)
