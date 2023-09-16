@@ -9,9 +9,8 @@ import Layout from '@/components/Layout'
 
 import { UseCounter } from '@/app/hooks/Counter'
 import { UseDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
-import { UseStarRating } from '@/app/hooks/starRating'
+import { CalculateAverageRating } from '@/app/utils/avarageRatings'
 import StarRating from '@/components/Rating'
-import { calculateAverageRating } from '@/app/utils/avarageRatings'
 
 interface ProductPageProps {
   params: {
@@ -49,16 +48,28 @@ export default function page({ params }: ProductPageProps) {
       {
         id: 1,
         user: 'John Doe',
-        rating: 5,
+        rating: 4,
         comment: 'Great product!',
       },
       {
         id: 2,
         user: 'Jane Smith',
+        rating: 3,
+        comment: 'Good quality shirt. I want more color.',
+      },
+      {
+        id: 3,
+        user: 'Henry Smith',
         rating: 1,
         comment: 'Good quality shirt.',
       },
-      // Add more review objects as needed
+      {
+        id: 4,
+        user: 'James Smith',
+        rating: 5,
+        comment: 'Good quality shirt.',
+      },
+      
     ],
     related: [
       {
@@ -109,8 +120,7 @@ export default function page({ params }: ProductPageProps) {
     productJSON.images[0]
   )
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
-  const { rating, setRating } = setRating()
-  const averageRating = calculateAverageRating(productJSON?.reviews) // Calculate the average rating
+  const averageRating = CalculateAverageRating(productJSON?.reviews) // Calculate the average rating
 
   const handleSizeClick = (size: string) => {
     setSelectedSize(size)
@@ -132,7 +142,7 @@ export default function page({ params }: ProductPageProps) {
 
   return (
     <Layout>
-      <span className='xl:p-10'>Home / Shop / men / {slug}</span>
+      {/* <span className='xl:p-10'>Home / Shop / men / {slug}</span> */}
       <header className='flex xl:flex-row xl:gap-10 xl:px-10 xl:py-14 '>
         <div className='productImage flex 2xl:h-[30rem] xl:flex-row xl:justify-start xl:items-start xl:gap-5'>
           <div className='flex 2xl:h-[31rem] xl:h-[] xl:flex-col xl:justify-start xl:items-center xl:gap-5 xl:overflow-y-auto scrollbar-hide '>

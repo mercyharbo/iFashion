@@ -1,4 +1,4 @@
-export const calculateAverageRating = (reviews: { rating: number }[]) => {
+export const CalculateAverageRating = (reviews: { rating: number }[]) => {
     if (reviews.length === 0) {
     return 0; // Default rating if there are no reviews
   }

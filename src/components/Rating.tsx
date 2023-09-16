@@ -1,4 +1,3 @@
-// StarRating.tsx
 import React from 'react'
 import clsx from 'clsx'
 
@@ -18,8 +17,6 @@ const StarRating: React.FC<StarRatingProps> = ({
       onRatingChange(value)
     }
   }
-
-  console.log(rating, 'as rating...')
 
   return (
     <div className='flex justify-center items-center gap-2'>
