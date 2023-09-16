@@ -12,7 +12,7 @@ import { UseDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
 import { CalculateAverageRating } from '@/app/utils/avarageRatings'
 import StarRating from '@/components/Rating'
 
-import productJSON from '@/app/product/[slug]/product.json'
+import ProductJSON from '@/app/product/[slug]/product.json'
 
 interface ProductPageProps {
   params: {
@@ -22,10 +22,10 @@ interface ProductPageProps {
 
 export default function page({ params }: ProductPageProps) {
   const [selectedImage, setSelectedImage] = useState<string>(
-    productJSON.images[0]
+    ProductJSON.images[0]
   )
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
-  const averageRating = CalculateAverageRating(productJSON?.reviews)
+  const averageRating = CalculateAverageRating(ProductJSON?.reviews)
   const { count, increment, decrement } = UseCounter()
   const { calculateDiscountedPrice, calculateRoundedPrice } =
     UseDiscountCalculator()
@@ -42,11 +42,11 @@ export default function page({ params }: ProductPageProps) {
 
   // Calculate discounted price if discount is provided
   const discountedPrice =
-    productJSON?.discount !== null && productJSON?.discount !== undefined
-      ? calculateDiscountedPrice(productJSON?.price, productJSON?.discount)
+    ProductJSON?.discount !== null && ProductJSON?.discount !== undefined
+      ? calculateDiscountedPrice(ProductJSON?.price, ProductJSON?.discount)
       : null
 
-  const roundedPrice = calculateRoundedPrice(productJSON?.price)
+  const roundedPrice = calculateRoundedPrice(ProductJSON?.price)
   const roundedDiscountedPrice =
     discountedPrice !== null ? calculateRoundedPrice(discountedPrice) : null
 
@@ -56,7 +56,7 @@ export default function page({ params }: ProductPageProps) {
       <header className='flex xl:flex-row xl:gap-10 xl:px-10 xl:py-14 '>
         <div className='productImage flex 2xl:h-[30rem] xl:flex-row xl:justify-start xl:items-start xl:gap-5'>
           <div className='flex 2xl:h-[31rem] xl:h-[] xl:flex-col xl:justify-start xl:items-center xl:gap-5 xl:overflow-y-auto scrollbar-hide '>
-            {productJSON?.images?.map((img, index) => {
+            {ProductJSON?.images?.map((img, index) => {
               return (
                 <Button
                   key={index}
@@ -89,11 +89,11 @@ export default function page({ params }: ProductPageProps) {
 
         <div className='details flex xl:flex-col xl:justify-start xl:items-start xl:gap-5'>
           <h1 className='xl:text-5xl uppercase font-extrabold '>
-            {productJSON.productName}
+            {ProductJSON.productName}
           </h1>
           <StarRating rating={averageRating} readOnly />
 
-          {productJSON?.discount ? (
+          {ProductJSON?.discount ? (
             <div className='flex justify-center items-center gap-5'>
               <span className='text-[32px] font-semibold'>
                 ${roundedDiscountedPrice}
@@ -106,17 +106,17 @@ export default function page({ params }: ProductPageProps) {
                   'bg-[#ff333330] text-[#f33] py-1 px-[14px] rounded-full inline-flex justify-center items-center '
                 )}
               >
-                {productJSON?.discount}%
+                {ProductJSON?.discount}%
               </p>
             </div>
           ) : (
             <h4 className='2xl:text-4xl xl:text-4xl font-bold '>
-              ${productJSON.price}
+              ${ProductJSON.price}
             </h4>
           )}
 
           <p className='text-[#5e5e5d] 2xl:w-[70%] '>
-            {productJSON.description}
+            {ProductJSON.description}
           </p>
           <div className='colors flex'>colors</div>
           <hr className='w-full' />
