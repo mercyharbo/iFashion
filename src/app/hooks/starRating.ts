@@ -5,7 +5,7 @@ export interface StarRating {
   setRating: (value: number) => void;
 }
 
-export const useStarRating = (initialRating: number = 0): StarRating => {
+export const UseStarRating = (initialRating: number = 0): StarRating => {
   const [rating, setRating] = useState<number>(initialRating);
 
   const handleRatingChange = (value: number) => {

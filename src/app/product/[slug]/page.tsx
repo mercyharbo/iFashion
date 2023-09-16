@@ -7,9 +7,9 @@ import clsx from 'clsx'
 import Button from '@/types/Button'
 import Layout from '@/components/Layout'
 
-import { useCounter } from '@/app/hooks/Counter'
-import { useDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
-import { useStarRating } from '@/app/hooks/starRating'
+import { UseCounter } from '@/app/hooks/Counter'
+import { UseDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
+import { UseStarRating } from '@/app/hooks/starRating'
 import StarRating from '@/components/Rating'
 import { calculateAverageRating } from '@/app/utils/avarageRatings'
 
@@ -21,9 +21,9 @@ interface ProductPageProps {
 
 export default function page({ params }: ProductPageProps) {
   const { slug } = params
-  const { count, increment, decrement } = useCounter()
+  const { count, increment, decrement } = UseCounter()
   const { calculateDiscountedPrice, calculateRoundedPrice } =
-    useDiscountCalculator()
+    UseDiscountCalculator()
 
   const sizesBtn = ['small', 'medium', 'large', 'x-large']
 
@@ -109,7 +109,7 @@ export default function page({ params }: ProductPageProps) {
     productJSON.images[0]
   )
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
-  const { rating, setRating } = useStarRating()
+  const { rating, setRating } = setRating()
   const averageRating = calculateAverageRating(productJSON?.reviews) // Calculate the average rating
 
   const handleSizeClick = (size: string) => {

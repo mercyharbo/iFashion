@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-export const useDiscountCalculator = () => {
+export const UseDiscountCalculator = () => {
   const calculateDiscountedPrice = (
     originalPrice: number,
     discountPercentage: number
