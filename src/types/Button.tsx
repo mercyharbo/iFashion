@@ -3,7 +3,7 @@ import React from 'react'
 
 type ButtonProps = {
   title?: string
-  icon?: React.ReactElement // Use React.ReactElement type for icon
+  icon?: React.ReactElement
   type?: 'submit' | 'button' | 'reset'
   buttonClass?: string
   onClick?: () => void
