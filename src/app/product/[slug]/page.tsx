@@ -20,11 +20,12 @@ interface ProductPageProps {
   }
 }
 
-export default function page({ params }: ProductPageProps) {
+export default function Product_Details({ params }: ProductPageProps) {
   const [selectedImage, setSelectedImage] = useState<string>(
     ProductJSON.images[0]
   )
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
+
   const averageRating = CalculateAverageRating(ProductJSON?.reviews)
   const { count, increment, decrement } = UseCounter()
   const { calculateDiscountedPrice, calculateRoundedPrice } =
