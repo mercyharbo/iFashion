@@ -14,6 +14,9 @@ import StarRating from '@/components/Rating'
 
 import ProductJSON from '@/app/product/[slug]/product.json'
 
+import minus from '@/assets/minus.png'
+import plus from '@/assets/plus.png'
+
 interface ProductPageProps {
   params: {
     slug: string
@@ -54,41 +57,40 @@ export default function Product_Details({ params }: ProductPageProps) {
   return (
     <Layout>
       {/* <span className='xl:p-10'>Home / Shop / men / {slug}</span> */}
-      <header className='flex xl:flex-row xl:gap-10 xl:px-10 xl:py-14 sm:flex-col sm:px-5 '>
-        <div className='productImage flex 2xl:h-[30rem] xl:flex-row xl:justify-start xl:items-start xl:gap-5 md:justify-start md:items-start sm:flex-col-reverse sm:justify-center sm:items-center sm:gap-5'>
+      <header className='relative grid 3xl:w-[80%] 2xl:w-[80%] xl:grid-cols-2 xl:gap-10 xl:px-10 xl:w-full xl:py-14 md:w-full sm:w-full sm:flex-col sm:px-5 '>
+        <div
+          className='flex xl:flex-row md:flex-col-reverse md:gap-10 sm:gap-5 sm:flex-col-reverse '
+          //   className='flex 2xl:h-[30rem] xl:flex-row xl:justify-start xl:items-start xl:gap-5 md:justify-start md:items-start sm:flex-col-reverse
+          // sm:justify-center sm:items-center sm:gap-5 '
+        >
           <div
-            className='flex 3xl:h-[25rem] 2xl:h-[25rem] xl:h-[25rem] xl:flex-col xl:justify-start xl:items-center xl:gap-5 xl:overflow-y-auto md:flex-row md:justify-start 
-            md:items-center md:gap-5 md:w-[100%] md:overflow-x-auto sm:flex-row sm:justify-start sm:items-center sm:gap-3 sm:overflow-x-auto sm:max-w-full crollbar-hide '
+            className='3xl:h-[35rem] 2xl:h-[30rem] xl:w-[20%] xl:h-[30rem] xl:flex-col xl:snap-y xl:items-center md:snap-x md:w-[80%] sm:w-full 
+            sm:flex-row snap-mandatory flex justify-start overflow-scroll scrollbar-hide '
+            // className='3xl:h-[30rem] 3xl:mr-auto 2xl:h-[30rem] 2xl:w-[25%] xl:snap-y xl:flex-col xl:h-[30rem] xl:w-[100%] md:w-[80%] md:mr-[10rem]
+            // md:snap-x md:h-auto md:flex-row sm:snap-x sm:h-auto sm:flex-row mx-auto snap-mandatory flex justify-start items-start overflow-scroll scrollbar-hide'
           >
             {ProductJSON?.images?.map((img, index) => {
               return (
-                <Button
+                <Image
                   key={index}
-                  type='button'
+                  src={img}
+                  width={100}
+                  height={100}
+                  alt='product images'
                   onClick={() => handleImageClick(img)}
-                  icon={
-                    <Image
-                      src={img}
-                      width={100}
-                      height={100}
-                      alt='product images'
-                      className='rounded-2xl object-cover sm:w-[111px] sm:h-[106px] '
-                    />
-                  }
+                  className='rounded-2xl object-cover flex-shrink-0 h-auto flex items-start justify-start gap-5 xl:my-2 sm:mx-2'
                 />
               )
             })}
           </div>
 
-          <div className=''>
-            <Image
-              src={selectedImage}
-              width={450}
-              height={450}
-              alt='selected product image'
-              className='rounded-2xl object-cover xl:w-[60rem] xl:h-[25rem] h-full w-full '
-            />
-          </div>
+          <Image
+            src={selectedImage}
+            width={1000}
+            height={1000}
+            alt='selected product image'
+            className='rounded-2xl object-cover xl:w-[80%] xl:h- md:w-[60%] sm:h-auto '
+          />
         </div>
 
         <div className=' flex xl:flex-col xl:justify-start xl:items-start xl:gap-5 xl:py-0 sm:w-full sm:flex-col sm:justify-start sm:items-start sm:gap-5 sm:py-8 '>
@@ -148,15 +150,17 @@ export default function Product_Details({ params }: ProductPageProps) {
               <Button
                 type='button'
                 onClick={decrement}
-                title='-'
-                buttonClass='font-semibold text-2xl'
+                icon={
+                  <Image src={minus} width={50} height={50} alt='minus icon' />
+                }
               />
-              <span className=''>{count}</span>
+              <span className='font-medium text-xl '>{count}</span>
               <Button
                 type='button'
                 onClick={increment}
-                title='+'
-                buttonClass='font-semibold text-2xl'
+                icon={
+                  <Image src={plus} width={50} height={50} alt='minus icon' />
+                }
               />
             </div>
             <Button
