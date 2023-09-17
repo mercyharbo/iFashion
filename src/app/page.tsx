@@ -1,48 +1,26 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
 import Image from 'next/image'
 import Link from 'next/link'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger' // Import ScrollTrigger
 
-import { AppDispatch, useAppSelector } from '@/redux/Store'
-
 import Hero from '@/components/Hero'
-import Layout from '@/components/Layout'
-import Modal from '@/types/Modal'
 import InputField from '@/types/InputField'
-
-import { closeModal } from '@/redux/Slice/ModalSlice'
-import { closeSearchModal } from '@/redux/Slice/SearchModalSlice'
 
 import Button from '@/types/Button'
 import Product from '@/types/Product'
 import ProductJSON from '@/components/Product.json'
 
 import inbox from '@/assets/envelope.svg'
-import facebook from '@/assets/facebook.png'
-import twitter from '@/assets/twitter.png'
-import github from '@/assets/github.png'
-import instagram from '@/assets/instagram.png'
-
-import paypal from '@/assets/paypal_196566.png'
-import visa from '@/assets/visa.png'
-import applepay from '@/assets/cc-apple-pay_6422266.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
-  const dispatch = useDispatch<AppDispatch>()
-  const isOpen = useAppSelector((state) => state.modalReducer.modal.isOpen)
-  const isSearchOpen = useAppSelector(
-    (state) => state.searchModalReducer.modal.isOpen
-  )
   const revealRefs = useRef<any[]>([])
   revealRefs.current = []
 
-  const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
   const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
   const browseStyle = [
     { id: 1, style: 'casual', image: '/casual2.jpg' },
@@ -95,42 +73,7 @@ export default function Home() {
     },
   ]
 
-  const handleNavClose = () => {
-    dispatch(closeModal())
-  }
-
-  const handleSearchModal = () => {
-    dispatch(closeSearchModal())
-  }
-
   useEffect(() => {
-    if (isOpen) {
-      gsap.from('.nav-container', {
-        opacity: 0,
-        x: -100,
-        duration: 1,
-        ease: 'power2.out',
-      })
-
-      gsap.from('.nav-link', {
-        opacity: 0,
-        x: -20,
-        stagger: 0.5,
-        duration: 0.5,
-        ease: 'power2.inOut',
-      })
-    }
-
-    if (isSearchOpen) {
-      gsap.from('.search-container', {
-        opacity: 0,
-        y: -50,
-        stagger: 0.2,
-        duration: 0.5,
-        ease: 'sine.inOut',
-      })
-    }
-
     revealRefs.current.forEach((el, index) => {
       gsap.fromTo(
         el,
@@ -163,7 +106,7 @@ export default function Home() {
         scale: 0,
         ease: 'back',
       })
-  }, [isOpen, isSearchOpen])
+  }, [])
 
   const addToRefs = (el: HTMLElement | null) => {
     if (el && !revealRefs.current.includes(el)) {
@@ -172,7 +115,7 @@ export default function Home() {
   }
 
   return (
-    <Layout>
+    <>
       <Hero />
       <section className='brands-container bg-black text-white flex flex-col justify-center items-center  xl:h-[10rem] xl:mb-10 md:h-[8rem] sm:h-[8rem] '>
         <div className='flex xl:gap-10 xl:w-[80%] xl:justify-between xl:items-center md:justify-center md:items-center md:gap-5 sm:justify-center sm:items-center sm:gap-5 flex-wrap '>
@@ -259,6 +202,7 @@ export default function Home() {
           {browseStyle.map((style) => {
             return (
               <Link
+                scroll={false}
                 key={style.id}
                 href={`/${style.style}`}
                 className={
@@ -336,139 +280,6 @@ export default function Home() {
           />
         </div>
       </section>
-
-      <footer
-        // ref={addToRefs}
-        className='bg-[#F0F0F0] w-full relative flex flex-col justify-center items-center gap-10 '
-      >
-        <div className='w-full xl:pt-[8rem] md:pt-[8rem] md:w-full md:px-10 sm:w-full sm:py-10 sm:px-5 flex flex-col justify-center items-center gap-10 '>
-          <div className='grid xl:grid-cols-5 xl:content-center xl:place-items-center xl:gap-10 md:grid-cols-3 sm:grid-cols-1 sm:gap-10 '>
-            <div className='flex flex-col justify-start items-start gap-3 '>
-              <h3 className='xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase'>
-                {' '}
-                shop.co{' '}
-              </h3>
-              <p className=' text-[#858282] '>
-                We have clothes that suits your style and which you’re proud to
-                wear. From women to men.
-              </p>
-              <div className='flex justify-start items-center gap-5'>
-                <Link href={'/'}>
-                  <Image
-                    src={facebook}
-                    width={25}
-                    height={25}
-                    alt='facebook icon'
-                  />
-                </Link>
-                <Link href={'/'}>
-                  <Image
-                    src={twitter}
-                    width={25}
-                    height={25}
-                    alt='twitter icon'
-                  />
-                </Link>
-                <Link href={'/'}>
-                  <Image
-                    src={instagram}
-                    width={25}
-                    height={25}
-                    alt='instagram icon'
-                  />
-                </Link>
-                <Link href={'/'}>
-                  <Image
-                    src={github}
-                    width={25}
-                    height={25}
-                    alt='github icon'
-                  />
-                </Link>
-              </div>
-            </div>
-            <div className='flex flex-col justify-start items-start gap-3 '>
-              <h3 className='xl:text-lg font-medium uppercase'> company </h3>
-              <p className='capitalize text-[#858282] '>about</p>
-              <p className='capitalize text-[#858282] '>features</p>
-              <p className='capitalize text-[#858282] '>works</p>
-              <p className='capitalize text-[#858282] '>career</p>
-            </div>
-            <div className='flex flex-col justify-start items-start gap-3 '>
-              <h3 className='xl:text-lg font-medium uppercase'> help </h3>
-              <p className='capitalize text-[#858282]'>customer support</p>
-              <p className='capitalize text-[#858282]'>delivery details</p>
-              <p className='capitalize text-[#858282]'>terms & conditions</p>
-              <p className='capitalize text-[#858282]'>privacy policy</p>
-            </div>
-            <div className='flex flex-col justify-start items-start gap-3 '>
-              <h3 className='xl:text-lg font-medium uppercase'> faq </h3>
-              <p className='capitalize text-[#858282]'>account</p>
-              <p className='capitalize text-[#858282]'>manage deliveries</p>
-              <p className='capitalize text-[#858282]'>orders</p>
-              <p className='capitalize text-[#858282]'>payments</p>
-            </div>
-            <div className='flex flex-col justify-start items-start gap-3 '>
-              <h3 className='xl:text-lg font-medium uppercase'> resources </h3>
-              <p className='capitalize text-[#858282]'>free ebooks</p>
-              <p className='capitalize text-[#858282]'>development tutorial</p>
-              <p className='capitalize text-[#858282]'>how to - blog</p>
-              <p className='capitalize text-[#858282]'>youtube playlist</p>
-            </div>
-          </div>
-          <hr className='w-full' />
-          <div
-            className='flex w-full xl:flex-row xl:justify-between xl:items-center md:flex-col-reverse md:justify-center md:items-center sm:flex-col-reverse 
-            sm:justify-center sm:items-center sm:gap-5 '
-          >
-            <span className=''>Shop.co © 2000-2023, All Rights Reserved</span>
-            <div className='flex justify-center items-center gap-5'>
-              <Image src={visa} width={30} height={30} alt='github icon' />
-              <Image src={applepay} width={30} height={30} alt='github icon' />
-              <Image src={paypal} width={30} height={30} alt='github icon' />
-            </div>
-          </div>
-        </div>
-      </footer>
-
-      {isOpen && (
-        <Modal
-          handleCloseModal={handleNavClose}
-          showLogo={true}
-          showHeader={true}
-          modalClass='nav-container w-[80%] mx-auto top-0 left-0 p-5 z-20 rounded-r-xl h-screen absolute bg-white '
-          contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold pt-10 text-lg'
-        >
-          {NavItems.map((items, key) => {
-            return (
-              <Link
-                href={`/${items.replace(/\s+/g, '-')}`}
-                key={key}
-                className='nav-link'
-              >
-                {items}
-              </Link>
-            )
-          })}
-        </Modal>
-      )}
-
-      {isSearchOpen && (
-        <Modal
-          handleCloseModal={handleSearchModal}
-          showLogo={false}
-          showHeader={false}
-          modalClass='search-container 2xl:hidden xl:hidden md:flex sm:flex w-[95%] mx-auto top-2 right-0 p-5 z-10 absolute rounded-xl'
-          contentClass='flex-col justify-center items-center gap-5 w-full capitalize font-semibold'
-        >
-          <InputField
-            type='text'
-            placeholder='Search for products...'
-            inputWrapper='w-full'
-            inputClass='rounded-full px-3 text-sm bg-[#F0F0F0] outline-none border-2 h-[45px] w-full xl:hidden md:flex sm:flex '
-          />
-        </Modal>
-      )}
-    </Layout>
+    </>
   )
 }

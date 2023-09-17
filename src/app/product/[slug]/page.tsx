@@ -5,7 +5,6 @@ import Image from 'next/image'
 import clsx from 'clsx'
 
 import Button from '@/types/Button'
-import Layout from '@/components/Layout'
 
 import { UseCounter } from '@/app/hooks/Counter'
 import { UseDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
@@ -55,31 +54,29 @@ export default function Product_Details({ params }: ProductPageProps) {
     discountedPrice !== null ? calculateRoundedPrice(discountedPrice) : null
 
   return (
-    <Layout>
-      {/* <span className='xl:p-10'>Home / Shop / men / {slug}</span> */}
-      <header className='relative grid 3xl:w-[80%] 2xl:w-[80%] xl:grid-cols-2 xl:gap-10 xl:px-10 xl:w-full xl:py-14 md:w-full sm:w-full sm:flex-col sm:px-5 '>
-        <div
-          className='flex xl:flex-row md:flex-col-reverse md:gap-10 sm:gap-5 sm:flex-col-reverse '
-          //   className='flex 2xl:h-[30rem] xl:flex-row xl:justify-start xl:items-start xl:gap-5 md:justify-start md:items-start sm:flex-col-reverse
-          // sm:justify-center sm:items-center sm:gap-5 '
-        >
+    <>
+      <header className='grid 3xl:w-[80%] 2xl:w-[80%] xl:grid-cols-2 xl:gap-10 xl:px-10 xl:w-full xl:py-14 md:w-full sm:w-full sm:flex-col sm:px-5 '>
+        <div className='flex xl:flex-row md:flex-col-reverse md:gap-10 sm:gap-5 sm:flex-col-reverse '>
           <div
             className='3xl:h-[35rem] 2xl:h-[30rem] xl:w-[20%] xl:h-[30rem] xl:flex-col xl:snap-y xl:items-center md:snap-x md:w-[80%] sm:w-full 
             sm:flex-row snap-mandatory flex justify-start overflow-scroll scrollbar-hide '
-            // className='3xl:h-[30rem] 3xl:mr-auto 2xl:h-[30rem] 2xl:w-[25%] xl:snap-y xl:flex-col xl:h-[30rem] xl:w-[100%] md:w-[80%] md:mr-[10rem]
-            // md:snap-x md:h-auto md:flex-row sm:snap-x sm:h-auto sm:flex-row mx-auto snap-mandatory flex justify-start items-start overflow-scroll scrollbar-hide'
           >
             {ProductJSON?.images?.map((img, index) => {
               return (
-                <Image
+                <button
                   key={index}
-                  src={img}
-                  width={100}
-                  height={100}
-                  alt='product images'
+                  type='button'
                   onClick={() => handleImageClick(img)}
-                  className='rounded-2xl object-cover flex-shrink-0 h-auto flex items-start justify-start gap-5 xl:my-2 sm:mx-2'
-                />
+                  className='flex-shrink-0 h-auto flex items-start justify-start gap-5 xl:my-2 sm:mx-2'
+                >
+                  <Image
+                    src={img}
+                    width={100}
+                    height={100}
+                    alt='product images'
+                    className='rounded-2xl object-cover '
+                  />
+                </button>
               )
             })}
           </div>
@@ -171,6 +168,6 @@ export default function Product_Details({ params }: ProductPageProps) {
           </div>
         </div>
       </header>
-    </Layout>
+    </>
   )
 }
