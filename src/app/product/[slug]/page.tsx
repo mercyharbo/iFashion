@@ -54,9 +54,12 @@ export default function Product_Details({ params }: ProductPageProps) {
   return (
     <Layout>
       {/* <span className='xl:p-10'>Home / Shop / men / {slug}</span> */}
-      <header className='flex xl:flex-row xl:gap-10 xl:px-10 xl:py-14 '>
-        <div className='productImage flex 2xl:h-[30rem] xl:flex-row xl:justify-start xl:items-start xl:gap-5'>
-          <div className='flex 2xl:h-[31rem] xl:h-[] xl:flex-col xl:justify-start xl:items-center xl:gap-5 xl:overflow-y-auto scrollbar-hide '>
+      <header className='flex xl:flex-row xl:gap-10 xl:px-10 xl:py-14 sm:flex-col sm:px-5 '>
+        <div className='productImage flex 2xl:h-[30rem] xl:flex-row xl:justify-start xl:items-start xl:gap-5 md:justify-start md:items-start sm:flex-col-reverse sm:justify-center sm:items-center sm:gap-5'>
+          <div
+            className='flex 3xl:h-[25rem] 2xl:h-[25rem] xl:h-[25rem] xl:flex-col xl:justify-start xl:items-center xl:gap-5 xl:overflow-y-auto md:flex-row md:justify-start 
+            md:items-center md:gap-5 md:w-[100%] md:overflow-x-auto sm:flex-row sm:justify-start sm:items-center sm:gap-3 sm:overflow-x-auto sm:max-w-full crollbar-hide '
+          >
             {ProductJSON?.images?.map((img, index) => {
               return (
                 <Button
@@ -69,7 +72,7 @@ export default function Product_Details({ params }: ProductPageProps) {
                       width={100}
                       height={100}
                       alt='product images'
-                      className='rounded-2xl object-cover '
+                      className='rounded-2xl object-cover sm:w-[111px] sm:h-[106px] '
                     />
                   }
                 />
@@ -83,16 +86,18 @@ export default function Product_Details({ params }: ProductPageProps) {
               width={450}
               height={450}
               alt='selected product image'
-              className='rounded-2xl object-cover h-full '
+              className='rounded-2xl object-cover xl:w-[60rem] xl:h-[25rem] h-full w-full '
             />
           </div>
         </div>
 
-        <div className='details flex xl:flex-col xl:justify-start xl:items-start xl:gap-5'>
-          <h1 className='xl:text-5xl uppercase font-extrabold '>
-            {ProductJSON.productName}
-          </h1>
-          <StarRating rating={averageRating} readOnly />
+        <div className=' flex xl:flex-col xl:justify-start xl:items-start xl:gap-5 xl:py-0 sm:w-full sm:flex-col sm:justify-start sm:items-start sm:gap-5 sm:py-8 '>
+          <div className='flex flex-col justify-start items-start gap-2'>
+            <h1 className='xl:text-5xl md:text-3xl sm:text-2xl uppercase font-extrabold '>
+              {ProductJSON.productName}
+            </h1>
+            <StarRating rating={averageRating} readOnly />
+          </div>
 
           {ProductJSON?.discount ? (
             <div className='flex justify-center items-center gap-5'>
@@ -121,7 +126,7 @@ export default function Product_Details({ params }: ProductPageProps) {
           </p>
           <div className='colors flex'>colors</div>
           <hr className='w-full' />
-          <div className='flex flex-wrap justify-center items-center gap-5'>
+          <div className='flex flex-wrap justify-start items-center gap-5'>
             {sizesBtn.map((btn, index) => {
               return (
                 <Button
@@ -138,8 +143,8 @@ export default function Product_Details({ params }: ProductPageProps) {
               )
             })}
           </div>
-          <div className='flex xl:flex-row xl:justify-start xl:items-center xl:gap-5 '>
-            <div className='bg-[#F0F0F0] flex justify-between items-center gap-5 rounded-full px-5 xl:w-[8rem] xl:h-[50px] '>
+          <div className='flex w-full xl:flex-row xl:justify-start xl:items-center xl:gap-5 sm:gap-5 '>
+            <div className='bg-[#F0F0F0] flex justify-between items-center gap-5 rounded-full px-5 xl:w-[8rem] xl:h-[50px] md:w-[12rem] '>
               <Button
                 type='button'
                 onClick={decrement}
