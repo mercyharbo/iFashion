@@ -7,13 +7,10 @@ import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger' // Import ScrollTrigger
 
 import Hero from '@/components/Hero'
-import InputField from '@/types/InputField'
 
 import Button from '@/types/Button'
 import Product from '@/types/Product'
 import ProductJSON from '@/components/Product.json'
-
-import inbox from '@/assets/envelope.svg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -250,34 +247,6 @@ export default function Home() {
               </div>
             )
           })}
-        </div>
-      </section>
-
-      <section
-        ref={addToRefs}
-        className='bg-black text-white flex rounded-2xl xl:mx-auto xl:relative xl:top-[5rem] xl:z-10 xl:h-[10rem] xl:flex-row xl:justify-between xl:w-[80%] 
-        xl:items-center xl:px-16 md:flex-col md:justify-center md:items-center md:gap-5 md:relative md:top-[5rem] md:z-10 sm:static sm:flex-col sm:justify-center 
-        sm:items-center sm:gap-5 sm:mx-5 sm:p-4 '
-      >
-        <h1 className='2xl:text-4xl xl:text-4xl xl:w-[50%] md:w-full md:text-4xl sm:w-full sm:text-2xl font-bold uppercase '>
-          STAY UPTO DATE ABOUT OUR LATEST OFFERS
-        </h1>
-
-        <div className='newsletter-form flex flex-col justify-center items-center gap-3 3xl:w-[30%] 2xl:w-[40%] xl:w-[40%] md:w-full sm:w-full '>
-          <InputField
-            placeholder='Enter your email address'
-            type='email'
-            icon={
-              <Image src={inbox} width={20} height={20} alt='Envelope icon' />
-            }
-            inputClass='pl-10 text-black'
-            inputWrapper='w-full relative'
-          />
-          <Button
-            type='button'
-            title='subscribe to newsletter'
-            buttonClass='rounded-full h-[45px] py-2 bg-[#fff] text-black font-medium w-full '
-          />
         </div>
       </section>
     </>

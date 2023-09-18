@@ -15,6 +15,7 @@ import ProductJSON from '@/app/product/[slug]/product.json'
 
 import minus from '@/assets/minus.png'
 import plus from '@/assets/plus.png'
+import moment from 'moment'
 
 interface ProductPageProps {
   params: {
@@ -22,18 +23,20 @@ interface ProductPageProps {
   }
 }
 
+const tabs: string[] = ['Product Details', 'Ratings and Reviews', 'FAQs']
+const sizesBtn: string[] = ['small', 'medium', 'large', 'x-large']
+
 export default function Product_Details({ params }: ProductPageProps) {
   const [selectedImage, setSelectedImage] = useState<string>(
     ProductJSON.images[0]
   )
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<string>('Product Details')
 
   const averageRating = CalculateAverageRating(ProductJSON?.reviews)
   const { count, increment, decrement } = UseCounter()
   const { calculateDiscountedPrice, calculateRoundedPrice } =
     UseDiscountCalculator()
-
-  const sizesBtn = ['small', 'medium', 'large', 'x-large']
 
   const handleSizeClick = (size: string) => {
     setSelectedSize(size)
@@ -41,6 +44,10 @@ export default function Product_Details({ params }: ProductPageProps) {
 
   const handleImageClick = (img: string) => {
     setSelectedImage(img)
+  }
+
+  const handleTabClick = (tab: string): void => {
+    setActiveTab(tab)
   }
 
   // Calculate discounted price if discount is provided
@@ -55,11 +62,16 @@ export default function Product_Details({ params }: ProductPageProps) {
 
   return (
     <>
-      <header className='grid 3xl:w-[80%] 2xl:w-[80%] xl:grid-cols-2 xl:gap-10 xl:px-10 xl:w-full xl:py-14 md:w-full sm:w-full sm:flex-col sm:px-5 '>
+      <header
+        className={clsx(
+          'grid mx-auto 3xl:w-[80%] 2xl:w-[80%] xl:grid-cols-2 xl:gap-10 xl:px-10 xl:w-full xl:py-14 md:w-full sm:w-full sm:flex-col sm:px-5 '
+        )}
+      >
         <div className='flex xl:flex-row md:flex-col-reverse md:gap-10 sm:gap-5 sm:flex-col-reverse '>
           <div
-            className='3xl:h-[35rem] 2xl:h-[30rem] xl:w-[20%] xl:h-[30rem] xl:flex-col xl:snap-y xl:items-center md:snap-x md:w-[80%] sm:w-full 
-            sm:flex-row snap-mandatory flex justify-start overflow-scroll scrollbar-hide '
+            className={clsx(
+              '3xl:h-[35rem] 2xl:h-[30rem] xl:w-[20%] xl:h-[30rem] xl:flex-col xl:snap-y xl:items-center md:snap-x md:w-[80%] sm:w-full sm:flex-row snap-mandatory flex justify-start overflow-scroll scrollbar-hide '
+            )}
           >
             {ProductJSON?.images?.map((img, index) => {
               return (
@@ -67,7 +79,9 @@ export default function Product_Details({ params }: ProductPageProps) {
                   key={index}
                   type='button'
                   onClick={() => handleImageClick(img)}
-                  className='flex-shrink-0 h-auto flex items-start justify-start gap-5 xl:my-2 sm:mx-2'
+                  className={clsx(
+                    'flex-shrink-0 h-auto flex items-start justify-start gap-5 xl:my-2 sm:mx-2'
+                  )}
                 >
                   <Image
                     src={img}
@@ -86,13 +100,25 @@ export default function Product_Details({ params }: ProductPageProps) {
             width={1000}
             height={1000}
             alt='selected product image'
-            className='rounded-2xl object-cover xl:w-[80%] xl:h- md:w-[60%] sm:h-auto '
+            className={clsx(
+              'rounded-2xl object-cover xl:w-[80%] xl:h- md:w-[60%] sm:h-auto '
+            )}
           />
         </div>
 
-        <div className=' flex xl:flex-col xl:justify-start xl:items-start xl:gap-5 xl:py-0 sm:w-full sm:flex-col sm:justify-start sm:items-start sm:gap-5 sm:py-8 '>
-          <div className='flex flex-col justify-start items-start gap-2'>
-            <h1 className='xl:text-5xl md:text-3xl sm:text-2xl uppercase font-extrabold '>
+        <div
+          className={clsx(
+            ' flex xl:flex-col xl:justify-start xl:items-start xl:gap-5 xl:py-0 sm:w-full sm:flex-col sm:justify-start sm:items-start sm:gap-5 sm:py-8 '
+          )}
+        >
+          <div
+            className={clsx('flex flex-col justify-start items-start gap-2')}
+          >
+            <h1
+              className={clsx(
+                'xl:text-5xl md:text-3xl sm:text-2xl uppercase font-extrabold '
+              )}
+            >
               {ProductJSON.productName}
             </h1>
             <StarRating rating={averageRating} readOnly />
@@ -168,6 +194,105 @@ export default function Product_Details({ params }: ProductPageProps) {
           </div>
         </div>
       </header>
+
+      <section className={clsx('xl:w-[80%] xl:py-10 mx-auto ')}>
+        <div
+          className={clsx(
+            'relative flex justify-center items-center text-[#0000001A] xl:gap-10 after:absolute after:border-[1px] after:w-full after:-bottom-3 after:left-0 '
+          )}
+        >
+          {tabs.map((tab, index) => {
+            return (
+              <Button
+                key={index}
+                type='button'
+                title={tab}
+                onClick={() => handleTabClick(tab)}
+                buttonClass={clsx(
+                  'capitialize text-[#00000099] relative  xl:text-xl ',
+                  activeTab === tab
+                    ? 'after:absolute after:-bottom-[13px] after:left-0 after:w-full after:border-2 after:border-black after:z-10'
+                    : ''
+                )}
+              />
+            )
+          })}
+        </div>
+
+        {/* Render content based on the selected tab */}
+        {/* {activeTab === 'Product Details' && <ProductDetailsContent />} */}
+        {activeTab === 'Ratings and Reviews' && (
+          <main className=''>
+            <div
+              className={clsx(
+                'flex xl:justify-between xl:items-center xl:mt-8 '
+              )}
+            >
+              <h1 className={clsx('font-semibold capitalize xl:text-2xl')}>
+                all reviews {ProductJSON.reviews.length}
+              </h1>
+              <div
+                className={clsx(
+                  'flex xl:justify-center xl:items-center xl:gap-10  '
+                )}
+              >
+                <Button
+                  type='button'
+                  title='filter btn'
+                  buttonClass={clsx('capitalize bg-[] rounded-xl px-2 py-1 ')}
+                />
+                <Button
+                  type='button'
+                  title='Latest'
+                  buttonClass={clsx('capitalize bg-[] rounded-xl px-2 py-1 ')}
+                />
+                <Button
+                  type='button'
+                  title='write a review'
+                  buttonClass={clsx(
+                    'capitalize bg-black text-white rounded-full px-4 h-[45px] text-base '
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className={clsx('grid xl:grid-cols-3 xl:gap-10 xl:py-10 ')}>
+              {ProductJSON.reviews.map((review) => {
+                return (
+                  <div
+                    key={review.id}
+                    className={clsx(
+                      'border-2 rounded-2xl p-4 flex flex-col justify-start items-start gap-3'
+                    )}
+                  >
+                    <div
+                      className={clsx(
+                        'flex justify-between items-center w-full'
+                      )}
+                    >
+                      <StarRating rating={review.rating} readOnly />
+
+                      <Button
+                        type='button'
+                        title='...'
+                        buttonClass='text-3xl'
+                      />
+                    </div>
+                    <h3 className={clsx('xl:text-xl font-semibold')}>
+                      {review.user}
+                    </h3>
+                    <p className='text-[#00000099] '>{review.comment}</p>
+                    <span className='text-sm'>
+                      Posted on {moment(review.date).format('MMMM D, YYYY')}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          </main>
+        )}
+        {/* {activeTab === 'FAQs' && <FAQsContent />} */}
+      </section>
     </>
   )
 }
