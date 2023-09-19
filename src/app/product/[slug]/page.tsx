@@ -238,9 +238,8 @@ export default function Product_Details({ params }: ProductPageProps) {
             {ProductJSON.related.map((product) => {
               const avarageRating = CalculateAverageRating(product.reviews)
               return (
-                <Link href={`/product/${product.id}`}>
+                <Link key={product.id} href={`/product/${product.id}`}>
                   <Product
-                    key={product.id}
                     title={product.name}
                     price={product.price}
                     productImage={product.image}

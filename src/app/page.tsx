@@ -166,7 +166,7 @@ export default function Home() {
           {ProductJSON.products.map((item, index) => {
             const avarageRating = CalculateAverageRating(item?.reviews)
             return (
-              <Link href={`/product/${index}`}>
+              <Link key={index} href={`/product/${index}`}>
                 <Product
                   key={index}
                   title={item.title}
@@ -212,9 +212,8 @@ export default function Home() {
             const avarageRating = CalculateAverageRating(item?.reviews)
 
             return (
-              <Link href={`/product/${index}`}>
+              <Link key={index} href={`/product/${index}`}>
                 <Product
-                  key={index}
                   title={item.title}
                   price={item.price}
                   discount={item.discount}
