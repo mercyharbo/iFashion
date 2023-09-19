@@ -3,54 +3,166 @@
     {
       "productImage": "cloth1.jpg",
       "title": "Product 1",
-      "ratings": 4.2,
+      "reviews": [
+        {
+          "id": 1,
+          "user": "John Doe",
+          "rating": 4,
+          "comment": "Great product!",
+          "date": "April 1, 2022"
+        },
+        {
+          "id": 2,
+          "user": "Jane Smith",
+          "rating": 3,
+          "comment": "Good quality shirt. I want more color.",
+          "date": "March 15, 2022"
+        }
+      ],
       "price": 49.99,
       "discount": 15
     },
     {
       "productImage": "cloth2.jpg",
       "title": "Product 2",
-      "ratings": 4.8,
+      "reviews": [
+        {
+          "id": 1,
+          "user": "John Doe",
+          "rating": 4,
+          "comment": "Great product!",
+          "date": "April 1, 2022"
+        },
+        {
+          "id": 2,
+          "user": "Jane Smith",
+          "rating": 3,
+          "comment": "Good quality shirt. I want more color.",
+          "date": "March 15, 2022"
+        },
+        {
+          "id": 3,
+          "user": "Henry Smith",
+          "rating": 1,
+          "comment": "Good quality shirt.",
+          "date": "February 28, 2022"
+        },
+        {
+          "id": 4,
+          "user": "James Smith",
+          "rating": 5,
+          "comment": "Good quality shirt.",
+          "date": "January 10, 2022"
+        }
+      ],
       "price": 39.99
     },
     {
       "productImage": "cloth3.jpg",
       "title": "Product 3",
-      "ratings": 4.5,
+      "reviews": [
+        {
+          "id": 1,
+          "user": "John Doe",
+          "rating": 4,
+          "comment": "Great product!",
+          "date": "April 1, 2022"
+        },
+        {
+          "id": 2,
+          "user": "Jane Smith",
+          "rating": 3,
+          "comment": "Good quality shirt. I want more color.",
+          "date": "March 15, 2022"
+        },
+        {
+          "id": 3,
+          "user": "Henry Smith",
+          "rating": 1,
+          "comment": "Good quality shirt.",
+          "date": "February 28, 2022"
+        },
+        {
+          "id": 4,
+          "user": "James Smith",
+          "rating": 5,
+          "comment": "Good quality shirt.",
+          "date": "January 10, 2022"
+        }
+      ],
       "price": 59.99,
       "discount": 10
     },
     {
       "productImage": "cloth3.jpg",
       "title": "Product 4",
-      "ratings": 4.0,
+      "reviews": [
+        {
+          "id": 1,
+          "user": "John Doe",
+          "rating": 4,
+          "comment": "Great product!",
+          "date": "April 1, 2022"
+        },
+        {
+          "id": 2,
+          "user": "Jane Smith",
+          "rating": 3,
+          "comment": "Good quality shirt. I want more color.",
+          "date": "March 15, 2022"
+        },
+        {
+          "id": 3,
+          "user": "Henry Smith",
+          "rating": 1,
+          "comment": "Good quality shirt.",
+          "date": "February 28, 2022"
+        },
+        {
+          "id": 4,
+          "user": "James Smith",
+          "rating": 5,
+          "comment": "Good quality shirt.",
+          "date": "January 10, 2022"
+        }
+      ],
       "price": 29.99
     },
     {
       "productImage": "cloth3.jpg",
       "title": "Product 3",
-      "ratings": 4.5,
+      "reviews": [
+        {
+          "id": 1,
+          "user": "John Doe",
+          "rating": 1,
+          "comment": "Great product!",
+          "date": "April 1, 2022"
+        },
+        {
+          "id": 2,
+          "user": "Jane Smith",
+          "rating": 1,
+          "comment": "Good quality shirt. I want more color.",
+          "date": "March 15, 2022"
+        },
+        {
+          "id": 2,
+          "user": "Henry Smith",
+          "rating": 1,
+          "comment": "Good quality shirt.",
+          "date": "February 28, 2022"
+        },
+        {
+          "id": 4,
+          "user": "James Smith",
+          "rating": 3,
+          "comment": "Good quality shirt.",
+          "date": "January 10, 2022"
+        }
+      ],
       "price": 59.99,
       "discount": 10
-    },
-    {
-      "productImage": "cloth3.jpg",
-      "title": "Product 4",
-      "ratings": 4.0,
-      "price": 29.99
-    },
-    {
-      "productImage": "cloth3.jpg",
-      "title": "Product 3",
-      "ratings": 4.5,
-      "price": 59.99,
-      "discount": 10
-    },
-    {
-      "productImage": "cloth3.jpg",
-      "title": "Product 4",
-      "ratings": 4.0,
-      "price": 29.99
     }
   ]
 }

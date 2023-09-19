@@ -90,9 +90,12 @@ const Navbar = () => {
             icon={<Image src={hamburger} width={25} height={25} alt='icon' />}
             buttonClass='xl:hidden md:hidden sm:flex '
           />
-          <h1 className='xl:text-3xl sm:text-xl font-extrabold uppercase '>
+          <Link
+            href={'/'}
+            className='xl:text-3xl sm:text-xl font-extrabold uppercase '
+          >
             shop.co
-          </h1>
+          </Link>
         </div>
 
         <div className='xl:flex md:flex sm:hidden justify-center items-center gap-5 capitalize'>

@@ -3,15 +3,18 @@ import Image from 'next/image'
 import clsx from 'clsx'
 
 import { UseDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
+import StarRating from '@/components/Rating'
 
 type ProductProps = {
-  productImage: React.ReactNode
   title: string
-  ratings?: number | null
   price: number
-  discount?: number | null
   productClass?: string
+  ratings?: number | undefined
+  discount?: number | null
+  productImage: React.ReactNode
+  starStyling?: string
 }
+
 const Product = ({
   productImage,
   title,
@@ -19,6 +22,7 @@ const Product = ({
   price,
   discount,
   productClass,
+  starStyling,
 }: ProductProps) => {
   const { calculateDiscountedPrice, calculateRoundedPrice } =
     UseDiscountCalculator()
@@ -46,7 +50,7 @@ const Product = ({
       />
       <div className='flex flex-col justify-start items-start gap-2 p-3'>
         <h3 className='text-base font-semibold capitalize'>{title}</h3>
-        <span className=''>{ratings} ratings </span>
+        <StarRating rating={ratings} starStyling={starStyling} />
         {discount ? (
           <div className='flex justify-center items-center gap-3'>
             <span className='text-lg font-semibold'>

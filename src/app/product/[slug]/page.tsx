@@ -10,12 +10,14 @@ import { UseCounter } from '@/app/hooks/Counter'
 import { UseDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
 import { CalculateAverageRating } from '@/app/utils/avarageRatings'
 import StarRating from '@/components/Rating'
+import Reviews from '@/components/Reviews'
 
 import ProductJSON from '@/app/product/[slug]/product.json'
 
-import minus from '@/assets/minus.png'
 import plus from '@/assets/plus.png'
-import moment from 'moment'
+import minus from '@/assets/minus.png'
+import Product from '@/types/Product'
+import Link from 'next/link'
 
 interface ProductPageProps {
   params: {
@@ -195,10 +197,12 @@ export default function Product_Details({ params }: ProductPageProps) {
         </div>
       </header>
 
-      <section className={clsx('xl:w-[80%] xl:py-10 mx-auto ')}>
+      <section
+        className={clsx('xl:w-[80%] xl:py-10 md:py-10 sm:py-10 mx-auto ')}
+      >
         <div
           className={clsx(
-            'relative flex justify-center items-center text-[#0000001A] xl:gap-10 after:absolute after:border-[1px] after:w-full after:-bottom-3 after:left-0 '
+            'relative flex justify-center items-center text-[#0000001A] xl:gap-10 md:gap-5 sm:gap-6 after:absolute after:border-[1px] after:w-full after:-bottom-3 after:left-0 '
           )}
         >
           {tabs.map((tab, index) => {
@@ -219,79 +223,37 @@ export default function Product_Details({ params }: ProductPageProps) {
           })}
         </div>
 
-        {/* Render content based on the selected tab */}
         {/* {activeTab === 'Product Details' && <ProductDetailsContent />} */}
         {activeTab === 'Ratings and Reviews' && (
-          <main className=''>
-            <div
-              className={clsx(
-                'flex xl:justify-between xl:items-center xl:mt-8 '
-              )}
-            >
-              <h1 className={clsx('font-semibold capitalize xl:text-2xl')}>
-                all reviews {ProductJSON.reviews.length}
-              </h1>
-              <div
-                className={clsx(
-                  'flex xl:justify-center xl:items-center xl:gap-10  '
-                )}
-              >
-                <Button
-                  type='button'
-                  title='filter btn'
-                  buttonClass={clsx('capitalize bg-[] rounded-xl px-2 py-1 ')}
-                />
-                <Button
-                  type='button'
-                  title='Latest'
-                  buttonClass={clsx('capitalize bg-[] rounded-xl px-2 py-1 ')}
-                />
-                <Button
-                  type='button'
-                  title='write a review'
-                  buttonClass={clsx(
-                    'capitalize bg-black text-white rounded-full px-4 h-[45px] text-base '
-                  )}
-                />
-              </div>
-            </div>
-
-            <div className={clsx('grid xl:grid-cols-3 xl:gap-10 xl:py-10 ')}>
-              {ProductJSON.reviews.map((review) => {
-                return (
-                  <div
-                    key={review.id}
-                    className={clsx(
-                      'border-2 rounded-2xl p-4 flex flex-col justify-start items-start gap-3'
-                    )}
-                  >
-                    <div
-                      className={clsx(
-                        'flex justify-between items-center w-full'
-                      )}
-                    >
-                      <StarRating rating={review.rating} readOnly />
-
-                      <Button
-                        type='button'
-                        title='...'
-                        buttonClass='text-3xl'
-                      />
-                    </div>
-                    <h3 className={clsx('xl:text-xl font-semibold')}>
-                      {review.user}
-                    </h3>
-                    <p className='text-[#00000099] '>{review.comment}</p>
-                    <span className='text-sm'>
-                      Posted on {moment(review.date).format('MMMM D, YYYY')}
-                    </span>
-                  </div>
-                )
-              })}
-            </div>
-          </main>
+          <Reviews data={ProductJSON.reviews} />
         )}
         {/* {activeTab === 'FAQs' && <FAQsContent />} */}
+
+        <div className='flex flex-col justify-center items-center gap-10 my-14'>
+          <h1 className='xl:text-5xl md:text-3xl sm:text-3xl uppercase font-extrabold'>
+            you might also like
+          </h1>
+
+          <div className='grid 3xl:grid-cols-6 3xl:gap-10 xl:grid-cols-4 xl:gap-5 md:grid-cols-2 md:gap-5 md:px-5 sm:px-14 sm:grid-cols-1 sm:gap-5'>
+            {ProductJSON.related.map((product) => {
+              const avarageRating = CalculateAverageRating(product.reviews)
+              return (
+                <Link href={`/product/${product.id}`}>
+                  <Product
+                    key={product.id}
+                    title={product.name}
+                    price={product.price}
+                    productImage={product.image}
+                    ratings={avarageRating}
+                    discount={product.discount}
+                    productClass='w-auto border-[1px] rounded-2xl '
+                    starStyling='text-2xl'
+                  />
+                </Link>
+              )
+            })}
+          </div>
+        </div>
       </section>
     </>
   )

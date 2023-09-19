@@ -11,8 +11,8 @@ import github from '@/assets/github.png'
 import instagram from '@/assets/instagram.png'
 
 import paypal from '@/assets/paypal_196566.png'
-import visa from '@/assets/visa.png'
-import applepay from '@/assets/cc-apple-pay_6422266.png'
+import visa from '@/assets/cc-visa.png'
+import applepay from '@/assets/cc-apple-pay.png'
 import inbox from '@/assets/envelope.svg'
 
 function Footer() {

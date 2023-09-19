@@ -11,6 +11,11 @@ import Hero from '@/components/Hero'
 import Button from '@/types/Button'
 import Product from '@/types/Product'
 import ProductJSON from '@/components/Product.json'
+import { CalculateAverageRating } from './utils/avarageRatings'
+import StarRating from '@/components/Rating'
+
+import check from '@/assets/verified.png'
+import clsx from 'clsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -114,15 +119,25 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <section className='brands-container bg-black text-white flex flex-col justify-center items-center  xl:h-[10rem] xl:mb-10 md:h-[8rem] sm:h-[8rem] '>
-        <div className='flex xl:gap-10 xl:w-[80%] xl:justify-between xl:items-center md:justify-center md:items-center md:gap-5 sm:justify-center sm:items-center sm:gap-5 flex-wrap '>
+      <section
+        className={clsx(
+          'brands-container bg-black text-white flex flex-col justify-center items-center  xl:h-[10rem] xl:mb-10 md:h-[8rem] sm:h-[8rem] '
+        )}
+      >
+        <div
+          className={clsx(
+            'flex xl:gap-10 xl:w-[80%] xl:justify-between xl:items-center md:justify-center md:items-center md:gap-5 sm:justify-center sm:items-center sm:gap-5 flex-wrap '
+          )}
+        >
           {brands.map((brandName, index) => {
             return (
               <Button
                 key={index}
                 type='button'
                 title={brandName}
-                buttonClass='brands 2xl:text-6xl xl:text-5xl md:text-3xl sm:text-2xl '
+                buttonClass={clsx(
+                  'brands 2xl:text-6xl xl:text-5xl md:text-3xl sm:text-2xl '
+                )}
               />
             )
           })}
@@ -131,56 +146,88 @@ export default function Home() {
 
       <section
         ref={addToRefs}
-        className=' xl:py-10 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-2 sm:w-[100%] flex flex-col justify-center 
-      items-center gap-10 mx-auto '
+        className={clsx(
+          ' xl:py-10 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-2 sm:w-[100%] flex flex-col justify-center items-center gap-10 mx-auto '
+        )}
       >
-        <h1 className='xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '>
+        <h1
+          className={clsx(
+            'xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '
+          )}
+        >
           {' '}
           new arrivals{' '}
         </h1>
-        <div className='w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '>
-          {ProductJSON.products.map((item, index) => (
-            <Product
-              key={index}
-              title={item.title}
-              price={item.price}
-              discount={item.discount}
-              productImage={item.productImage}
-              ratings={item.ratings}
-              productClass={` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer
-              hover:scale-105 ease-in-out duration-300 `}
-            />
-          ))}
+        <div
+          className={clsx(
+            'w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
+          )}
+        >
+          {ProductJSON.products.map((item, index) => {
+            const avarageRating = CalculateAverageRating(item?.reviews)
+            return (
+              <Link href={`/product/${index}`}>
+                <Product
+                  key={index}
+                  title={item.title}
+                  price={item.price}
+                  discount={item.discount}
+                  productImage={item.productImage}
+                  ratings={avarageRating}
+                  starStyling='text-2xl'
+                  productClass={clsx(` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer
+              hover:scale-105 ease-in-out duration-300 `)}
+                />
+              </Link>
+            )
+          })}
         </div>
         <Button
           title='view all'
-          buttonClass='border-[1px] rounded-full w-[150px] py-2 '
+          buttonClass={clsx('border-[1px] rounded-full w-[150px] py-2 ')}
         />
       </section>
       <hr />
 
       <section
         ref={addToRefs}
-        className=' xl:py-10 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-2 sm:w-[100%] flex flex-col justify-center 
-      items-center gap-10 mx-auto '
+        className={clsx(
+          'xl:py-10 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-2 sm:w-[100%] flex flex-col justify-center items-center gap-10 mx-auto '
+        )}
       >
-        <h1 className='xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '>
+        <h1
+          className={clsx(
+            'xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '
+          )}
+        >
           {' '}
           top selling{' '}
         </h1>
-        <div className=' w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '>
-          {ProductJSON.products.map((item, index) => (
-            <Product
-              key={index}
-              title={item.title}
-              price={item.price}
-              discount={item.discount}
-              productImage={item.productImage}
-              ratings={item.ratings}
-              productClass={` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer
-              hover:scale-105 ease-in-out duration-300 `}
-            />
-          ))}
+        <div
+          className={clsx(
+            ' w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
+          )}
+        >
+          {ProductJSON.products.map((item, index) => {
+            const avarageRating = CalculateAverageRating(item?.reviews)
+
+            return (
+              <Link href={`/product/${index}`}>
+                <Product
+                  key={index}
+                  title={item.title}
+                  price={item.price}
+                  discount={item.discount}
+                  productImage={item.productImage}
+                  ratings={avarageRating}
+                  productClass={clsx(
+                    ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer hover:scale-105 ease-in-out duration-300 `
+                  )}
+                  starStyling='text-2xl'
+                />
+              </Link>
+            )
+          })}
         </div>
         <Button
           title='view all'
@@ -190,12 +237,22 @@ export default function Home() {
 
       <section
         ref={addToRefs}
-        className='bg-[#F0F0F0] rounded-xl xl:mx-auto flex flex-col justify-center items-center gap-5 xl:p-10 xl:w-[80%] xl:my-10 md:p-10 md:mx-5 sm:mx-3 sm:p-5  '
+        className={clsx(
+          'bg-[#F0F0F0] rounded-xl xl:mx-auto flex flex-col justify-center items-center gap-5 xl:p-10 xl:w-[80%] xl:my-10 md:p-10 md:mx-5 sm:mx-3 sm:p-5  '
+        )}
       >
-        <h1 className='xl:text-5xl md:text-4xl sm:text-2xl font-extrabold uppercase '>
+        <h1
+          className={clsx(
+            'xl:text-5xl md:text-4xl sm:text-2xl font-extrabold uppercase '
+          )}
+        >
           browse by dress style
         </h1>
-        <div className='grid 2xl:py-10 2xl:gap-5 xl:grid-cols-3 xl:gap-5 md:grid-cols-2 md:py-5 sm:py-5 sm:grid-cols-1 sm:gap-5 '>
+        <div
+          className={clsx(
+            'grid 2xl:py-10 2xl:gap-5 xl:grid-cols-3 xl:gap-5 md:grid-cols-2 md:py-5 sm:py-5 sm:grid-cols-1 sm:gap-5 '
+          )}
+        >
           {browseStyle.map((style) => {
             return (
               <Link
@@ -213,9 +270,15 @@ export default function Home() {
                   width={1000}
                   height={1000}
                   alt={style.style}
-                  className='rounded-2xl object-cover w-full 2xl:h-[350px] xl:h-[350px] '
+                  className={clsx(
+                    'rounded-2xl object-cover w-full 2xl:h-[350px] xl:h-[350px] '
+                  )}
                 />
-                <span className='font-bold capitalize absolute top-5 left-5 2xl:text-4xl xl:text-4xl md:text-3xl sm:text-3xl '>
+                <span
+                  className={clsx(
+                    'font-bold capitalize absolute top-5 left-5 2xl:text-4xl xl:text-4xl md:text-3xl sm:text-3xl '
+                  )}
+                >
                   {style.style}
                 </span>
               </Link>
@@ -240,9 +303,18 @@ export default function Home() {
                 className='testy-card xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 inline-block whitespace-normal p-4 border-[1px] 
                 rounded-xl cursor-pointer hover:scale-105 ease-in-out duration-300 h-full '
               >
-                <h3 className='text-base font-semibold capitalize'>
+                <h3 className='text-base font-semibold capitalize flex justify-start items-center gap-2'>
                   {testy.name}
+                  <Image
+                    src={check}
+                    width={20}
+                    height={20}
+                    alt='verify check'
+                  />
                 </h3>
+                <div className='flex justify-start items-start'>
+                  <StarRating rating={testy.ratings} starStyling='text-2xl' />
+                </div>
                 <p className='py-2 text-[#858282] '>{testy.paragraph}</p>
               </div>
             )

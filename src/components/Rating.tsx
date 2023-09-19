@@ -2,15 +2,17 @@ import React from 'react'
 import clsx from 'clsx'
 
 type StarRatingProps = {
-  rating: number
+  rating: number | undefined
   readOnly?: boolean
   onRatingChange?: (value: number) => void
+  starStyling?: string
 }
 
 const StarRating: React.FC<StarRatingProps> = ({
-  rating,
+  rating = 0,
   readOnly = true,
   onRatingChange,
+  starStyling,
 }) => {
   const handleRatingChange = (value: number) => {
     if (!readOnly && onRatingChange) {
@@ -25,6 +27,7 @@ const StarRating: React.FC<StarRatingProps> = ({
           key={index}
           onClick={() => handleRatingChange(index + 1)}
           className={clsx(
+            starStyling,
             index < rating
               ? 'text-4xl text-[gold]'
               : 'text-4xl text-[grey] cursor-pointer'
