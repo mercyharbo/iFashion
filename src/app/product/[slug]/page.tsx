@@ -18,6 +18,7 @@ import plus from '@/assets/plus.png'
 import minus from '@/assets/minus.png'
 import Product from '@/types/Product'
 import Link from 'next/link'
+import ProductDetailsContent from '@/components/Product_Details'
 
 interface ProductPageProps {
   params: {
@@ -223,7 +224,7 @@ export default function Product_Details({ params }: ProductPageProps) {
           })}
         </div>
 
-        {/* {activeTab === 'Product Details' && <ProductDetailsContent />} */}
+        {activeTab === 'Product Details' && <ProductDetailsContent />}
         {activeTab === 'Ratings and Reviews' && (
           <Reviews data={ProductJSON.reviews} />
         )}
