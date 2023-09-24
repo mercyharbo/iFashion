@@ -19,7 +19,7 @@ function CasualCategory() {
         category
       </div>
 
-      <div className='flex flex-col justify-between items-center gap-5 2xl:w-[80%] '>
+      <div className='flex flex-col justify-between items-start gap-5 2xl:w-[80%] '>
         <div className='flex justify-between items-center w-full '>
           <h1 className='text-2xl font-semibold capitalize '>casual</h1>
           <div className='flex justify-center items-center gap-5'>
