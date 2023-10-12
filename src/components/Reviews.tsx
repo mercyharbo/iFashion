@@ -65,7 +65,7 @@ function Reviews({ data }: reviewsProps) {
 
       <div
         className={clsx(
-          'grid xl:grid-cols-3 xl:gap-10 xl:py-5 md:px-5 md:grid-cols-2 md:gap-5 sm:grid-cols-1 sm:gap-5 sm:px-5 '
+          'grid 3xl:grid-cols-4 xl:grid-cols-3 xl:gap-10 xl:py-5 md:px-5 md:grid-cols-2 md:gap-5 sm:grid-cols-1 sm:gap-5 sm:px-5 '
         )}
       >
         {data.map((review) => {
@@ -73,21 +73,21 @@ function Reviews({ data }: reviewsProps) {
             <div
               key={review.id}
               className={clsx(
-                'border-2 rounded-2xl p-4 flex flex-col justify-start items-start gap-3'
+                'border-[1px] rounded-2xl p-4 flex flex-col justify-start items-start gap-3'
               )}
             >
               <div className={clsx('flex justify-between items-center w-full')}>
                 <StarRating
                   rating={review.rating}
                   readOnly
-                  starStyling={clsx('text-2xl')}
+                  starStyling={clsx('text-xl')}
                 />
 
                 <Button type='button' title='...' buttonClass='text-3xl' />
               </div>
               <h3
                 className={clsx(
-                  'xl:text-xl font-semibold flex justify-start items-center gap-2'
+                  'text-lg font-semibold flex justify-start items-center gap-2'
                 )}
               >
                 {review.user}

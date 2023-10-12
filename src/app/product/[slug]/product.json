@@ -4,9 +4,12 @@
   "description": "This graphic t-shirt, perfect for any occasion, is crafted from a soft and breathable fabric, offering superior comfort and style.",
   "rating": 4,
   "colors": [
-    "#31344F",
-    "#314F4A",
-    "#4F4631"
+    "#FF5733",
+    "#FFC300",
+    "#33FF57",
+    "#338CFF",
+    "#D833FF",
+    "#FF33E6"
   ],
   "available_sizes": [
     "small",

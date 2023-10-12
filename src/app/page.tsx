@@ -285,41 +285,6 @@ export default function Home() {
           })}
         </div>
       </section>
-
-      <section
-        ref={addToRefs}
-        className=' xl:py-14 xl:my-10 md:py-10 md:px-10 sm:py-10 sm:px-5 flex flex-col justify-start 
-      items-start gap-10 mx-auto '
-      >
-        <h1 className='2xl:text-5xl xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '>
-          our happy customers
-        </h1>
-        <div className='w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide  '>
-          {testymonie.map((testy) => {
-            return (
-              <div
-                key={testy.id}
-                className='testy-card xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 inline-block whitespace-normal p-4 border-[1px] 
-                rounded-xl cursor-pointer hover:scale-105 ease-in-out duration-300 h-full '
-              >
-                <h3 className='text-base font-semibold capitalize flex justify-start items-center gap-2'>
-                  {testy.name}
-                  <Image
-                    src={check}
-                    width={20}
-                    height={20}
-                    alt='verify check'
-                  />
-                </h3>
-                <div className='flex justify-start items-start'>
-                  <StarRating rating={testy.ratings} starStyling='text-2xl' />
-                </div>
-                <p className='py-2 text-[#858282] '>{testy.paragraph}</p>
-              </div>
-            )
-          })}
-        </div>
-      </section>
     </>
   )
 }

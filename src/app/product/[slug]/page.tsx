@@ -19,6 +19,7 @@ import minus from '@/assets/minus.png'
 import Product from '@/types/Product'
 import Link from 'next/link'
 import ProductDetailsContent from '@/components/Product_Details'
+import ColorSelector from '@/components/ColorSelector'
 
 interface ProductPageProps {
   params: {
@@ -40,6 +41,11 @@ export default function Product_Details({ params }: ProductPageProps) {
   const { count, increment, decrement } = UseCounter()
   const { calculateDiscountedPrice, calculateRoundedPrice } =
     UseDiscountCalculator()
+  const [selectedColor, setSelectedColor] = useState<string | null>(null)
+
+  const handleColorSelection = (color: string) => {
+    setSelectedColor(color)
+  }
 
   const handleSizeClick = (size: string) => {
     setSelectedSize(size)
@@ -152,7 +158,10 @@ export default function Product_Details({ params }: ProductPageProps) {
           <p className='text-[#5e5e5d] 2xl:w-[70%] '>
             {ProductJSON.description}
           </p>
-          <div className='colors flex'>colors</div>
+          <ColorSelector
+            colors={ProductJSON.colors}
+            onSelectColor={handleColorSelection}
+          />
           <hr className='w-full' />
           <div className='flex flex-wrap justify-start items-center gap-5'>
             {sizesBtn.map((btn, index) => {
