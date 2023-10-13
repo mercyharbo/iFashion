@@ -161,6 +161,7 @@ export default function Product_Details({ params }: ProductPageProps) {
           <ColorSelector
             colors={ProductJSON.colors}
             onSelectColor={handleColorSelection}
+            colorStyle='flex justify-between items-center flex-wrap gap-5 xl:w-[40%] md:w-full sm:w-full '
           />
           <hr className='w-full' />
           <div className='flex flex-wrap justify-start items-center gap-5'>

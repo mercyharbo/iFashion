@@ -1,0 +1,32 @@
+{
+    "categories": [
+        "t-shirt",
+        "shorts",
+        "shirt",
+        "hoodie",
+        "jeans",
+        "skirt"
+    ],
+    "color": [
+        "#FF5733",
+        "#FFC300",
+        "#33FF57",
+        "#338CFF",
+        "#D833FF",
+        "#FF33E6",
+        "#000",
+        "#fff",
+        "#F50606",
+        "#F506A4"
+    ],
+    "sizes": [
+        "XX-Small",
+        "X-Small",
+        "Small",
+        "Medium",
+        "Large",
+        "X-Large",
+        "XX-Large",
+        "3x-Large"
+    ]
+}

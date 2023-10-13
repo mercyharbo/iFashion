@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import clsx from 'clsx'
 
@@ -23,7 +24,8 @@ const StarRating: React.FC<StarRatingProps> = ({
   return (
     <div className='flex justify-center items-center gap-2'>
       {Array.from({ length: 5 }).map((_, index) => (
-        <span
+        <button
+          type='button'
           key={index}
           onClick={() => handleRatingChange(index + 1)}
           className={clsx(
@@ -34,7 +36,7 @@ const StarRating: React.FC<StarRatingProps> = ({
           )}
         >
           &#9733;
-        </span>
+        </button>
       ))}
     </div>
   )

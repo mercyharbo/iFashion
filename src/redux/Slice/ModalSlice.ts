@@ -6,6 +6,7 @@ type InitialState = {
 
 type ModalState = {
   isOpen: boolean
+  filterModal: boolean
 }
 
 const initialState = {
@@ -24,8 +25,14 @@ const modalSlice = createSlice({
     closeModal: (state) => {
       state.modal.isOpen = false;
     },
+    openFilterModal: (state) => {
+      state.modal.filterModal = true
+    },
+    closeFilterModal: (state) => {
+      state.modal.filterModal = false
+    }
   },
 });
 
-export const { openModal, closeModal } = modalSlice.actions;
+export const { openModal, closeModal, openFilterModal, closeFilterModal } = modalSlice.actions;
 export default modalSlice.reducer;
