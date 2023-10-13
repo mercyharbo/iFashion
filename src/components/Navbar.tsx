@@ -20,6 +20,7 @@ import { closeModal, openModal } from '@/redux/Slice/ModalSlice'
 import {
   closeSearchModal,
   openSearchModal,
+  setSearchQuercy,
 } from '@/redux/Slice/SearchModalSlice'
 import Modal from '@/types/Modal'
 
@@ -29,6 +30,7 @@ const Navbar = () => {
   const isSearchOpen = useAppSelector(
     (state) => state.searchModalReducer.modal.isOpen
   )
+  const searchQuery = useAppSelector((state) => state.searchModalReducer.modal.searchQuery)
   const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
 
   const handleOpenModal = () => {
@@ -41,6 +43,11 @@ const Navbar = () => {
 
   const handleSearchModal = () => {
     dispatch(closeSearchModal())
+  }
+
+  
+  const handleSearch = (newQuery: string) => {
+    dispatch(setSearchQuercy(newQuery)) // Dispatch the action to update the search query
   }
 
   useEffect(() => {
@@ -110,6 +117,8 @@ const Navbar = () => {
 
         <InputField
           type='text'
+          value={searchQuery}
+          onChange={(e) => handleSearch(e.target.value)}
           placeholder='Search for products...'
           inputClass='xl:flex xl:w-[30rem] md:hidden sm:hidden  '
         />

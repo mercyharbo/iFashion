@@ -26,6 +26,9 @@ function CasualCategory() {
   const filterOpen = useAppSelector(
     (state) => state.modalReducer.modal.filterModal
   )
+  const searchQuery = useAppSelector(
+    (state) => state.searchModalReducer.modal.searchQuery
+  )
 
   const handleOpenModal = () => {
     dispatch(openFilterModal())
@@ -38,6 +41,10 @@ function CasualCategory() {
   const handleColorSelection = (color: string) => {
     setSelectedColor(color)
   }
+
+  const filteredData = ProductJSON.products.filter((item) => {
+    return item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  })
 
   return (
     <main
@@ -82,7 +89,7 @@ function CasualCategory() {
             'grid 3xl:grid-cols-4 2xl:grid-cols-4 2xl:gap-2 xl:grid-cols-3 xl:content-start xl:place-items-start xl:gap-5 md:grid-cols-3 md:gap-3 md:content-center md:place-items-center sm:grid-cols-1 sm:gap-5'
           )}
         >
-          {ProductJSON.products.map((item, index) => {
+          {filteredData.map((item, index) => {
             const avarageRating = CalculateAverageRating(item?.reviews)
 
             return (
