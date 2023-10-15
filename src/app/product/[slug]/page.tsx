@@ -19,7 +19,7 @@ import minus from '@/assets/minus.png'
 import Product from '@/types/Product'
 import Link from 'next/link'
 import ProductDetailsContent from '@/components/Product_Details'
-import ColorSelector from '@/app/hooks/ColorSelector'
+import useColorSelection from '@/app/hooks/ColorSelector'
 
 interface ProductPageProps {
   params: {
@@ -41,11 +41,8 @@ export default function Product_Details({ params }: ProductPageProps) {
   const { count, increment, decrement } = UseCounter()
   const { calculateDiscountedPrice, calculateRoundedPrice } =
     UseDiscountCalculator()
-  const [selectedColor, setSelectedColor] = useState<string | null>(null)
-
-  const handleColorSelection = (color: string) => {
-    setSelectedColor(color)
-  }
+  const { selectedColors, setSelectedColors, handleColorClick } =
+    useColorSelection()
 
   const handleSizeClick = (size: string) => {
     setSelectedSize(size)
@@ -158,11 +155,24 @@ export default function Product_Details({ params }: ProductPageProps) {
           <p className='text-[#5e5e5d] 2xl:w-[70%] '>
             {ProductJSON.description}
           </p>
-          <ColorSelector
-            colors={ProductJSON.colors}
-            onSelectColor={handleColorSelection}
-            colorStyle='flex justify-between items-center flex-wrap gap-5 xl:w-[40%] md:w-full sm:w-full '
-          />
+          <div className='flex justify-start items-center gap-5 flex-wrap xl:w-[50%] md:w-full sm:w-full '>
+            {ProductJSON.colors.map((colorOption, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => handleColorClick(colorOption)}
+                  className={clsx(
+                    'w-6 h-6 rounded-full cursor-pointer border-[1px]',
+                    selectedColors.includes(colorOption)
+                      ? 'ring-4 ring-blue-500'
+                      : ''
+                  )}
+                  style={{ backgroundColor: colorOption }}
+                ></div>
+              )
+            })}
+          </div>
+
           <hr className='w-full' />
           <div className='flex flex-wrap justify-start items-center gap-5'>
             {sizesBtn.map((btn, index) => {

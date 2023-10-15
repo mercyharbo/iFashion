@@ -18,11 +18,11 @@ import Filter from '@/components/Filter'
 import Modal from '@/types/Modal'
 import useSizeSelection from '@/app/hooks/useSizeSeelection'
 import Button from '@/types/Button'
-import useColorSelection from '@/app/hooks/ColorSelector'
 
 import { setSelectedCategory } from '@/redux/Slice/Filter'
 import { CalculateAverageRating } from '@/app/utils/avarageRatings'
 import { closeFilterModal, openFilterModal } from '@/redux/Slice/ModalSlice'
+import useColorSelection from '../hooks/ColorSelector'
 
 function CasualCategory() {
   const dispatch = useDispatch<AppDispatch>()
@@ -49,13 +49,9 @@ function CasualCategory() {
     const sortedProducts = [...filteredProducts]
 
     if (criteria === 'newest') {
-      sortedProducts.sort(
-        (a, b) => Date.parse(b.reviews[0].date) - Date.parse(a.reviews[0].date)
-      )
+      sortedProducts.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
     } else if (criteria === 'oldest') {
-      sortedProducts.sort(
-        (a, b) => Date.parse(a.reviews[0].date) - Date.parse(b.reviews[0].date)
-      )
+      sortedProducts.sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
     } else if (criteria === 'price') {
       sortedProducts.sort((a, b) => a.price - b.price)
     }
@@ -106,7 +102,7 @@ function CasualCategory() {
   return (
     <main
       className={clsx(
-        'relative -z-10 flex justify-center items-start 2xl:gap-10 2xl:p-10 xl:gap-10 md:p-5 sm:p-5'
+        'relative z-20 flex justify-center items-start 2xl:gap-10 2xl:p-10 xl:gap-10 md:p-5 sm:p-5'
       )}
     >
       <Filter
@@ -131,16 +127,22 @@ function CasualCategory() {
             )}
           >
             <span className='text-sm'>Showing 1-10 of 100 Products</span>
-            <div className='flex justify-center items-center gap-2'>
-              {/* <label>Sort By:</label> */}
+            <button
+              type='button'
+              onClick={handleOpenModal}
+              className='xl:hidden md:hidden sm:flex'
+            >
+              <BiFilter className='text-2xl' />
+            </button>
+
+            <div className='xl:flex md:hidden sm:hidden justify-center items-center gap-2'>
+              <label>Sort By:</label>
               <select
-                // onChange={(e) =>
-                //   sortProducts(e.target.value as 'newest' | 'price' | 'oldest')
-                // }
-                // value={sortBy}
-                name='sort'
-                id='sort'
-                className='border-[1px] '
+                onChange={(e) =>
+                  sortProducts(e.target.value as 'newest' | 'price' | 'oldest')
+                }
+                value={sortBy}
+                className='outline-none'
               >
                 <option value='newest'>Newest</option>
                 <option value='oldest'>Oldest</option>
