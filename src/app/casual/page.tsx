@@ -3,26 +3,38 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useDispatch } from 'react-redux'
+import { AppDispatch, useAppSelector } from '@/redux/Store'
 import { BiFilter } from 'react-icons/bi'
-import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
+import {
+  MdOutlineKeyboardArrowRight,
+  MdKeyboardArrowDown,
+  MdClose,
+} from 'react-icons/md'
 
 import Product from '@/types/Product'
 import ProductJSON from '@/components/Product.json'
-import { CalculateAverageRating } from '@/app/utils/avarageRatings'
+import filterJSON from '@/components/Filter.json'
 import Filter from '@/components/Filter'
-import { AppDispatch, useAppSelector } from '@/redux/Store'
-import { closeFilterModal, openFilterModal } from '@/redux/Slice/ModalSlice'
 import Modal from '@/types/Modal'
 import useSizeSelection from '@/app/hooks/useSizeSeelection'
-import filterJSON from '@/components/Filter.json'
-import ColorSelector from '@/components/ColorSelector'
 import Button from '@/types/Button'
+import useColorSelection from '@/app/hooks/ColorSelector'
+
+import { setSelectedCategory } from '@/redux/Slice/Filter'
+import { CalculateAverageRating } from '@/app/utils/avarageRatings'
+import { closeFilterModal, openFilterModal } from '@/redux/Slice/ModalSlice'
 
 function CasualCategory() {
-  const [selectedColor, setSelectedColor] = useState<string | null>(null)
-  const { selectedSize, handleSizeClick } = useSizeSelection(null)
-
   const dispatch = useDispatch<AppDispatch>()
+  const { selectedSize, setSelectedSize, handleSizeClick } = useSizeSelection()
+  const { selectedColors, setSelectedColors, handleColorClick } =
+    useColorSelection()
+  const selectedCategory = useAppSelector(
+    (state) => state.filterReducer.filters.selectedCategory
+  )
+  const [filteredProducts, setFilteredProducts] = useState(ProductJSON.products)
+  const [sortBy, setSortBy] = useState<'newest' | 'price' | 'oldest'>('newest')
+
   const filterOpen = useAppSelector(
     (state) => state.modalReducer.modal.filterModal
   )
@@ -30,29 +42,77 @@ function CasualCategory() {
     (state) => state.searchModalReducer.modal.searchQuery
   )
 
+  const [minPrice, setMinPrice] = useState<number | undefined>(undefined)
+  const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined)
+
+  const sortProducts = (criteria: 'newest' | 'price' | 'oldest') => {
+    const sortedProducts = [...filteredProducts]
+
+    if (criteria === 'newest') {
+      sortedProducts.sort(
+        (a, b) => Date.parse(b.reviews[0].date) - Date.parse(a.reviews[0].date)
+      )
+    } else if (criteria === 'oldest') {
+      sortedProducts.sort(
+        (a, b) => Date.parse(a.reviews[0].date) - Date.parse(b.reviews[0].date)
+      )
+    } else if (criteria === 'price') {
+      sortedProducts.sort((a, b) => a.price - b.price)
+    }
+
+    setFilteredProducts(sortedProducts)
+    setSortBy(criteria)
+  }
+
+  const handleFilter = () => {
+    const filtered = ProductJSON.products.filter((product) => {
+      return (
+        (!selectedCategory || product.category === selectedCategory) &&
+        (selectedColors.length === 0 ||
+          selectedColors.some((color) => product.colors.includes(color))) &&
+        (selectedSize.length === 0 ||
+          selectedSize.some((size) =>
+            product.available_sizes.includes(size)
+          )) &&
+        (!minPrice || product.price >= (minPrice as number)) &&
+        (!maxPrice || product.price <= (maxPrice as number))
+      )
+    })
+
+    setFilteredProducts(filtered)
+  }
+
+  const resetFilters = () => {
+    dispatch(setSelectedColors(''))
+    dispatch(setSelectedSize(''))
+    dispatch(setSelectedCategory(''))
+    // setMinPrice('')
+    // setMaxPrice('')
+    setFilteredProducts(ProductJSON.products)
+  }
+
+  const handleCategorySelect = (categoryOption: string) => {
+    dispatch(setSelectedCategory(categoryOption))
+  }
+
   const handleOpenModal = () => {
     dispatch(openFilterModal())
   }
 
-  const handleNavClose = () => {
+  const handleFilterClose = () => {
     dispatch(closeFilterModal())
   }
-
-  const handleColorSelection = (color: string) => {
-    setSelectedColor(color)
-  }
-
-  const filteredData = ProductJSON.products.filter((item) => {
-    return item.title.toLowerCase().includes(searchQuery.toLowerCase())
-  })
 
   return (
     <main
       className={clsx(
-        'relative flex justify-center items-start 2xl:gap-10 2xl:p-10 md:p-5 sm:p-5'
+        'relative -z-10 flex justify-center items-start 2xl:gap-10 2xl:p-10 xl:gap-10 md:p-5 sm:p-5'
       )}
     >
-      <Filter />
+      <Filter
+        products={ProductJSON.products}
+        setFilteredProducts={setFilteredProducts}
+      />
 
       <div
         className={clsx(
@@ -71,25 +131,31 @@ function CasualCategory() {
             )}
           >
             <span className='text-sm'>Showing 1-10 of 100 Products</span>
-            <span className='text-sm capitalize xl:flex md:flex sm:hidden'>
-              sort by{' '}
-            </span>
-            <button
-              type='button'
-              onClick={handleOpenModal}
-              className='xl:hidden md:hidden sm:flex'
-            >
-              <BiFilter className='text-2xl' />
-            </button>
+            <div className='flex justify-center items-center gap-2'>
+              {/* <label>Sort By:</label> */}
+              <select
+                // onChange={(e) =>
+                //   sortProducts(e.target.value as 'newest' | 'price' | 'oldest')
+                // }
+                // value={sortBy}
+                name='sort'
+                id='sort'
+                className='border-[1px] '
+              >
+                <option value='newest'>Newest</option>
+                <option value='oldest'>Oldest</option>
+                <option value='price'>Price</option>
+              </select>
+            </div>
           </div>
         </div>
 
         <div
           className={clsx(
-            'grid 3xl:grid-cols-4 2xl:grid-cols-4 2xl:gap-2 xl:grid-cols-3 xl:content-start xl:place-items-start xl:gap-5 md:grid-cols-3 md:gap-3 md:content-center md:place-items-center sm:grid-cols-1 sm:gap-5'
+            'grid w-full 3xl:grid-cols-4 3xl:gap-10 2xl:grid-cols-4 2xl:gap-2 xl:grid-cols-3 xl:content-between xl:place-items-start xl:gap-5 md:grid-cols-3 md:gap-3 md:content-center md:place-items-center sm:grid-cols-1 sm:gap-5'
           )}
         >
-          {filteredData.map((item, index) => {
+          {filteredProducts.map((item, index) => {
             const avarageRating = CalculateAverageRating(item?.reviews)
 
             return (
@@ -113,69 +179,112 @@ function CasualCategory() {
 
       {filterOpen && (
         <Modal
-          handleCloseModal={handleNavClose}
-          showLogo={false}
+          handleCloseModal={handleFilterClose}
+          showLogo={true}
           showHeader={true}
-          modalClass='nav-container w-full mx-auto top-0 left-0 p-5 z-20 rounded-t-xl h-auto absolute bg-white '
-          contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold pt-10 text-lg'
+          headerTitle='filter'
+          modalClass='nav-container w-full mx-auto top-0 left-0 p-5 z-20 rounded-t-xl h-auto fixed bg-white '
+          contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold text-lg'
         >
-          <div className='flex justify-between items-center w-full'>
-            <h1 className='text-lg font-medium'>Filters</h1>
-            <span className=''>
-              <BiFilter />{' '}
-            </span>
-          </div>
-          <hr className='w-full' />
-
           <div className='flex flex-col justify-start items-start gap-5 w-full'>
-            {filterJSON.categories.map((category, index) => {
-              return (
-                <div
+            <button
+              type='button'
+              className='flex justify-between items-center w-full'
+            >
+              <h1 className='text-lg font-medium'>Categories</h1>
+              <MdKeyboardArrowDown className='text-2xl' />
+            </button>
+
+            <div className='flex flex-col justify-start items-start gap-3 w-full'>
+              {filterJSON.categories.map((categoryOption, index) => (
+                <button
                   key={index}
-                  className='flex justify-between items-center capitalize text-[#00000099] w-full '
+                  onClick={() => handleCategorySelect(categoryOption)}
+                  className={clsx(
+                    'flex justify-between items-center capitalize w-full p-2 text-sm',
+                    selectedCategory === categoryOption
+                      ? 'bg-black text-white rounded-md'
+                      : 'text-[#00000099] '
+                  )}
                 >
-                  {category}{' '}
+                  {categoryOption}{' '}
                   <MdOutlineKeyboardArrowRight className='text-2xl' />
-                </div>
-              )
-            })}
+                </button>
+              ))}
+            </div>
           </div>
           <hr className='w-full' />
-          <div className='flex flex-col justify-start items-start gap-3 w-full'>
-            <h1 className='text-lg font-medium'>Colors</h1>
-            <ColorSelector
-              colors={filterJSON.color}
-              onSelectColor={handleColorSelection}
-              colorStyle='flex justify-start items-start gap-5 flex-wrap space-x-0 w-full'
-            />
+          <div className='flex flex-col justify-start items-start gap-5 w-full'>
+            <button
+              type='button'
+              className='flex justify-between items-center w-full'
+            >
+              <h1 className='text-lg font-medium'>Colors</h1>
+              <MdKeyboardArrowDown className='text-2xl' />
+            </button>
+            <div className='flex justify-start items-start gap-5 flex-wrap space-x-0 w-full'>
+              {filterJSON.color.map((colorOption, index) => {
+                return (
+                  <div
+                    key={index}
+                    onClick={() => handleColorClick(colorOption)}
+                    className={clsx(
+                      'w-6 h-6 rounded-full cursor-pointer border-[1px]',
+                      selectedColors.includes(colorOption)
+                        ? 'ring-4 ring-blue-500'
+                        : ''
+                    )}
+                    style={{ backgroundColor: colorOption }}
+                  ></div>
+                )
+              })}
+            </div>
           </div>
           <hr className='w-full' />
-          <div className='flex flex-col justify-between items-start gap-3 flex-wrap w-full'>
-            <h1 className='text-lg font-medium'>Sizes</h1>
-            <div className='flex flex-wrap justify-start items-center gap-5'>
-              {filterJSON.sizes.map((size, index) => {
+          <div className='flex flex-col justify-start items-start gap-5 w-full'>
+            <button
+              type='button'
+              className='flex justify-between items-center w-full'
+            >
+              <h1 className='text-lg font-medium'>Sizes</h1>
+              <MdKeyboardArrowDown className='text-2xl' />
+            </button>
+            <div className='flex justify-start items-center flex-wrap gap-5'>
+              {filterJSON.sizes.map((sizeOption, index) => {
                 return (
                   <Button
                     key={index}
                     type='button'
-                    onClick={() => handleSizeClick(size)}
-                    title={size}
+                    title={sizeOption}
+                    onClick={() => handleSizeClick(sizeOption)}
                     buttonClass={clsx(
-                      size === selectedSize
-                        ? 'bg-black text-white rounded-full px-5 py-2'
-                        : 'bg-[#F0EEED] text-[#00000099] rounded-full px-5 py-2 hover:bg-black hover:text-white'
+                      `bg-[#F0F0F0] py-2 px-4 rounded-full text-black text-sm `,
+                      selectedSize.includes(sizeOption)
+                        ? 'bg-black text-white '
+                        : ''
                     )}
                   />
                 )
               })}
             </div>
           </div>
+          <hr className='w-full' />
 
-          <Button
-            type='button'
-            title='apply filter'
-            buttonClass='bg-[#000] text-white w-full rounded-full h-[3rem] my-5 '
-          />
+          <div className='flex justify-between items-center gap-5 w-full'>
+            <Button
+              type='button'
+              title='reset'
+              onClick={resetFilters}
+              buttonClass='bg-transparent border-[1px] py-3 px-5 rounded-full text-black w-full hover:bg-black hover:text-white text-sm'
+            />
+
+            <Button
+              type='button'
+              title='save filter'
+              onClick={handleFilter}
+              buttonClass='bg-black py-3 px-5 rounded-full text-white w-full text-sm '
+            />
+          </div>
         </Modal>
       )}
     </main>

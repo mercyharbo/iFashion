@@ -20,7 +20,19 @@
         }
       ],
       "price": 49.99,
-      "discount": 15
+      "discount": 15,
+      "category": "shirt",
+      "colors": [
+        "#FF5733",
+        "#FFC300",
+        "#33FF57"
+      ],
+      "available_sizes": [
+        "Small",
+        "Medium",
+        "Large"
+      ],
+      "date": "October 10, 2022"
     },
     {
       "productImage": "cloth2.jpg",
@@ -55,7 +67,17 @@
           "date": "January 10, 2022"
         }
       ],
-      "price": 39.99
+      "price": 39.99,
+      "category": "causual",
+      "colors": [
+        "#FF33E6"
+      ],
+      "available_sizes": [
+        "Small",
+        "Medium",
+        "X-Large"
+      ],
+      "date": "October 2, 2022"
     },
     {
       "productImage": "cloth3.jpg",
@@ -91,7 +113,18 @@
         }
       ],
       "price": 59.99,
-      "discount": 10
+      "discount": 10,
+      "category": "short",
+      "colors": [
+        "#FF5733",
+        "#D833FF",
+        "#FF33E6"
+      ],
+      "available_sizes": [
+        "large",
+        "X-Large"
+      ],
+      "date": "May 1, 2022"
     },
     {
       "productImage": "cloth3.jpg",
@@ -126,7 +159,18 @@
           "date": "January 10, 2022"
         }
       ],
-      "price": 29.99
+      "price": 29.99,
+      "category": "causual",
+      "colors": [
+        "#FF5733",
+        "#338CFF",
+        "#D833FF",
+        "#FF33E6"
+      ],
+      "available_sizes": [
+        "Small"
+      ],
+      "date": "April 9, 2022"
     },
     {
       "productImage": "cloth3.jpg",
@@ -162,7 +206,20 @@
         }
       ],
       "price": 59.99,
-      "discount": 10
+      "discount": 10,
+      "category": "jean",
+      "colors": [
+        "#FF5733",
+        "#FFC300",
+        "#338CFF",
+        "#D833FF",
+        "#FF33E6"
+      ],
+      "available_sizes": [
+        "Small",
+        "X-Large"
+      ],
+      "date": "April 6, 2021"
     }
   ]
 }

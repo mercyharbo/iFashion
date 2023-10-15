@@ -13,6 +13,7 @@ type ModalProps = {
   showLogo?: boolean
   showHeader?: boolean
   handleCloseModal: () => void
+  headerTitle?: string
 }
 
 const Modal = ({
@@ -22,6 +23,7 @@ const Modal = ({
   showLogo,
   showHeader,
   handleCloseModal,
+  headerTitle = 'shop.co',
 }: ModalProps): JSX.Element | null => {
   return (
     <>
@@ -46,7 +48,7 @@ const Modal = ({
         {showHeader && (
           <div className='flex justify-between items-center mr-auto '>
             {showLogo && (
-              <h1 className='text-2xl font-extrabold uppercase'>shop.co</h1>
+              <h1 className='text-2xl font-normal capitalize'>{headerTitle}</h1>
             )}
 
             <button
@@ -59,11 +61,11 @@ const Modal = ({
                 alignItems: 'flex-end',
               }}
             >
-              <Image src={close} width={20} height={20} alt='close' />
+              <Image src={close} width={15} height={15} alt='close' />
             </button>
           </div>
         )}
-
+        <hr className='w-full' />
         <div className={clsx(contentClass)}>{children}</div>
       </div>
     </>

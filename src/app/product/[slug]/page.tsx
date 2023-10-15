@@ -19,7 +19,7 @@ import minus from '@/assets/minus.png'
 import Product from '@/types/Product'
 import Link from 'next/link'
 import ProductDetailsContent from '@/components/Product_Details'
-import ColorSelector from '@/components/ColorSelector'
+import ColorSelector from '@/app/hooks/ColorSelector'
 
 interface ProductPageProps {
   params: {

@@ -1,10 +1,10 @@
 {
     "categories": [
         "t-shirt",
-        "shorts",
+        "short",
         "shirt",
         "hoodie",
-        "jeans",
+        "jean",
         "skirt"
     ],
     "color": [
@@ -20,8 +20,8 @@
         "#F506A4"
     ],
     "sizes": [
-        "XX-Small",
-        "X-Small",
+        "XX-small",
+        "X-small",
         "Small",
         "Medium",
         "Large",
