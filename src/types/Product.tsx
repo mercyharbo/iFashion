@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
 
-import { UseDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
+import { UseDiscountCalculator } from '@/hooks/useDiscountCalculator'
 import StarRating from '@/components/Rating'
 
 type ProductProps = {

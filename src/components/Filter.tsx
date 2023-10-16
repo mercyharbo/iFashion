@@ -6,17 +6,22 @@ import { BiFilter } from 'react-icons/bi'
 import {
   MdOutlineKeyboardArrowRight,
   MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
 } from 'react-icons/md'
 
 import Button from '@/types/Button'
 import filterJSON from '@/components/Filter.json'
-import ColorSelector from '../app/hooks/ColorSelector'
-import useSizeSelection from '@/app/hooks/useSizeSeelection'
-import { useDispatch, useSelector } from 'react-redux'
+import useSizeSelection from '@/hooks/useSizeSeelection'
+import { useDispatch } from 'react-redux'
 import { AppDispatch, useAppSelector } from '@/redux/Store'
 
-import useColorSelection from '../app/hooks/ColorSelector'
-import { setSelectedCategory } from '@/redux/Slice/Filter'
+import useColorSelection from '../hooks/ColorSelector'
+import {
+  setIsCategoryVisible,
+  setIsColorVisible,
+  setIsSizeVisible,
+  setSelectedCategory,
+} from '@/redux/Slice/Filter'
 
 interface ProductFilterProps {
   products: Product[]
@@ -50,6 +55,15 @@ export default function Filter({
     useColorSelection()
   const selectedCategory = useAppSelector(
     (state) => state.filterReducer.filters.selectedCategory
+  )
+  const isColorVisible = useAppSelector(
+    (state) => state.filterReducer.filters.isColorVisible
+  )
+  const isSizeVisible = useAppSelector(
+    (state) => state.filterReducer.filters.isSizeVisible
+  )
+  const isCategoryVisible = useAppSelector(
+    (state) => state.filterReducer.filters.iCategoryVisible
   )
 
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined)
@@ -86,6 +100,18 @@ export default function Filter({
     dispatch(setSelectedCategory(categoryOption))
   }
 
+  const toggleColorVisibility = () => {
+    dispatch(setIsColorVisible(!isColorVisible))
+  }
+
+  const toggleSizeVisibility = () => {
+    dispatch(setIsSizeVisible(!isSizeVisible))
+  }
+
+  const toggleCategoryVisibility = () => {
+    dispatch(setIsCategoryVisible(!isCategoryVisible))
+  }
+
   return (
     <main className='flex-col justify-start items-start gap-5 border-[1px] border-[#00000099] p-5 rounded-lg 2xl:w-[20%] xl:w-[20%] xl:flex md:hidden sm:hidden '>
       <div className='flex justify-between items-center w-full'>
@@ -99,85 +125,106 @@ export default function Filter({
       <div className='flex flex-col justify-start items-start gap-5 w-full'>
         <button
           type='button'
+          onClick={toggleCategoryVisibility}
           className='flex justify-between items-center w-full'
         >
           <h1 className='text-lg font-medium'>Categories</h1>
-          <MdKeyboardArrowDown className='text-2xl' />
+          {isCategoryVisible ? (
+            <MdKeyboardArrowUp className='text-2xl' />
+          ) : (
+            <MdKeyboardArrowDown className='text-2xl' />
+          )}
         </button>
-        <div className='flex flex-col justify-start items-start gap-3 w-full'>
-          {filterJSON.categories.map((categoryOption, index) => (
-            <button
-              key={index}
-              onClick={() => handleCategorySelect(categoryOption)}
-              className={clsx(
-                'flex justify-between items-center capitalize w-full p-2',
-                selectedCategory === categoryOption
-                  ? 'bg-black text-white rounded-md'
-                  : 'text-[#00000099] '
-              )}
-            >
-              {categoryOption}{' '}
-              <MdOutlineKeyboardArrowRight className='text-2xl' />
-            </button>
-          ))}
-        </div>
+        {isCategoryVisible && (
+          <div className='flex flex-col justify-start items-start gap-3 w-full'>
+            {filterJSON.categories.map((categoryOption, index) => (
+              <button
+                key={index}
+                onClick={() => handleCategorySelect(categoryOption)}
+                className={clsx(
+                  'flex justify-between items-center capitalize w-full p-2',
+                  selectedCategory === categoryOption
+                    ? 'bg-black text-white rounded-md'
+                    : 'text-[#00000099] '
+                )}
+              >
+                {categoryOption}{' '}
+                <MdOutlineKeyboardArrowRight className='text-2xl' />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <hr className='w-full' />
       <div className='flex flex-col justify-start items-start gap-3 w-full'>
         <button
           type='button'
+          onClick={toggleColorVisibility}
           className='flex justify-between items-center w-full'
         >
           <h1 className='text-lg font-medium'>Colors</h1>
-          <MdKeyboardArrowDown className='text-2xl' />
+          {isColorVisible ? (
+            <MdKeyboardArrowUp className='text-2xl' />
+          ) : (
+            <MdKeyboardArrowDown className='text-2xl' />
+          )}
         </button>
-        <div className='flex justify-start items-start gap-5 flex-wrap space-x-0 w-full'>
-          {filterJSON.color.map((colorOption, index) => {
-            return (
-              <div
-                key={index}
-                onClick={() => handleColorClick(colorOption)}
-                className={clsx(
-                  'w-6 h-6 rounded-full cursor-pointer border-[1px]',
-                  selectedColors.includes(colorOption)
-                    ? 'ring-4 ring-blue-500'
-                    : ''
-                )}
-                style={{ backgroundColor: colorOption }}
-              ></div>
-            )
-          })}
-        </div>
+        {isColorVisible && (
+          <div className='flex justify-start items-start gap-5 flex-wrap space-x-0 w-full'>
+            {filterJSON.color.map((colorOption, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => handleColorClick(colorOption)}
+                  className={clsx(
+                    'w-6 h-6 rounded-full cursor-pointer border-[1px]',
+                    selectedColors.includes(colorOption)
+                      ? 'ring-4 ring-blue-500'
+                      : ''
+                  )}
+                  style={{ backgroundColor: colorOption }}
+                ></div>
+              )
+            })}
+          </div>
+        )}
       </div>
 
       <hr className='w-full' />
       <div className='flex flex-col justify-start items-start gap-5 w-full'>
         <button
           type='button'
+          onClick={toggleSizeVisibility}
           className='flex justify-between items-center w-full'
         >
           <h1 className='text-lg font-medium'>Sizes</h1>
-          <MdKeyboardArrowDown className='text-2xl' />
+          {isSizeVisible ? (
+            <MdKeyboardArrowUp className='text-2xl' />
+          ) : (
+            <MdKeyboardArrowDown className='text-2xl' />
+          )}
         </button>
-        <div className='flex justify-start items-center flex-wrap gap-5'>
-          {filterJSON.sizes.map((sizeOption, index) => {
-            return (
-              <Button
-                key={index}
-                type='button'
-                title={sizeOption}
-                onClick={() => handleSizeClick(sizeOption)}
-                buttonClass={clsx(
-                  `bg-[#F0F0F0] py-2 px-4 rounded-full text-black `,
-                  selectedSize.includes(sizeOption)
-                    ? 'bg-black text-white '
-                    : ''
-                )}
-              />
-            )
-          })}
-        </div>
+        {isSizeVisible && (
+          <div className='flex justify-start items-center flex-wrap gap-5'>
+            {filterJSON.sizes.map((sizeOption, index) => {
+              return (
+                <Button
+                  key={index}
+                  type='button'
+                  title={sizeOption}
+                  onClick={() => handleSizeClick(sizeOption)}
+                  buttonClass={clsx(
+                    `bg-[#F0F0F0] py-2 px-4 rounded-full text-black `,
+                    selectedSize.includes(sizeOption)
+                      ? 'bg-black text-white '
+                      : ''
+                  )}
+                />
+              )
+            })}
+          </div>
+        )}
       </div>
 
       {/* <div>

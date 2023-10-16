@@ -167,7 +167,7 @@ const Navbar = () => {
           handleCloseModal={handleSearchModal}
           showLogo={false}
           showHeader={false}
-          modalClass='search-container 2xl:hidden xl:hidden md:flex sm:flex w-[95%] mx-auto top-2 right-0 p-5 z-10 absolute rounded-xl'
+          modalClass='search-container 2xl:hidden xl:hidden md:flex sm:flex w-[95%] mx-auto top-2 right-0 p-5 z-30 absolute rounded-xl'
           contentClass='flex-col justify-center items-center gap-5 w-full capitalize font-semibold'
         >
           <InputField

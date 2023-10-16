@@ -2,14 +2,15 @@ import { createSlice } from '@reduxjs/toolkit'
 
 type InitialState = {
   filters: FilterState
-  filteredData: any[]
 }
 
 type FilterState = {
   selectedColors: string[]
   selectedSize: string[]
   selectedCategory: string | ''
-  filteredData: any[]
+  isColorVisible: boolean
+  isSizeVisible: boolean
+  iCategoryVisible: boolean
 }
 
 const initialState = {
@@ -17,7 +18,9 @@ const initialState = {
     selectedCategory: '',
     selectedSize: [],
     selectedColors: [],
-    filteredData: [],
+    isColorVisible: false,
+    isSizeVisible: false,
+    iCategoryVisible: false,
   } as FilterState,
 } as InitialState
 
@@ -34,8 +37,14 @@ const filterSlice = createSlice({
     setSelectedSize: (state, action) => {
       state.filters.selectedSize = action.payload
     },
-    setFilteredData: (state, action) => {
-      state.filteredData = action.payload
+    setIsColorVisible: (state, action) => {
+      state.filters.isColorVisible = action.payload
+    },
+    setIsSizeVisible: (state, action) => {
+      state.filters.isSizeVisible = action.payload
+    },
+    setIsCategoryVisible: (state, action) => {
+      state.filters.iCategoryVisible = action.payload
     },
   },
 })
@@ -44,6 +53,8 @@ export const {
   setSelectedCategory,
   setSelectedColors,
   setSelectedSize,
-  setFilteredData,
+  setIsColorVisible,
+  setIsCategoryVisible,
+  setIsSizeVisible,
 } = filterSlice.actions
 export default filterSlice.reducer

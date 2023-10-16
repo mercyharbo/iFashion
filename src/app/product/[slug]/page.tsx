@@ -6,9 +6,9 @@ import clsx from 'clsx'
 
 import Button from '@/types/Button'
 
-import { UseCounter } from '@/app/hooks/Counter'
-import { UseDiscountCalculator } from '@/app/hooks/useDiscountCalculator'
-import { CalculateAverageRating } from '@/app/utils/avarageRatings'
+import { UseCounter } from '@/hooks/Counter'
+import { UseDiscountCalculator } from '@/hooks/useDiscountCalculator'
+import { CalculateAverageRating } from '@/utils/avarageRatings'
 import StarRating from '@/components/Rating'
 import Reviews from '@/components/Reviews'
 
@@ -19,7 +19,7 @@ import minus from '@/assets/minus.png'
 import Product from '@/types/Product'
 import Link from 'next/link'
 import ProductDetailsContent from '@/components/Product_Details'
-import useColorSelection from '@/app/hooks/ColorSelector'
+import useColorSelection from '@/hooks/ColorSelector'
 
 interface ProductPageProps {
   params: {

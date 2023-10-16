@@ -8,7 +8,7 @@ import { BiFilter } from 'react-icons/bi'
 import {
   MdOutlineKeyboardArrowRight,
   MdKeyboardArrowDown,
-  MdClose,
+  MdKeyboardArrowUp,
 } from 'react-icons/md'
 
 import Product from '@/types/Product'
@@ -16,13 +16,18 @@ import ProductJSON from '@/components/Product.json'
 import filterJSON from '@/components/Filter.json'
 import Filter from '@/components/Filter'
 import Modal from '@/types/Modal'
-import useSizeSelection from '@/app/hooks/useSizeSeelection'
+import useSizeSelection from '@/hooks/useSizeSeelection'
 import Button from '@/types/Button'
 
-import { setSelectedCategory } from '@/redux/Slice/Filter'
-import { CalculateAverageRating } from '@/app/utils/avarageRatings'
+import {
+  setIsCategoryVisible,
+  setIsColorVisible,
+  setIsSizeVisible,
+  setSelectedCategory,
+} from '@/redux/Slice/Filter'
+import { CalculateAverageRating } from '@/utils/avarageRatings'
 import { closeFilterModal, openFilterModal } from '@/redux/Slice/ModalSlice'
-import useColorSelection from '../hooks/ColorSelector'
+import useColorSelection from '../../hooks/ColorSelector'
 
 function CasualCategory() {
   const dispatch = useDispatch<AppDispatch>()
@@ -40,6 +45,15 @@ function CasualCategory() {
   )
   const searchQuery = useAppSelector(
     (state) => state.searchModalReducer.modal.searchQuery
+  )
+  const isColorVisible = useAppSelector(
+    (state) => state.filterReducer.filters.isColorVisible
+  )
+  const isSizeVisible = useAppSelector(
+    (state) => state.filterReducer.filters.isSizeVisible
+  )
+  const isCategoryVisible = useAppSelector(
+    (state) => state.filterReducer.filters.iCategoryVisible
   )
 
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined)
@@ -99,10 +113,22 @@ function CasualCategory() {
     dispatch(closeFilterModal())
   }
 
+  const toggleColorVisibility = () => {
+    dispatch(setIsColorVisible(!isColorVisible))
+  }
+
+  const toggleSizeVisibility = () => {
+    dispatch(setIsSizeVisible(!isSizeVisible))
+  }
+
+  const toggleCategoryVisibility = () => {
+    dispatch(setIsCategoryVisible(!isCategoryVisible))
+  }
+
   return (
     <main
       className={clsx(
-        'relative z-20 flex justify-center items-start 2xl:gap-10 2xl:p-10 xl:gap-10 md:p-5 sm:p-5'
+        ' flex justify-center items-start 2xl:gap-10 2xl:p-10 xl:gap-10 md:p-5 sm:p-5'
       )}
     >
       <Filter
@@ -112,7 +138,7 @@ function CasualCategory() {
 
       <div
         className={clsx(
-          ' flex flex-col justify-between items-start gap-5 2xl:w-[80%] md:w-full sm:w-full '
+          'flex flex-col justify-between items-start gap-5 2xl:w-[80%] md:w-full sm:w-full '
         )}
       >
         <div
@@ -130,7 +156,7 @@ function CasualCategory() {
             <button
               type='button'
               onClick={handleOpenModal}
-              className='xl:hidden md:hidden sm:flex'
+              className='xl:hidden md:flex sm:flex'
             >
               <BiFilter className='text-2xl' />
             </button>
@@ -185,90 +211,112 @@ function CasualCategory() {
           showLogo={true}
           showHeader={true}
           headerTitle='filter'
-          modalClass='nav-container w-full mx-auto top-0 left-0 p-5 z-20 rounded-t-xl h-auto fixed bg-white '
+          modalClass='nav-container w-full mx-auto bottom-0 left-0 p-5 z-20 rounded-t-xl h-screen fixed bg-white '
           contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold text-lg'
         >
           <div className='flex flex-col justify-start items-start gap-5 w-full'>
             <button
               type='button'
+              onClick={toggleCategoryVisibility}
               className='flex justify-between items-center w-full'
             >
               <h1 className='text-lg font-medium'>Categories</h1>
-              <MdKeyboardArrowDown className='text-2xl' />
+              {isCategoryVisible ? (
+                <MdKeyboardArrowUp className='text-2xl' />
+              ) : (
+                <MdKeyboardArrowDown className='text-2xl' />
+              )}
             </button>
 
-            <div className='flex flex-col justify-start items-start gap-3 w-full'>
-              {filterJSON.categories.map((categoryOption, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleCategorySelect(categoryOption)}
-                  className={clsx(
-                    'flex justify-between items-center capitalize w-full p-2 text-sm',
-                    selectedCategory === categoryOption
-                      ? 'bg-black text-white rounded-md'
-                      : 'text-[#00000099] '
-                  )}
-                >
-                  {categoryOption}{' '}
-                  <MdOutlineKeyboardArrowRight className='text-2xl' />
-                </button>
-              ))}
-            </div>
+            {isCategoryVisible && (
+              <div className='flex flex-col justify-start items-start gap-3 w-full'>
+                {filterJSON.categories.map((categoryOption, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleCategorySelect(categoryOption)}
+                    className={clsx(
+                      'flex justify-between items-center capitalize w-full p-2 text-sm',
+                      selectedCategory === categoryOption
+                        ? 'bg-black text-white rounded-md'
+                        : 'text-[#00000099] '
+                    )}
+                  >
+                    {categoryOption}{' '}
+                    <MdOutlineKeyboardArrowRight className='text-2xl' />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <hr className='w-full' />
           <div className='flex flex-col justify-start items-start gap-5 w-full'>
             <button
               type='button'
+              onClick={toggleColorVisibility}
               className='flex justify-between items-center w-full'
             >
               <h1 className='text-lg font-medium'>Colors</h1>
-              <MdKeyboardArrowDown className='text-2xl' />
+              {isColorVisible ? (
+                <MdKeyboardArrowUp className='text-2xl' />
+              ) : (
+                <MdKeyboardArrowDown className='text-2xl' />
+              )}
             </button>
-            <div className='flex justify-start items-start gap-5 flex-wrap space-x-0 w-full'>
-              {filterJSON.color.map((colorOption, index) => {
-                return (
-                  <div
-                    key={index}
-                    onClick={() => handleColorClick(colorOption)}
-                    className={clsx(
-                      'w-6 h-6 rounded-full cursor-pointer border-[1px]',
-                      selectedColors.includes(colorOption)
-                        ? 'ring-4 ring-blue-500'
-                        : ''
-                    )}
-                    style={{ backgroundColor: colorOption }}
-                  ></div>
-                )
-              })}
-            </div>
+
+            {isColorVisible && (
+              <div className='flex justify-start items-start gap-5 flex-wrap space-x-0 w-full'>
+                {filterJSON.color.map((colorOption, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => handleColorClick(colorOption)}
+                      className={clsx(
+                        'w-6 h-6 rounded-full cursor-pointer border-[1px]',
+                        selectedColors.includes(colorOption)
+                          ? 'ring-4 ring-blue-500'
+                          : ''
+                      )}
+                      style={{ backgroundColor: colorOption }}
+                    ></div>
+                  )
+                })}
+              </div>
+            )}
           </div>
           <hr className='w-full' />
           <div className='flex flex-col justify-start items-start gap-5 w-full'>
             <button
               type='button'
+              onClick={toggleSizeVisibility}
               className='flex justify-between items-center w-full'
             >
-              <h1 className='text-lg font-medium'>Sizes</h1>
-              <MdKeyboardArrowDown className='text-2xl' />
+              <h1 className='text-lg font-medium'>Colors</h1>
+              {isSizeVisible ? (
+                <MdKeyboardArrowUp className='text-2xl' />
+              ) : (
+                <MdKeyboardArrowDown className='text-2xl' />
+              )}
             </button>
-            <div className='flex justify-start items-center flex-wrap gap-5'>
-              {filterJSON.sizes.map((sizeOption, index) => {
-                return (
-                  <Button
-                    key={index}
-                    type='button'
-                    title={sizeOption}
-                    onClick={() => handleSizeClick(sizeOption)}
-                    buttonClass={clsx(
-                      `bg-[#F0F0F0] py-2 px-4 rounded-full text-black text-sm `,
-                      selectedSize.includes(sizeOption)
-                        ? 'bg-black text-white '
-                        : ''
-                    )}
-                  />
-                )
-              })}
-            </div>
+            {isSizeVisible && (
+              <div className='flex justify-start items-center flex-wrap gap-5'>
+                {filterJSON.sizes.map((sizeOption, index) => {
+                  return (
+                    <Button
+                      key={index}
+                      type='button'
+                      title={sizeOption}
+                      onClick={() => handleSizeClick(sizeOption)}
+                      buttonClass={clsx(
+                        `bg-[#F0F0F0] py-2 px-4 rounded-full text-black text-sm `,
+                        selectedSize.includes(sizeOption)
+                          ? 'bg-black text-white '
+                          : ''
+                      )}
+                    />
+                  )
+                })}
+              </div>
+            )}
           </div>
           <hr className='w-full' />
 
