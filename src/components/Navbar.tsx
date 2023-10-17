@@ -9,7 +9,7 @@ import { BiMinus, BiPlus } from 'react-icons/bi'
 
 import Button from '@/types/Button'
 import InputField from '@/types/InputField'
-import ProjectJSON from '@/components/Product.json'
+import ProductJSON from '@/components/Product.json'
 
 // Icons
 import hamburger from '@/assets/menu-burger.svg'
@@ -209,12 +209,15 @@ const Navbar = () => {
         >
           <h1 className='font-extrabold uppercase xl:text-2xl '>Your cart</h1>
 
-          {ProjectJSON.products.slice(0, 3).map((item, index) => {
+          {ProductJSON.products.slice(0, 3).map((item, index) => {
             return (
               <div
                 key={index}
                 className={clsx(
-                  'flex justify-center items-center gap-3 border-b-[1px] py-3 '
+                  'flex justify-center items-center gap-3 py-3 ',
+                  index === ProductJSON.products.slice(0, 3).length - 1
+                    ? ''
+                    : 'border-b-[1px]'
                 )}
               >
                 <div
