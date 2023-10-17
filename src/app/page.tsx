@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger' // Import ScrollTrigger
+import ScrollTrigger from 'gsap/ScrollTrigger'
 
 import Hero from '@/components/Hero'
 
@@ -12,9 +12,7 @@ import Button from '@/types/Button'
 import Product from '@/types/Product'
 import ProductJSON from '@/components/Product.json'
 import { CalculateAverageRating } from '../utils/avarageRatings'
-import StarRating from '@/components/Rating'
 
-import check from '@/assets/verified.png'
 import clsx from 'clsx'
 
 gsap.registerPlugin(ScrollTrigger)

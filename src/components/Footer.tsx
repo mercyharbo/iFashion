@@ -49,7 +49,7 @@ function Footer() {
         // ref={addToRefs}
         className='bg-[#F0F0F0] w-full relative flex flex-col justify-center items-center gap-10 '
       >
-        <div className='w-full xl:pt-[8rem] md:pt-[8rem] md:w-full md:px-10 sm:w-full sm:py-10 sm:px-5 flex flex-col justify-center items-center gap-10 '>
+        <div className='xl:w-[90%] xl:pt-[8rem] xl:px-0 md:pt-[8rem] md:w-full md:px-10 sm:w-full sm:py-10 sm:px-5 flex flex-col justify-center items-center gap-10 '>
           <div className='grid xl:grid-cols-5 xl:content-center xl:place-items-center xl:gap-10 md:grid-cols-3 sm:grid-cols-1 sm:gap-10 '>
             <div className='flex flex-col justify-start items-start gap-3 '>
               <h3 className='xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase'>
