@@ -42,14 +42,30 @@ const Navbar = () => {
   const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
 
   useEffect(() => {
-    const header = document.querySelector('.fixed-header')
+    const tl = gsap.timeline()
 
-    gsap.from(header, {
-      duration: 1,
-      y: -100,
-      opacity: 0,
-      ease: 'power2.out',
-    })
+    if (cartOpen) {
+      tl.fromTo(
+        '.cartOpen',
+        { opacity: 0, x: -50 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          ease: 'power2.inOut',
+          delay: 0.2,
+        }
+      )
+
+      gsap.from('.cartItems', {
+        opacity: 0,
+        x: -20,
+        stagger: 0.5,
+        duration: 0.5,
+        ease: 'power2.inOut',
+        delay: 0.5,
+      })
+    }
 
     if (isOpen) {
       gsap.from('.nav-container', {
@@ -77,7 +93,7 @@ const Navbar = () => {
         ease: 'sine.inOut',
       })
     }
-  }, [isOpen, isSearchOpen])
+  }, [isSearchOpen, cartOpen, isOpen])
 
   const handleOpenModal = () => {
     dispatch(openModal())
@@ -103,7 +119,7 @@ const Navbar = () => {
     <>
       <nav
         className={clsx(
-          'fixed-header relative z-10 flex flex-row justify-between items-center gap-5 w-full mx-auto xl:px-0 xl:py-5 xl:w-[90%] md:w-full md:py-5 md:px-5 sm:w-full sm:px-5 sm:py-5'
+          'relative z-10 flex flex-row justify-between items-center gap-5 w-full mx-auto xl:px-0 xl:py-5 xl:w-[90%] md:w-full md:py-5 md:px-5 sm:w-full sm:px-5 sm:py-5'
         )}
       >
         <div className='flex justify-center items-center gap-3'>
@@ -167,7 +183,7 @@ const Navbar = () => {
           handleCloseModal={handleNavClose}
           showLogo={true}
           showHeader={true}
-          modalClass='nav-container w-[80%] mx-auto top-0 left-0 p-5 z-20 rounded-r-xl h-screen absolute bg-white '
+          modalClass=' w-[80%] mx-auto top-0 left-0 p-5 z-20 rounded-r-xl h-screen absolute bg-white '
           contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold pt-10 text-lg'
         >
           {NavItems.map((items, key) => {
@@ -204,7 +220,7 @@ const Navbar = () => {
       {cartOpen && (
         <div
           className={clsx(
-            'bg-white shadow-2xl h-auto absolute z-20 rounded-lg p-5 flex flex-col gap-5 xl:right-5 xl:w-[20%] xl:top-[6rem] md:w-[60%] sm:w-[95%] sm:right-2 sm:top-[5rem] '
+            'cartOpen bg-white shadow-2xl h-auto absolute z-20 rounded-lg p-5 flex flex-col gap-5 3xl:w-[25%] 2xl:w-[30%] xl:right-5 xl:w-[20%] xl:top-[6rem] md:w-[60%] sm:w-[95%] sm:right-2 sm:top-[5rem] '
           )}
         >
           <h1 className='font-extrabold uppercase xl:text-2xl '>Your cart</h1>
@@ -214,7 +230,7 @@ const Navbar = () => {
               <div
                 key={index}
                 className={clsx(
-                  'flex justify-center items-center gap-3 py-3 ',
+                  'cartItems flex justify-center items-center gap-3 py-3 ',
                   index === ProductJSON.products.slice(0, 3).length - 1
                     ? ''
                     : 'border-b-[1px]'

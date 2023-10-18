@@ -25,7 +25,7 @@ export default function Cart() {
     ).fromTo(
       '.checkout',
       { x: 100, opacity: 0 },
-      { opacity: 1, x: 0, duration: 1, ease: 'power3.inOut', delay: 0.5 }
+      { opacity: 1, x: 0, duration: 1, ease: 'power3.inOut', delay: 0.2 }
     )
   }, [])
 

@@ -13,6 +13,7 @@ type ModalState = {
 const initialState = {
   modal: {
     isOpen: false,
+    cartOpen: false,
   } as ModalState,
 } as InitialState
 

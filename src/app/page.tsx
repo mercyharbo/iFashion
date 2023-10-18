@@ -253,7 +253,7 @@ export default function Home() {
           {browseStyle.map((style) => {
             return (
               <Link
-                scroll={false}
+                scroll={true}
                 key={style.id}
                 href={`/${style.style}`}
                 className={
