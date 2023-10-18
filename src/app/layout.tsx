@@ -1,10 +1,9 @@
 import { Providers } from '@/redux/Provider'
 import type { Metadata } from 'next'
+import { ToastContainer } from 'react-toastify'
 
-import Navbar from '@/components/Navbar'
-
+import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
-import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'Shop.co | where you can shop everything',
@@ -21,9 +20,8 @@ export default function RootLayout({
     <html lang='en'>
       <body suppressHydrationWarning={true}>
         <Providers>
-          <Navbar />
           {children}
-          <Footer />
+          <ToastContainer />
         </Providers>
       </body>
     </html>

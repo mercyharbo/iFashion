@@ -27,7 +27,7 @@ import {
 } from '@/redux/Slice/Filter'
 import { CalculateAverageRating } from '@/utils/avarageRatings'
 import { closeFilterModal, openFilterModal } from '@/redux/Slice/ModalSlice'
-import useColorSelection from '../../hooks/ColorSelector'
+import useColorSelection from '../../../hooks/ColorSelector'
 
 function CasualCategory() {
   const dispatch = useDispatch<AppDispatch>()

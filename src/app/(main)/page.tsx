@@ -11,7 +11,7 @@ import Hero from '@/components/Hero'
 import Button from '@/types/Button'
 import Product from '@/types/Product'
 import ProductJSON from '@/components/Product.json'
-import { CalculateAverageRating } from '../utils/avarageRatings'
+import { CalculateAverageRating } from '../../utils/avarageRatings'
 
 import clsx from 'clsx'
 
