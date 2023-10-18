@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 type InitialState = {
   modal: ModalState
@@ -7,30 +7,40 @@ type InitialState = {
 type ModalState = {
   isOpen: boolean
   searchQuery: string
+  showPassword: boolean
 }
 
 const initialState = {
   modal: {
     isOpen: false,
-    searchQuery: ''
-  } as ModalState
-} as InitialState;
+    searchQuery: '',
+    showPassword: false,
+  } as ModalState,
+} as InitialState
 
 const searchModal = createSlice({
   name: 'modal',
   initialState,
   reducers: {
     openSearchModal: (state) => {
-      state.modal.isOpen = true;
+      state.modal.isOpen = true
     },
     closeSearchModal: (state) => {
-      state.modal.isOpen = false;
+      state.modal.isOpen = false
     },
     setSearchQuercy: (state, action) => {
-       state.modal.searchQuery = action.payload;
-    }
+      state.modal.searchQuery = action.payload
+    },
+    setShowPassword: (state, action) => {
+      state.modal.showPassword = action.payload
+    },
   },
-});
+})
 
-export const { openSearchModal, closeSearchModal, setSearchQuercy } = searchModal.actions;
-export default searchModal.reducer;
+export const {
+  openSearchModal,
+  closeSearchModal,
+  setSearchQuercy,
+  setShowPassword,
+} = searchModal.actions
+export default searchModal.reducer
