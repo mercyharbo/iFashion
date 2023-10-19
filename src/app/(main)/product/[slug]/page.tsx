@@ -12,7 +12,7 @@ import { CalculateAverageRating } from '@/utils/avarageRatings'
 import StarRating from '@/components/Rating'
 import Reviews from '@/components/Reviews'
 
-import ProductJSON from '@/app/(main)/[slug]/product.json'
+import ProductJSON from '@/app/(main)/product/[slug]/product.json'
 
 import plus from '@/assets/plus.png'
 import minus from '@/assets/minus.png'
