@@ -1,9 +1,12 @@
-import { Providers } from '@/redux/Provider'
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import { ToastContainer } from 'react-toastify'
 
+import { Providers } from '@/redux/Provider'
 import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Shop.co | where you can shop everything',
@@ -20,7 +23,7 @@ export default function RootLayout({
     <html lang='en'>
       <body suppressHydrationWarning={true}>
         <Providers>
-          {children}
+          <main className={inter.className}>{children}</main>
           <ToastContainer />
         </Providers>
       </body>
