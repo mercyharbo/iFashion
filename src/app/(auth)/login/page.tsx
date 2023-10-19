@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import clsx from 'clsx'
 import { Formik, Form, FormikHelpers, Field, ErrorMessage } from 'formik'
 import Image from 'next/image'
@@ -8,7 +8,7 @@ import Link from 'next/link'
 import * as Yup from 'yup'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
-import { BsEye, BsEyeFill } from 'react-icons/bs'
+import { BsEyeFill } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
 import { AppDispatch, useAppSelector } from '@/redux/Store'
 import { setShowPassword } from '@/redux/Slice/SearchModalSlice'
@@ -32,11 +32,13 @@ interface Values {
 export default function Login() {
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const showPassword = useAppSelector(
     (state) => state.searchModalReducer.modal.showPassword
   )
 
   const handleLogin = async (values: Values) => {
+    setIsSubmitting(true)
     try {
       const response = await fetch(`${process.env.BASE_URL}/user/login`, {
         method: 'POST',
@@ -49,9 +51,11 @@ export default function Login() {
       const data = await response.json()
       if (data.success === true) {
         toast.success(`You're logged in successfully...`)
+        setIsSubmitting(false)
         router.push('/')
       } else {
         toast.error(data.message)
+        setIsSubmitting(false)
       }
     } catch (error) {
       console.log(error)
@@ -89,72 +93,68 @@ export default function Login() {
             values: Values,
             { setSubmitting }: FormikHelpers<Values>
           ) => {
-            setTimeout(() => {
-              handleLogin(values)
-              setSubmitting(false)
-            }, 500)
+            handleLogin(values)
+            // setSubmitting(false)
           }}
         >
-          {({ isSubmitting }) => (
-            <Form className='flex flex-col justify-start items-start gap-5 3xl:w-[70%] 2xl:w-[80%] xl:w-full lg:w-full md:w-full sm:w-full '>
-              <div className='flex flex-col justify-start items-start gap-2 w-full'>
-                <label htmlFor='email' className='capitalize font-medium'>
-                  email
-                </label>
+          <Form className='flex flex-col justify-start items-start gap-5 3xl:w-[70%] 2xl:w-[80%] xl:w-full lg:w-full md:w-full sm:w-full '>
+            <div className='flex flex-col justify-start items-start gap-2 w-full'>
+              <label htmlFor='email' className='capitalize font-medium'>
+                email
+              </label>
+              <Field
+                id='email'
+                name='email'
+                placeholder='Enter your email'
+                type='email'
+                className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none '
+              />
+              <ErrorMessage
+                name='email'
+                component='div'
+                className='text-red-500'
+              />
+            </div>
+            <div className='flex flex-col justify-start items-start gap-2 w-full'>
+              <label htmlFor='password' className='capitalize font-medium'>
+                password
+              </label>
+              <div className='relative w-full'>
                 <Field
-                  id='email'
-                  name='email'
-                  placeholder='Enter your email'
-                  type='email'
+                  id='password'
+                  name='password'
+                  placeholder='Enter your password'
+                  type={showPassword ? 'text' : 'password'}
                   className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none '
                 />
-                <ErrorMessage
-                  name='email'
-                  component='div'
-                  className='text-red-500'
-                />
+                <button
+                  type='button'
+                  onClick={() => dispatch(setShowPassword(!showPassword))}
+                  className='absolute 3xl:top-4 xl:right-4 md:top-4 md:right-3 sm:right-3 sm:top-4'
+                >
+                  {' '}
+                  <BsEyeFill />
+                </button>
               </div>
-              <div className='flex flex-col justify-start items-start gap-2 w-full'>
-                <label htmlFor='password' className='capitalize font-medium'>
-                  password
-                </label>
-                <div className='relative w-full'>
-                  <Field
-                    id='password'
-                    name='password'
-                    placeholder='Enter your password'
-                    type={showPassword ? 'text' : 'password'}
-                    className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none '
-                  />
-                  <button
-                    type='button'
-                    onClick={() => dispatch(setShowPassword(!showPassword))}
-                    className='absolute 3xl:top-4 xl:right-4 md:top-4 md:right-3 sm:right-3 sm:top-4'
-                  >
-                    {' '}
-                    <BsEyeFill />
-                  </button>
-                </div>
-                <ErrorMessage
-                  name='password'
-                  component='div'
-                  className='text-red-500'
-                />
-              </div>
-              <button
-                type='submit' // Change 'type' to 'button'
-                className='bg-black py-3 w-full rounded-md text-white'
-              >
-                {isSubmitting ? 'Logging In...' : 'Login'}
-              </button>
-              <p className='text-gray-400 text-center'>
-                I don’t have an account ?{' '}
-                <Link href='/signup' className='text-[red] font-medium '>
-                  Sign up
-                </Link>
-              </p>
-            </Form>
-          )}
+              <ErrorMessage
+                name='password'
+                component='div'
+                className='text-red-500'
+              />
+            </div>
+            <button
+              type='submit'
+              className='bg-black py-3 w-full rounded-md text-white'
+            >
+              {isSubmitting ? 'Logging In...' : 'Login'}
+            </button>
+            <p className='text-gray-400 text-center'>
+              I don’t have an account ?{' '}
+              <Link href='/signup' className='text-[red] font-medium '>
+                Sign up
+              </Link>
+            </p>
+          </Form>
         </Formik>
       </div>
       <div
