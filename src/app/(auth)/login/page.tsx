@@ -51,6 +51,7 @@ export default function Login() {
       const data = await response.json()
       if (data.success === true) {
         toast.success(`You're logged in successfully...`)
+        localStorage.setItem('token', data.token)
         setIsSubmitting(false)
         router.push('/')
       } else {

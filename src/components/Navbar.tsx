@@ -5,7 +5,14 @@ import { useDispatch } from 'react-redux'
 import Image from 'next/image'
 import Link from 'next/link'
 import gsap from 'gsap'
-import { BiMinus, BiPlus } from 'react-icons/bi'
+import clsx from 'clsx'
+import {
+  BiCartAdd,
+  BiMinus,
+  BiPlus,
+  BiSearch,
+  BiUserCircle,
+} from 'react-icons/bi'
 
 import Button from '@/types/Button'
 import InputField from '@/types/InputField'
@@ -13,9 +20,6 @@ import ProductJSON from '@/components/Product.json'
 
 // Icons
 import hamburger from '@/assets/menu-burger.svg'
-import cart from '@/assets/shopping-cart.svg'
-import user from '@/assets/circle-user.svg'
-import search from '@/assets/search.svg'
 
 import { AppDispatch, useAppSelector } from '@/redux/Store'
 import { closeModal, openModal, setCartOpen } from '@/redux/Slice/ModalSlice'
@@ -26,9 +30,52 @@ import {
 } from '@/redux/Slice/SearchModalSlice'
 import Modal from '@/types/Modal'
 import { UseCounter } from '@/hooks/Counter'
-import clsx from 'clsx'
+import { setUserProfile } from '@/redux/Slice/UserSlice'
+import { toast } from 'react-toastify'
+import useToken from '@/hooks/useToken'
+import { MdOutlineArrowDropDown } from 'react-icons/md'
+
+export async function getUser() {
+  const token = localStorage.getItem('token') // get token from the localStorage
+
+  const headers = new Headers({
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  })
+
+  const options = {
+    method: 'GET',
+    headers,
+  }
+
+  const res = await fetch(`${process.env.BASE_URL}/user/profile`, options)
+
+  if (res.ok) {
+    return res.json()
+  } else {
+    const errorData = await res.json()
+    const errorMessage = errorData.message
+
+    toast.error(errorMessage, {
+      position: 'top-right',
+      autoClose: 5000, // Adjust as needed
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    })
+
+    return Promise.reject(errorMessage)
+  }
+}
+
+interface User {
+  id: number
+  firstName: string
+}
 
 const Navbar = () => {
+  const token = useToken()
   const dispatch = useDispatch<AppDispatch>()
   const { increment, decrement, count } = UseCounter()
   const isOpen = useAppSelector((state) => state.modalReducer.modal.isOpen)
@@ -38,6 +85,7 @@ const Navbar = () => {
   const searchQuery = useAppSelector(
     (state) => state.searchModalReducer.modal.searchQuery
   )
+  const user = useAppSelector((state) => state.userProfile.user)
   const cartOpen = useAppSelector((state) => state.modalReducer.modal.cartOpen)
   const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
 
@@ -94,6 +142,23 @@ const Navbar = () => {
       })
     }
   }, [isSearchOpen, cartOpen, isOpen])
+
+  useEffect(() => {
+    async function fetchUserDetails() {
+      try {
+        const data = await getUser()
+        dispatch(setUserProfile(data.profile))
+      } catch (error) {
+        console.log('Errro fetching users', error)
+      }
+    }
+
+    if (token) {
+      fetchUserDetails()
+    } else {
+      return
+    }
+  }, [token])
 
   const handleOpenModal = () => {
     dispatch(openModal())
@@ -158,24 +223,48 @@ const Navbar = () => {
           inputClass='xl:flex xl:w-[30rem] md:hidden sm:hidden  '
         />
 
-        <div
-          className={clsx('flex justify-center items-center gap-4 relative')}
-        >
-          <Button
-            onClick={() => dispatch(openSearchModal())}
-            icon={<Image src={search} width={25} height={25} alt='icon' />}
-            buttonClass='xl:hidden md:flex sm:flex '
-          />
-          <Button
-            onClick={handleCartOpen}
-            icon={<Image src={cart} width={25} height={25} alt='icon' />}
-            buttonClass=''
-          />
-          <Button
-            icon={<Image src={user} width={25} height={25} alt='icon' />}
-            buttonClass=''
-          />
-        </div>
+        {token ? (
+          <div
+            className={clsx('flex justify-center items-center gap-5 relative')}
+          >
+            <Button
+              onClick={() => dispatch(openSearchModal())}
+              icon={
+                <BiSearch className='xl:text-base md:text-2xl sm:text-2xl' />
+              }
+              buttonClass='xl:hidden md:flex sm:flex '
+            />
+            <button
+              type='button'
+              onClick={handleCartOpen}
+              className='flex justify-center items-center gap-2 hover:text-[red] '
+            >
+              <BiCartAdd className='xl:text-base md:text-2xl sm:text-2xl' />
+              <span className='xl:flex md:flex sm:hidden'>Cart</span>
+              {/* <span className='carts bg-[red] p-2 rounded-full '>cart</span> */}
+            </button>
+
+            <button
+              type='button'
+              className='flex justify-center items-center gap-2 hover:text-[red] '
+            >
+              <BiUserCircle className='xl:text-base md:text-2xl sm:text-2xl' />
+              <span className='xl:flex md:flex sm:hidden'>
+                Hey!, {user?.firstName}
+              </span>
+              <MdOutlineArrowDropDown className='xl:flex md:flex sm:hidden' />
+            </button>
+          </div>
+        ) : (
+          <div className='xl:flex md:hidden sm:hidden justify-center items-center gap-5'>
+            <Link href='/login' className='underline font-medium'>
+              Sign in
+            </Link>
+            <Link href='/signup' className='underline font-medium'>
+              Signup
+            </Link>
+          </div>
+        )}
       </nav>
 
       {isOpen && (
@@ -197,6 +286,17 @@ const Navbar = () => {
               </Link>
             )
           })}
+          <hr className='w-full' />
+          {!token && (
+            <div className='flex flex-col justify-center items-center gap-5'>
+              <Link href='/login' className='underline font-medium'>
+                Sign in
+              </Link>
+              <Link href='/signup' className='underline font-medium'>
+                Signup
+              </Link>
+            </div>
+          )}
         </Modal>
       )}
 
