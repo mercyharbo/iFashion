@@ -90,12 +90,8 @@ export default function Login() {
             password: '',
           }}
           validationSchema={LoginSchema}
-          onSubmit={(
-            values: Values,
-            { setSubmitting }: FormikHelpers<Values>
-          ) => {
+          onSubmit={(values: Values, {}: FormikHelpers<Values>) => {
             handleLogin(values)
-            // setSubmitting(false)
           }}
         >
           <Form className='flex flex-col justify-start items-start gap-5 3xl:w-[70%] 2xl:w-[80%] xl:w-full lg:w-full md:w-full sm:w-full '>

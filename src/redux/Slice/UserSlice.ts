@@ -5,10 +5,10 @@ type UserProfile = {
   firstName: string
   lastName: string
   email: string
-  phoneNumber: number
+  phoneNumber: string
   address: string
   gender: string
-  dateOfBirth: null
+  dateOfBirth: any
 }
 
 type InitialState = {
