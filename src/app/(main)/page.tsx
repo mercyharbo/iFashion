@@ -119,7 +119,7 @@ export default function Home() {
       <Hero />
       <section
         className={clsx(
-          'brands-container bg-black text-white flex flex-col justify-center items-center  xl:h-[10rem] xl:mb-10 md:h-[8rem] sm:h-[8rem] '
+          'brands-container bg-black text-white flex flex-col justify-center items-center overflow-x-hidden xl:h-[10rem] xl:mb-10 md:h-[8rem] sm:h-[8rem] '
         )}
       >
         <div
