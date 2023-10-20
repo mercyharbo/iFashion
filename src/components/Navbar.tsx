@@ -412,7 +412,7 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* {profileModal && (
+      {profileModal && (
         <div
           className={clsx(
             'flex flex-col justify-start items-start gap-5 p-5 rounded-lg bg-white shadow-2xl absolute z-20 3xl:right-[5rem] 3xl:w-[15%] 3xl:top-[6rem] xl:w-[20%] md:w-[50%] md:right-5 md:top-[5rem] sm:w-[90%] sm:right-5 sm:top-[5rem] '
@@ -446,7 +446,7 @@ const Navbar = () => {
             icon={<BiLogOut />}
           />
         </div>
-      )} */}
+      )}
     </>
   )
 }

@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify'
 import { Providers } from '@/redux/Provider'
 import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
+import clsx from 'clsx'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +24,9 @@ export default function RootLayout({
     <html lang='en'>
       <body suppressHydrationWarning={true}>
         <Providers>
-          <main className={inter.className}>{children}</main>
+          <main className={clsx('overflow-x-hidden', inter.className)}>
+            {children}
+          </main>
           <ToastContainer />
         </Providers>
       </body>
