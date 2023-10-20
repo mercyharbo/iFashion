@@ -16,7 +16,7 @@ export default function Profile() {
         'flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg w-full xl:p-10 xl:gap-10 md:p-10 md:gap-5 sm:p-5 sm:gap-5 '
       )}
     >
-      <h1 className='3xl:text-4xl 2xl:text-4xl xl:text-4xl md:text-3xl sm:text-2xl capitalize font-medium '>
+      <h1 className='3xl:text-4xl 2xl:text-4xl xl:text-4xl md:text-3xl sm:text-2xl capitalize font-medium mr-auto '>
         account overview
       </h1>
       <section
@@ -89,7 +89,7 @@ export default function Profile() {
           </p>
         </div>
 
-        {/* <div
+        <div
           className={clsx(
             'border-[1px] rounded-md p-5 flex flex-col justify-start items-start gap-2 w-full h-full '
           )}
@@ -115,7 +115,7 @@ export default function Profile() {
             </p>
             <p className='text-gray-400'>0704 305 0439</p>
           </div>
-        </div> */}
+        </div>
       </section>
     </main>
   )
