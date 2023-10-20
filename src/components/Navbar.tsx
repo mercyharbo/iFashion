@@ -181,7 +181,7 @@ const Navbar = () => {
     <>
       <nav
         className={clsx(
-          'relative z-10 flex flex-row justify-between items-center gap-5 w-full mx-auto xl:px-0 xl:py-5 xl:w-[90%] md:w-full md:py-5 md:px-5 sm:w-full sm:px-5 sm:py-5'
+          'relative z-10 overflow-hidden flex flex-row justify-between items-center gap-5 w-full mx-auto xl:px-0 xl:py-5 xl:w-[90%] md:w-full md:py-5 md:px-5 sm:w-full sm:px-5 sm:py-5'
         )}
       >
         <div className='flex justify-center items-center gap-3'>
@@ -412,7 +412,7 @@ const Navbar = () => {
         </div>
       )}
 
-      {profileModal && (
+      {/* {profileModal && (
         <div
           className={clsx(
             'flex flex-col justify-start items-start gap-5 p-5 rounded-lg bg-white shadow-2xl absolute z-20 3xl:right-[5rem] 3xl:w-[15%] 3xl:top-[6rem] xl:w-[20%] md:w-[50%] md:right-5 md:top-[5rem] sm:w-[90%] sm:right-5 sm:top-[5rem] '
@@ -446,7 +446,7 @@ const Navbar = () => {
             icon={<BiLogOut />}
           />
         </div>
-      )}
+      )} */}
     </>
   )
 }
