@@ -21,7 +21,7 @@ export default function Profile() {
       </h1>
       <section
         className={clsx(
-          'grid w-full xl:grid-cols-2 xl:content-between xl:place-items-center xl:gap-10 md:grid-cols-1 md:content-center md:place-items-center md:gap-10 sm:grid-cols-1 sm:content-center sm:place-items-center sm:gap-10'
+          'grid w-full xl:grid-cols-2 xl:content-center xl:place-items-center xl:gap-10 md:grid-cols-1 md:content-center md:place-items-center md:gap-10 sm:grid-cols-1 sm:content-center sm:place-items-center sm:gap-10'
         )}
       >
         <div
