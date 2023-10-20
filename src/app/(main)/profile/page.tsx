@@ -26,7 +26,7 @@ export default function Profile() {
       >
         <div
           className={clsx(
-            'border-[1px] rounded-md p-5 flex flex-col justify-start items-start gap-4 w-full '
+            'border-[1px] rounded-md p-5 flex flex-col justify-start items-start gap-4 w-full h-full '
           )}
         >
           <div className='flex justify-between items-center border-b-[1px] w-full pb-3 '>
