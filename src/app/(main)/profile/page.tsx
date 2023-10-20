@@ -13,7 +13,7 @@ export default function Profile() {
   return (
     <main
       className={clsx(
-        'flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg w-full xl:p-10 xl:gap-10 md:p-10 md:gap-5 sm:p-5 sm:gap-5 '
+        'flex flex-col justify-center items-center bg-white shadow-2xl rounded-xl w-full xl:p-10 xl:gap-10 md:p-10 md:gap-5 sm:px-5 sm:py-10 sm:gap-5 '
       )}
     >
       <h1 className='3xl:text-4xl 2xl:text-4xl xl:text-4xl md:text-3xl sm:text-2xl capitalize font-medium mr-auto '>
@@ -21,12 +21,12 @@ export default function Profile() {
       </h1>
       <section
         className={clsx(
-          'grid w-full xl:grid-cols-2 xl:content-center xl:place-items-center xl:gap-10 md:grid-cols-1 md:content-center md:place-items-center md:gap-10 sm:grid-cols-1 sm:content-center sm:place-items-center sm:gap-10'
+          'flex w-full xl:flex-row xl:justify-between xl:items-start xl:gap-10 md:flex-col md:justify-center md:items-center md:gap-10 sm:flex-col sm:justify-center sm:items-center sm:gap-10'
         )}
       >
         <div
           className={clsx(
-            'border-[1px] rounded-md p-5 flex flex-col justify-start items-start gap-4 w-full h-full '
+            'border-[1px] rounded-md p-5 flex flex-col justify-start items-start gap-4 w-full '
           )}
         >
           <div className='flex justify-between items-center border-b-[1px] w-full pb-3 '>
@@ -91,7 +91,7 @@ export default function Profile() {
 
         <div
           className={clsx(
-            'border-[1px] rounded-md p-5 flex flex-col justify-start items-start gap-2 w-full h-full '
+            'border-[1px] rounded-md p-5 flex flex-col justify-start items-start gap-2 w-full '
           )}
         >
           <div className='flex justify-between items-center border-b-[1px] w-full pb-3 '>
