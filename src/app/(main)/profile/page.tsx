@@ -89,7 +89,7 @@ export default function Profile() {
           </p>
         </div>
 
-        <div
+        {/* <div
           className={clsx(
             'border-[1px] rounded-md p-5 flex flex-col justify-start items-start gap-2 w-full h-full '
           )}
@@ -115,7 +115,7 @@ export default function Profile() {
             </p>
             <p className='text-gray-400'>0704 305 0439</p>
           </div>
-        </div>
+        </div> */}
       </section>
     </main>
   )
