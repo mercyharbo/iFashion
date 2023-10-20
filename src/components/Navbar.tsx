@@ -181,7 +181,7 @@ const Navbar = () => {
     <>
       <nav
         className={clsx(
-          'relative z-10 overflow-hidden flex flex-row justify-between items-center gap-5 w-full mx-auto xl:px-0 xl:py-5 xl:w-[90%] md:w-full md:py-5 md:px-5 sm:w-full sm:px-5 sm:py-5'
+          'relative z-10 overflow-hidden flex flex-row justify-between items-center gap-5 w-full mx-auto 3xl:w-[90%] 3xl:px-0 2xl:px-0 2xl:w-[90%] xl:px-10 xl:py-5 xl:w-full md:w-full md:py-5 md:px-5 sm:w-full sm:px-5 sm:py-5'
         )}
       >
         <div className='flex justify-center items-center gap-3'>
@@ -217,7 +217,7 @@ const Navbar = () => {
           value={searchQuery}
           onChange={(e) => handleSearch(e.target.value)}
           placeholder='Search for products...'
-          inputClass='xl:flex xl:w-[30rem] md:hidden sm:hidden  '
+          inputClass='3xl:w-[30rem] 2xl:w-[25rem] xl:flex xl:w-[20rem] lg:w-[20%] md:hidden sm:hidden  '
         />
 
         {token ? (
@@ -270,7 +270,7 @@ const Navbar = () => {
           handleCloseModal={handleNavClose}
           showLogo={true}
           showHeader={true}
-          modalClass=' w-[80%] mx-auto top-0 left-0 p-5 z-20 rounded-r-xl h-screen absolute bg-white '
+          modalClass=' nav-container w-[80%] mx-auto top-0 left-0 p-5 z-20 rounded-r-xl h-screen absolute bg-white '
           contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold pt-10 text-lg'
         >
           {NavItems.map((items, key) => {
@@ -287,10 +287,10 @@ const Navbar = () => {
           <hr className='w-full' />
           {!token && (
             <div className='flex flex-col justify-center items-center gap-5'>
-              <Link href='/login' className='underline font-medium'>
+              <Link href='/login' className='nav-link underline font-medium'>
                 Sign in
               </Link>
-              <Link href='/signup' className='underline font-medium'>
+              <Link href='/signup' className='nav-link underline font-medium'>
                 Signup
               </Link>
             </div>

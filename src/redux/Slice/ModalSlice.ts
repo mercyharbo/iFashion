@@ -9,6 +9,7 @@ type ModalState = {
   filterModal: boolean
   cartOpen: boolean
   profileOpen: boolean
+  updateProfileModal: boolean
 }
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
     isOpen: false,
     cartOpen: false,
     profileOpen: false,
+    updateProfileModal: false,
   } as ModalState,
 } as InitialState
 
@@ -41,6 +43,9 @@ const modalSlice = createSlice({
     setProfileOpen: (state, action) => {
       state.modal.profileOpen = action.payload
     },
+    setUpdateProfileModal: (state, action) => {
+      state.modal.updateProfileModal = action.payload
+    },
   },
 })
 
@@ -51,5 +56,6 @@ export const {
   closeFilterModal,
   setCartOpen,
   setProfileOpen,
+  setUpdateProfileModal,
 } = modalSlice.actions
 export default modalSlice.reducer
