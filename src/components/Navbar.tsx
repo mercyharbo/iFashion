@@ -8,9 +8,13 @@ import gsap from 'gsap'
 import clsx from 'clsx'
 import {
   BiCartAdd,
+  BiHeart,
+  BiHistory,
+  BiLogOut,
   BiMinus,
   BiPlus,
   BiSearch,
+  BiUser,
   BiUserCircle,
 } from 'react-icons/bi'
 
@@ -22,7 +26,12 @@ import ProductJSON from '@/components/Product.json'
 import hamburger from '@/assets/menu-burger.svg'
 
 import { AppDispatch, useAppSelector } from '@/redux/Store'
-import { closeModal, openModal, setCartOpen } from '@/redux/Slice/ModalSlice'
+import {
+  closeModal,
+  openModal,
+  setCartOpen,
+  setProfileOpen,
+} from '@/redux/Slice/ModalSlice'
 import {
   closeSearchModal,
   openSearchModal,
@@ -30,49 +39,43 @@ import {
 } from '@/redux/Slice/SearchModalSlice'
 import Modal from '@/types/Modal'
 import { UseCounter } from '@/hooks/Counter'
-import { setUserProfile } from '@/redux/Slice/UserSlice'
-import { toast } from 'react-toastify'
+import { fetchUserProfile } from '@/redux/Slice/UserSlice'
 import useToken from '@/hooks/useToken'
 import { MdOutlineArrowDropDown } from 'react-icons/md'
 
-export async function getUser() {
-  const token = localStorage.getItem('token') // get token from the localStorage
+// export async function getUser() {
+//   const token = localStorage.getItem('token') // get token from the localStorage
 
-  const headers = new Headers({
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  })
+//   const headers = new Headers({
+//     Authorization: `Bearer ${token}`,
+//     'Content-Type': 'application/json',
+//   })
 
-  const options = {
-    method: 'GET',
-    headers,
-  }
+//   const options = {
+//     method: 'GET',
+//     headers,
+//   }
 
-  const res = await fetch(`${process.env.BASE_URL}/user/profile`, options)
+//   const res = await fetch(`${process.env.BASE_URL}/user/profile`, options)
 
-  if (res.ok) {
-    return res.json()
-  } else {
-    const errorData = await res.json()
-    const errorMessage = errorData.message
+//   if (res.ok) {
+//     return res.json()
+//   } else {
+//     const errorData = await res.json()
+//     const errorMessage = errorData.message
 
-    toast.error(errorMessage, {
-      position: 'top-right',
-      autoClose: 5000, // Adjust as needed
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    })
+//     toast.error(errorMessage, {
+//       position: 'top-right',
+//       autoClose: 5000, // Adjust as needed
+//       hideProgressBar: false,
+//       closeOnClick: true,
+//       pauseOnHover: true,
+//       draggable: true,
+//     })
 
-    return Promise.reject(errorMessage)
-  }
-}
-
-interface User {
-  id: number
-  firstName: string
-}
+//     return Promise.reject(errorMessage)
+//   }
+// }
 
 const Navbar = () => {
   const token = useToken()
@@ -87,6 +90,9 @@ const Navbar = () => {
   )
   const user = useAppSelector((state) => state.userProfile.user)
   const cartOpen = useAppSelector((state) => state.modalReducer.modal.cartOpen)
+  const profileModal = useAppSelector(
+    (state) => state.modalReducer.modal.profileOpen
+  )
   const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
 
   useEffect(() => {
@@ -144,17 +150,8 @@ const Navbar = () => {
   }, [isSearchOpen, cartOpen, isOpen])
 
   useEffect(() => {
-    async function fetchUserDetails() {
-      try {
-        const data = await getUser()
-        dispatch(setUserProfile(data.profile))
-      } catch (error) {
-        console.log('Errro fetching users', error)
-      }
-    }
-
     if (token) {
-      fetchUserDetails()
+      dispatch(fetchUserProfile())
     } else {
       return
     }
@@ -246,6 +243,7 @@ const Navbar = () => {
 
             <button
               type='button'
+              onClick={() => dispatch(setProfileOpen(!profileModal))}
               className='flex justify-center items-center gap-2 hover:text-[red] '
             >
               <BiUserCircle className='xl:text-base md:text-2xl sm:text-2xl' />
@@ -411,6 +409,42 @@ const Navbar = () => {
               buttonClass='bg-black text-white  px-4 py-2 rounded-md '
             />
           </div>
+        </div>
+      )}
+
+      {profileModal && (
+        <div
+          className={clsx(
+            'flex flex-col justify-start items-start gap-5 p-5 rounded-lg bg-white shadow-2xl absolute z-20 3xl:right-[5rem] 3xl:w-[15%] 3xl:top-[6rem] xl:w-[20%] md:w-[50%] md:right-5 md:top-[5rem] sm:w-[90%] sm:right-5 sm:top-[5rem] '
+          )}
+        >
+          <Link
+            href='/profile'
+            className='capitalize flex justify-start items-center gap-2 hover:text-[red] '
+          >
+            {' '}
+            <BiUser /> My account
+          </Link>
+          <Link
+            href='/profile/history'
+            className='capitalize flex justify-start items-center gap-2 hover:text-[red] '
+          >
+            {' '}
+            <BiHistory /> History
+          </Link>
+          <Link
+            href=''
+            className='capitalize flex justify-start items-center gap-2 hover:text-[red] '
+          >
+            {' '}
+            <BiHeart /> Wishlist
+          </Link>
+          <Button
+            type='button'
+            title='logout'
+            buttonClass='flex justify-start items-center gap-2 hover:text-[red] '
+            icon={<BiLogOut />}
+          />
         </div>
       )}
     </>
