@@ -13,7 +13,7 @@ export default function Profile() {
   return (
     <main
       className={clsx(
-        'flex flex-col justify-start items-start bg-white shadow-2xl rounded-lg w-full xl:p-10 xl:gap-10 md:p-10 md:gap-5 sm:p-5 sm:gap-5 '
+        'flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg w-full xl:p-10 xl:gap-10 md:p-10 md:gap-5 sm:p-5 sm:gap-5 '
       )}
     >
       <h1 className='3xl:text-4xl 2xl:text-4xl xl:text-4xl md:text-3xl sm:text-2xl capitalize font-medium '>
