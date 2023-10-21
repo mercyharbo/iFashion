@@ -14,11 +14,13 @@ type UserProfile = {
 type InitialState = {
   user: UserProfile | null
   error: string | null
+  isSubmitting: boolean
 }
 
 const initialState: InitialState = {
   user: null,
   error: null,
+  isSubmitting: false,
 }
 
 // Create an async thunk to fetch user data
@@ -73,6 +75,9 @@ const userSlice = createSlice({
     setUserProfile: (state, action) => {
       state.user = action.payload
     },
+    setIsSubmitting: (state, action) => {
+      state.isSubmitting = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -86,5 +91,5 @@ const userSlice = createSlice({
   },
 })
 
-export const { setUserProfile } = userSlice.actions
+export const { setUserProfile, setIsSubmitting } = userSlice.actions
 export default userSlice.reducer

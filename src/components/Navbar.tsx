@@ -39,9 +39,11 @@ import {
 } from '@/redux/Slice/SearchModalSlice'
 import Modal from '@/types/Modal'
 import { UseCounter } from '@/hooks/Counter'
-import { fetchUserProfile } from '@/redux/Slice/UserSlice'
+import { fetchUserProfile, setIsSubmitting } from '@/redux/Slice/UserSlice'
 import useToken from '@/hooks/useToken'
 import { MdOutlineArrowDropDown } from 'react-icons/md'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 // export async function getUser() {
 //   const token = localStorage.getItem('token') // get token from the localStorage
@@ -79,6 +81,7 @@ import { MdOutlineArrowDropDown } from 'react-icons/md'
 
 const Navbar = () => {
   const token = useToken()
+  const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
   const { increment, decrement, count } = UseCounter()
   const isOpen = useAppSelector((state) => state.modalReducer.modal.isOpen)
@@ -156,6 +159,35 @@ const Navbar = () => {
       return
     }
   }, [token])
+
+  // handling the user logout request
+  const handleLogout = async () => {
+    dispatch(setIsSubmitting(true))
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`${process.env.BASE_URL}/user/logout`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+
+      const data = await response.json()
+      if (data.success === true) {
+        toast.success(data.message)
+        dispatch(setIsSubmitting(false))
+        localStorage.removeItem('token')
+        router.push('/')
+        window.location.reload()
+      } else {
+        toast.error(data.message)
+        dispatch(setIsSubmitting(false))
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleOpenModal = () => {
     dispatch(openModal())
@@ -442,6 +474,7 @@ const Navbar = () => {
           <Button
             type='button'
             title='logout'
+            onClick={handleLogout}
             buttonClass='flex justify-start items-center gap-2 hover:text-[red] '
             icon={<BiLogOut />}
           />
