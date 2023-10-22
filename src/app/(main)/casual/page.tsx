@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useDispatch } from 'react-redux'
@@ -12,7 +12,6 @@ import {
 } from 'react-icons/md'
 
 import Product from '@/types/Product'
-import ProductJSON from '@/components/Product.json'
 import filterJSON from '@/components/Filter.json'
 import Filter from '@/components/Filter'
 import Modal from '@/types/Modal'
@@ -28,6 +27,7 @@ import {
 import { CalculateAverageRating } from '@/utils/avarageRatings'
 import { closeFilterModal, openFilterModal } from '@/redux/Slice/ModalSlice'
 import useColorSelection from '../../../hooks/ColorSelector'
+import { fetchProducts, setFilteredProducts } from '@/redux/Slice/ProductSlice'
 
 function CasualCategory() {
   const dispatch = useDispatch<AppDispatch>()
@@ -37,7 +37,7 @@ function CasualCategory() {
   const selectedCategory = useAppSelector(
     (state) => state.filterReducer.filters.selectedCategory
   )
-  const [filteredProducts, setFilteredProducts] = useState(ProductJSON.products)
+
   const [sortBy, setSortBy] = useState<'newest' | 'price' | 'oldest'>('newest')
 
   const filterOpen = useAppSelector(
@@ -55,27 +55,39 @@ function CasualCategory() {
   const isCategoryVisible = useAppSelector(
     (state) => state.filterReducer.filters.iCategoryVisible
   )
+  const productData = useAppSelector((state) => state.products)
+  const filteredData = useAppSelector(
+    (state) => state.products.filteredProducts
+  )
 
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined)
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined)
 
+  useEffect(() => {
+    dispatch(fetchProducts())
+  }, [dispatch])
+
   const sortProducts = (criteria: 'newest' | 'price' | 'oldest') => {
-    const sortedProducts = [...filteredProducts]
+    const sortedProducts = [...productData.products]
 
     if (criteria === 'newest') {
-      sortedProducts.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+      sortedProducts.sort(
+        (a, b) => Date.parse(b.createdDate) - Date.parse(a.createdDate)
+      )
     } else if (criteria === 'oldest') {
-      sortedProducts.sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
+      sortedProducts.sort(
+        (a, b) => Date.parse(a.createdDate) - Date.parse(b.createdDate)
+      )
     } else if (criteria === 'price') {
       sortedProducts.sort((a, b) => a.price - b.price)
     }
 
-    setFilteredProducts(sortedProducts)
+    dispatch(setFilteredProducts(sortedProducts))
     setSortBy(criteria)
   }
 
   const handleFilter = () => {
-    const filtered = ProductJSON.products.filter((product) => {
+    const filtered = productData.products.filter((product) => {
       return (
         (!selectedCategory || product.category === selectedCategory) &&
         (selectedColors.length === 0 ||
@@ -98,7 +110,7 @@ function CasualCategory() {
     dispatch(setSelectedCategory(''))
     // setMinPrice('')
     // setMaxPrice('')
-    setFilteredProducts(ProductJSON.products)
+    dispatch(setFilteredProducts(productData.products))
   }
 
   const handleCategorySelect = (categoryOption: string) => {
@@ -125,16 +137,15 @@ function CasualCategory() {
     dispatch(setIsCategoryVisible(!isCategoryVisible))
   }
 
+  const products = filteredData.length > 0 ? filteredData : productData.products
+
   return (
     <main
       className={clsx(
         ' flex justify-center items-start 2xl:gap-10 2xl:p-10 xl:gap-10 md:p-5 sm:p-5'
       )}
     >
-      <Filter
-        products={ProductJSON.products}
-        setFilteredProducts={setFilteredProducts}
-      />
+      <Filter products={productData.products} />
 
       <div
         className={clsx(
@@ -183,11 +194,11 @@ function CasualCategory() {
             'grid w-full 3xl:grid-cols-4 3xl:gap-10 2xl:grid-cols-4 2xl:gap-2 xl:grid-cols-3 xl:content-between xl:place-items-start xl:gap-5 md:grid-cols-3 md:gap-3 md:content-center md:place-items-center sm:grid-cols-1 sm:gap-5'
           )}
         >
-          {filteredProducts.map((item, index) => {
+          {products.map((item) => {
             const avarageRating = CalculateAverageRating(item?.reviews)
 
             return (
-              <Link key={index} href={`/product/${index}`}>
+              <Link key={item._id} href={`/product/${item._id}`}>
                 <Product
                   title={item.title}
                   price={item.price}

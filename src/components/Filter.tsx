@@ -22,33 +22,28 @@ import {
   setIsSizeVisible,
   setSelectedCategory,
 } from '@/redux/Slice/Filter'
+import { setFilteredProducts } from '@/redux/Slice/ProductSlice'
 
 interface ProductFilterProps {
   products: Product[]
-  setFilteredProducts: (filtered: Product[]) => void
 }
 
 interface Product {
+  _id: string
+  description: string
+  discount: number
   productImage: string
   title: string
-  reviews: {
-    id: number
-    user: string
-    rating: number
-    comment: string
-    date: string
-  }[]
+  reviews: []
   price: number
   category: string
   colors: string[]
   available_sizes: string[]
-  date: string
+  images: string[]
+  createdDate: string
 }
 
-export default function Filter({
-  products,
-  setFilteredProducts,
-}: ProductFilterProps) {
+export default function Filter({ products }: ProductFilterProps) {
   const dispatch = useDispatch<AppDispatch>()
   const { selectedSize, setSelectedSize, handleSizeClick } = useSizeSelection()
   const { selectedColors, setSelectedColors, handleColorClick } =
@@ -84,7 +79,7 @@ export default function Filter({
       )
     })
 
-    setFilteredProducts(filtered)
+    dispatch(setFilteredProducts(filtered))
   }
 
   const resetFilters = () => {
@@ -93,7 +88,7 @@ export default function Filter({
     dispatch(setSelectedCategory(''))
     // setMinPrice('')
     // setMaxPrice('')
-    setFilteredProducts(products)
+    dispatch(setFilteredProducts(products))
   }
 
   const handleCategorySelect = (categoryOption: string) => {
