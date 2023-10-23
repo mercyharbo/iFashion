@@ -12,7 +12,8 @@ type productDetails = {
   available_sizes: string[]
   reviews: []
   images: string[]
-  productImage: string
+  related: []
+  faq: []
   createdDate: string
 }
 
@@ -21,6 +22,7 @@ type InitialState = {
   error: string | null
   isSubmitting: boolean
   filteredProducts: productDetails[]
+  productDetailsData: productDetails | null
 }
 
 const initialState: InitialState = {
@@ -28,6 +30,7 @@ const initialState: InitialState = {
   error: null,
   isSubmitting: false,
   filteredProducts: [],
+  productDetailsData: null,
 }
 
 // Create an async thunk to fetch products data
@@ -35,7 +38,7 @@ export const fetchProducts = createAsyncThunk('/products', async () => {
   try {
     const token = localStorage.getItem('token') // Get the token from localStorage
     const headers = new Headers({
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     })
 
@@ -73,7 +76,7 @@ const ProductSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    setproductDetails: (state, action: PayloadAction<productDetails[]>) => {
+    setProduct: (state, action: PayloadAction<productDetails[]>) => {
       state.products = action.payload
     },
     setIsSubmitting: (state, action) => {
@@ -81,6 +84,9 @@ const ProductSlice = createSlice({
     },
     setFilteredProducts: (state, action: PayloadAction<productDetails[]>) => {
       state.filteredProducts = action.payload
+    },
+    setProductDetailsData: (state, action: PayloadAction<productDetails>) => {
+      state.productDetailsData = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -95,6 +101,10 @@ const ProductSlice = createSlice({
   },
 })
 
-export const { setproductDetails, setIsSubmitting, setFilteredProducts } =
-  ProductSlice.actions
+export const {
+  setProduct,
+  setIsSubmitting,
+  setFilteredProducts,
+  setProductDetailsData,
+} = ProductSlice.actions
 export default ProductSlice.reducer

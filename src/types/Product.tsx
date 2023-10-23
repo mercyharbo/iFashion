@@ -41,24 +41,24 @@ const Product = ({
   return (
     <article className={clsx('', productClass)}>
       <Image
-        src={`/${productImage}`}
-        width={1000}
-        height={1000}
+        src={`${productImage}`}
+        width={500}
+        height={500}
         alt={title}
-        className='rounded-xl'
-        style={{ height: '200px' }}
+        className='rounded-xl object-cover'
+        style={{ height: '250px' }}
       />
       <div className='flex flex-col justify-start items-start gap-2 p-3'>
         <h3 className='text-base font-semibold capitalize'>{title}</h3>
         <StarRating rating={ratings} starStyling={starStyling} />
         {discount ? (
           <div className='flex justify-center items-center gap-3'>
-            <span className='text-lg font-semibold'>
+            <span className='text-base font-medium'>
               ${roundedDiscountedPrice}
             </span>
-            <del className='text-[#a5a5a5] font-semibold '>${roundedPrice}</del>
+            <del className='text-[#a5a5a5] font-medium text-base '>${roundedPrice}</del>
             <p
-              className={clsx('')}
+              className={clsx('text-base')}
               style={{
                 backgroundColor: '#ff333330',
                 borderRadius: '100px',
@@ -72,7 +72,7 @@ const Product = ({
             </p>
           </div>
         ) : (
-          <p className='text-lg font-semibold'>${price}</p>
+          <p className='text-base font-semibold'>${price}</p>
         )}
       </div>
     </article>

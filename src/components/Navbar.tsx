@@ -20,7 +20,6 @@ import {
 
 import Button from '@/types/Button'
 import InputField from '@/types/InputField'
-import ProductJSON from '@/components/Product.json'
 
 // Icons
 import hamburger from '@/assets/menu-burger.svg'
@@ -355,7 +354,7 @@ const Navbar = () => {
         >
           <h1 className='font-extrabold uppercase xl:text-2xl '>Your cart</h1>
 
-          {ProductJSON.products.slice(0, 3).map((item, index) => {
+          {/* {ProductJSON.products.slice(0, 3).map((item, index) => {
             return (
               <div
                 key={index}
@@ -424,7 +423,7 @@ const Navbar = () => {
                 </div>
               </div>
             )
-          })}
+          })} */}
 
           <div className='flex justify-between items-center w-full'>
             <Link

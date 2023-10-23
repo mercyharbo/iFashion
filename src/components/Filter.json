@@ -5,7 +5,10 @@
         "shirt",
         "hoodie",
         "jean",
-        "skirt"
+        "skirt",
+        "lace",
+        "abaya",
+        "jumpsuit"
     ],
     "color": [
         "#FF5733",

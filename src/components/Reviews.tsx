@@ -13,7 +13,7 @@ type reviewsObject = {
   user: string
   rating: number
   comment: string
-  date: string
+  createdDate: string
 }
 
 type reviewsProps = {
@@ -68,7 +68,7 @@ function Reviews({ data }: reviewsProps) {
           'grid 3xl:grid-cols-4 xl:grid-cols-3 xl:gap-10 xl:py-5 md:px-5 md:grid-cols-2 md:gap-5 sm:grid-cols-1 sm:gap-5 sm:px-5 '
         )}
       >
-        {data.map((review) => {
+        {data?.map((review) => {
           return (
             <div
               key={review.id}
@@ -102,13 +102,15 @@ function Reviews({ data }: reviewsProps) {
         })}
       </div>
 
-      <Button
-        type='button'
-        title='load more reviews'
-        buttonClass={clsx(
-          'capitialize flex justify-center items-center border-[1px] rounded-full h-[50px] w-[200px] mx-auto hover:bg-black hover:text-white '
-        )}
-      />
+      {data.length > 0 && (
+        <Button
+          type='button'
+          title='load more reviews'
+          buttonClass={clsx(
+            'capitialize flex justify-center items-center border-[1px] rounded-full h-[50px] w-[200px] mx-auto hover:bg-black hover:text-white '
+          )}
+        />
+      )}
     </main>
   )
 }
