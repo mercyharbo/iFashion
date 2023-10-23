@@ -95,7 +95,7 @@ function Reviews({ data }: reviewsProps) {
               </h3>
               <p className='text-[#00000099] '>{review.comment}</p>
               <span className='text-sm text-[#00000099] '>
-                Posted on {moment(review.date).format('MMMM D, YYYY')}
+                Posted on {moment(review.createdDate).format('MMMM D, YYYY')}
               </span>
             </div>
           )
