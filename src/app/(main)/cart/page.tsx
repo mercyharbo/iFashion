@@ -8,7 +8,6 @@ import { BiMinus, BiPlus } from 'react-icons/bi'
 import { BsTag } from 'react-icons/bs'
 import { MdDelete } from 'react-icons/md'
 
-import ProductJSON from '@/components/Product.json'
 import Button from '@/types/Button'
 import { UseCounter } from '@/hooks/Counter'
 import InputField from '@/types/InputField'
@@ -46,7 +45,7 @@ export default function Cart() {
             'cart xl:w-[70%] md:w-full sm:w-full flex flex-col justify-center items-center gap-5 border-[1px] rounded-md p-5  '
           )}
         >
-          {ProductJSON.products.slice(0, 3).map((item, index) => {
+          {/* {ProductJSON.products.slice(0, 3).map((item, index) => {
             return (
               <div
                 key={index}
@@ -122,7 +121,7 @@ export default function Cart() {
                 </div>
               </div>
             )
-          })}
+          })} */}
         </div>
 
         <div
