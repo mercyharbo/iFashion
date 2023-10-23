@@ -32,7 +32,6 @@ interface Product {
   _id: string
   description: string
   discount: number
-  productImage: string
   title: string
   reviews: []
   price: number
@@ -40,6 +39,8 @@ interface Product {
   colors: string[]
   available_sizes: string[]
   images: string[]
+  related: []
+  faq: []
   createdDate: string
 }
 
@@ -251,14 +252,14 @@ export default function Filter({ products }: ProductFilterProps) {
           type='button'
           title='reset'
           onClick={resetFilters}
-          buttonClass='bg-transparent border-[1px] py-3 px-5 rounded-full text-black w-full hover:bg-black hover:text-white'
+          buttonClass='bg-transparent border-[1px] 3xl:py-3 3xl:px-5 2xl:py-2 2xl:px-2 xl:py-2 xl:px-2 lg:px-2 lg:py-2 rounded-full text-black w-full hover:bg-black hover:text-white'
         />
 
         <Button
           type='button'
           title='save filter'
           onClick={handleFilter}
-          buttonClass='bg-black py-3 px-5 rounded-full text-white w-full '
+          buttonClass='bg-black 3xl:py-3 3xl:px-5 2xl:py-2 2xl:px-2 xl:py-2 xl:px-2 lg:px-2 lg:py-2 rounded-full text-white w-full '
         />
       </div>
     </main>

@@ -10,16 +10,20 @@ import Hero from '@/components/Hero'
 
 import Button from '@/types/Button'
 import Product from '@/types/Product'
-import ProductJSON from '@/components/Product.json'
 import { CalculateAverageRating } from '../../utils/avarageRatings'
 
 import clsx from 'clsx'
+import { AppDispatch, useAppSelector } from '@/redux/Store'
+import { useDispatch } from 'react-redux'
+import { fetchProducts } from '@/redux/Slice/ProductSlice'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
+  const dispatch = useDispatch<AppDispatch>()
   const revealRefs = useRef<any[]>([])
   revealRefs.current = []
+  const productData = useAppSelector((state) => state.products)
 
   const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
   const browseStyle = [
@@ -28,62 +32,22 @@ export default function Home() {
     { id: 3, style: 'party', image: '/party2.jpg' },
     { id: 4, style: 'gym', image: '/gym.jpg' },
   ]
-  const testymonie = [
-    {
-      id: 1,
-      name: 'sarah m',
-      ratings: 4,
-      paragraph: `I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.`,
-    },
-    {
-      id: 2,
-      name: 'alex k',
-      ratings: 3,
-      paragraph: `Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions.`,
-    },
-    {
-      id: 3,
-      name: 'james l',
-      ratings: 5,
-      paragraph: `Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions.`,
-    },
-    {
-      id: 4,
-      name: 'code with mercy',
-      ratings: 4,
-      paragraph: `As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.`,
-    },
-    {
-      id: 5,
-      name: 'code with mercy',
-      ratings: 4,
-      paragraph: `As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.`,
-    },
-    {
-      id: 6,
-      name: 'code with mercy',
-      ratings: 4,
-      paragraph: `As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.`,
-    },
-    {
-      id: 7,
-      name: 'code with mercy',
-      ratings: 4,
-      paragraph: `As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.`,
-    },
-  ]
 
   useEffect(() => {
+    dispatch(fetchProducts())
+
     revealRefs.current.forEach((el, index) => {
       gsap.fromTo(
         el,
         {
           autoAlpha: 0,
+          opacity: 0,
         },
         {
+          opacity: 1,
           duration: 1,
           autoAlpha: 1,
-          ease: 'back',
+          ease: 'power2.inOut',
           scrollTrigger: {
             id: `section-${index + 1}`,
             trigger: el,
@@ -106,13 +70,21 @@ export default function Home() {
         scale: 0,
         ease: 'back',
       })
-  }, [])
+  }, [dispatch])
 
   const addToRefs = (el: HTMLElement | null) => {
     if (el && !revealRefs.current.includes(el)) {
       revealRefs.current.push(el)
     }
   }
+
+  const currentDate = new Date() // Get the current date
+  currentDate.setDate(currentDate.getDate() - 14)
+
+  const filteredProducts = productData?.products.filter((item) => {
+    const productDate = new Date(item.createdDate)
+    return productDate >= currentDate
+  })
 
   return (
     <>
@@ -145,7 +117,7 @@ export default function Home() {
       <section
         ref={addToRefs}
         className={clsx(
-          ' xl:py-10 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-2 sm:w-[100%] flex flex-col justify-center items-center gap-10 mx-auto '
+          ' xl:py-10 xl:my-10 md:py-10 md:px-10 sm:py-10 sm:px-2 flex flex-col justify-center items-center gap-10 mx-auto w-full '
         )}
       >
         <h1
@@ -161,20 +133,20 @@ export default function Home() {
             'w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
           )}
         >
-          {ProductJSON.products.map((item, index) => {
+          {filteredProducts.slice(0, 6).map((item) => {
             const avarageRating = CalculateAverageRating(item?.reviews)
             return (
-              <Link key={index} href={`/product/${index}`}>
+              <Link key={item._id} href={`/product/${item._id}`}>
                 <Product
-                  key={index}
                   title={item.title}
                   price={item.price}
                   discount={item.discount}
-                  productImage={item.productImage}
+                  productImage={item?.images?.[0]}
                   ratings={avarageRating}
-                  starStyling='text-2xl'
-                  productClass={clsx(` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer
-              hover:scale-105 ease-in-out duration-300 `)}
+                  starStyling='text-lg'
+                  productClass={clsx(
+                    ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
+                  )}
                 />
               </Link>
             )
@@ -190,7 +162,7 @@ export default function Home() {
       <section
         ref={addToRefs}
         className={clsx(
-          'xl:py-10 xl:w-[80%] xl:my-10 md:py-10 md:px-10 md:w-[100%] sm:py-10 sm:px-2 sm:w-[100%] flex flex-col justify-center items-center gap-10 mx-auto '
+          'xl:py-10 xl:my-10 md:py-10 md:px-10 sm:py-10 sm:px-2 w-full flex flex-col justify-center items-center gap-10 mx-auto '
         )}
       >
         <h1
@@ -206,25 +178,28 @@ export default function Home() {
             ' w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
           )}
         >
-          {ProductJSON.products.map((item, index) => {
-            const avarageRating = CalculateAverageRating(item?.reviews)
+          {productData?.products
+            .slice(0, 6)
+            .reverse()
+            .map((item) => {
+              const avarageRating = CalculateAverageRating(item?.reviews)
 
-            return (
-              <Link key={index} href={`/product/${index}`}>
-                <Product
-                  title={item.title}
-                  price={item.price}
-                  discount={item.discount}
-                  productImage={item.productImage}
-                  ratings={avarageRating}
-                  productClass={clsx(
-                    ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer hover:scale-105 ease-in-out duration-300 `
-                  )}
-                  starStyling='text-2xl'
-                />
-              </Link>
-            )
-          })}
+              return (
+                <Link key={item._id} href={`/product/${item._id}`}>
+                  <Product
+                    title={item.title}
+                    price={item.price}
+                    discount={item.discount}
+                    productImage={item?.images?.[0]}
+                    ratings={avarageRating}
+                    productClass={clsx(
+                      ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
+                    )}
+                    starStyling='text-lg'
+                  />
+                </Link>
+              )
+            })}
         </div>
         <Button
           title='view all'
