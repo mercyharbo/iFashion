@@ -32,7 +32,6 @@ interface Product {
   _id: string
   description: string
   discount: number
-  productImage: string
   title: string
   reviews: []
   price: number
@@ -40,6 +39,8 @@ interface Product {
   colors: string[]
   available_sizes: string[]
   images: string[]
+  related: []
+  faq: []
   createdDate: string
 }
 
