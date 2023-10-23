@@ -11,12 +11,12 @@ import { UseCounter } from '@/hooks/Counter'
 import { UseDiscountCalculator } from '@/hooks/useDiscountCalculator'
 import { CalculateAverageRating } from '@/utils/avarageRatings'
 import StarRating from '@/components/Rating'
-import Reviews from '@/components/Reviews'
+// import Reviews from '@/components/Reviews'
 
 import plus from '@/assets/plus.png'
 import minus from '@/assets/minus.png'
-import Product from '@/types/Product'
-import Link from 'next/link'
+// import Product from '@/types/Product'
+// import Link from 'next/link'
 import useColorSelection from '@/hooks/ColorSelector'
 
 import {
@@ -90,7 +90,7 @@ export default function Product_Details({ params }: ProductPageProps) {
     }
 
     getProductDetails()
-  }, [params])
+  }, [dispatch, params])
 
   const handleSizeClick = (size: string) => {
     setSelectedSize(size)
