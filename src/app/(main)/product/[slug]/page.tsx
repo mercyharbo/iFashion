@@ -42,6 +42,7 @@ export default function Product_Details({ params }: ProductPageProps) {
   const [selectedImage, setSelectedImage] = useState<string>('')
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<string>('Product Details')
+  const [isReview, setIsReview] = useState<string | null>(null)
 
   const averageRating = CalculateAverageRating(
     productDetailsData?.reviews || []
@@ -76,6 +77,7 @@ export default function Product_Details({ params }: ProductPageProps) {
         if (data.success === true) {
           dispatch(setProductDetailsData(data.product))
           setSelectedImage(data.product.images[0])
+          setIsReview(data.product.reviews)
           dispatch(setIsSubmitting(false))
         } else {
           toast.error(data.message)
@@ -356,9 +358,9 @@ export default function Product_Details({ params }: ProductPageProps) {
             </div> */}
               </section>
             )}
-            {activeTab === 'Ratings and Reviews' && (
+            {/* {activeTab === 'Ratings and Reviews' && (
               <Reviews data={productDetailsData?.reviews} />
-            )}
+            )} */}
             {/* {activeTab === 'FAQs' && <FAQsContent />} */}
 
             {/* {productDetailsData?.related.length > 0 && (
