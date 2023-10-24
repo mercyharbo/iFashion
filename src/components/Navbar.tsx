@@ -99,7 +99,7 @@ const Navbar = () => {
       toast.success('Product removed from the cart')
       setTimeout(() => {
         window.location.reload()
-      }, 2000)
+      }, 6000)
     }
   }
 
