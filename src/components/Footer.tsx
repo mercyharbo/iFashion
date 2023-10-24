@@ -101,6 +101,8 @@ function Footer() {
               <p className='capitalize text-[#858282] '>features</p>
               <p className='capitalize text-[#858282] '>works</p>
               <p className='capitalize text-[#858282] '>career</p>
+              <Link href='/login' className='capitalize text-[#858282] '>Login</Link>
+              <Link href='/signup' className='capitalize text-[#858282] '>Sign up</Link>
             </div>
             <div className='flex flex-col justify-start items-start gap-3 '>
               <h3 className='xl:text-lg font-medium uppercase'> help </h3>

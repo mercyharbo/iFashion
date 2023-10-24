@@ -28,6 +28,7 @@ import { CalculateAverageRating } from '@/utils/avarageRatings'
 import useColorSelection from '../../../hooks/ColorSelector'
 import { closeFilterModal, openFilterModal } from '@/redux/Slice/ModalSlice'
 import { fetchProducts, setFilteredProducts } from '@/redux/Slice/ProductSlice'
+import Loading from '@/components/Loading'
 
 function CasualCategory() {
   const dispatch = useDispatch<AppDispatch>()
@@ -40,6 +41,7 @@ function CasualCategory() {
 
   const [sortBy, setSortBy] = useState<'newest' | 'price' | 'oldest'>('newest')
 
+  const isLoading = useAppSelector((state) => state.products.isSubmitting)
   const filterOpen = useAppSelector(
     (state) => state.modalReducer.modal.filterModal
   )
@@ -141,6 +143,8 @@ function CasualCategory() {
   const products =
     filteredData.length > 0 ? filteredData : productData?.products // checking if the length of filterData state if greater than zero else display productData
 
+  if (isLoading) return <Loading />
+  
   return (
     <main
       className={clsx(

@@ -91,12 +91,17 @@ const ProductSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.isSubmitting = true
+      })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.products = action.payload
         state.error = null
+        state.isSubmitting = false
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.error = action.payload as string
+        state.isSubmitting = false
       })
   },
 })
