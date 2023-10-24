@@ -119,7 +119,7 @@ const Navbar = () => {
   // Call initializeCartFromStorage when the component mounts to initialize the cart
   useEffect(() => {
     initializeCartFromStorage()
-  }, [])
+  }, [initializeCartFromStorage])
 
   useEffect(() => {
     const tl = gsap.timeline()
@@ -181,7 +181,7 @@ const Navbar = () => {
     } else {
       return
     }
-  }, [token])
+  }, [dispatch, token])
 
   // handling the user logout request
   const handleLogout = async () => {

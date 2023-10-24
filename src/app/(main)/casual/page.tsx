@@ -23,6 +23,7 @@ import {
   setIsColorVisible,
   setIsSizeVisible,
   setSelectedCategory,
+  setSelectedSize,
 } from '@/redux/Slice/Filter'
 import { CalculateAverageRating } from '@/utils/avarageRatings'
 import useColorSelection from '../../../hooks/ColorSelector'
@@ -32,7 +33,7 @@ import Loading from '@/components/Loading'
 
 function CasualCategory() {
   const dispatch = useDispatch<AppDispatch>()
-  const { selectedSize, setSelectedSize, handleSizeClick } = useSizeSelection()
+  const { selectedSize, handleSizeClick } = useSizeSelection()
   const { selectedColors, setSelectedColors, handleColorClick } =
     useColorSelection()
   const selectedCategory = useAppSelector(
@@ -94,10 +95,7 @@ function CasualCategory() {
         (!selectedCategory || product.category === selectedCategory) &&
         (selectedColors.length === 0 ||
           selectedColors.some((color) => product.colors.includes(color))) &&
-        (selectedSize.length === 0 ||
-          selectedSize.some((size) =>
-            product.available_sizes.includes(size)
-          )) &&
+        (!selectedSize || product.available_sizes.includes(selectedSize)) &&
         (!minPrice || product.price >= (minPrice as number)) &&
         (!maxPrice || product.price <= (maxPrice as number))
       )
@@ -144,7 +142,7 @@ function CasualCategory() {
     filteredData.length > 0 ? filteredData : productData?.products // checking if the length of filterData state if greater than zero else display productData
 
   if (isLoading) return <Loading />
-  
+
   return (
     <main
       className={clsx(
