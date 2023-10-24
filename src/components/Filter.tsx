@@ -21,6 +21,7 @@ import {
   setIsColorVisible,
   setIsSizeVisible,
   setSelectedCategory,
+  setSelectedSize,
 } from '@/redux/Slice/Filter'
 import { setFilteredProducts } from '@/redux/Slice/ProductSlice'
 
@@ -46,7 +47,7 @@ interface Product {
 
 export default function Filter({ products }: ProductFilterProps) {
   const dispatch = useDispatch<AppDispatch>()
-  const { selectedSize, setSelectedSize, handleSizeClick } = useSizeSelection()
+  const { selectedSize, handleSizeClick } = useSizeSelection()
   const { selectedColors, setSelectedColors, handleColorClick } =
     useColorSelection()
   const selectedCategory = useAppSelector(
@@ -71,10 +72,7 @@ export default function Filter({ products }: ProductFilterProps) {
         (!selectedCategory || product.category === selectedCategory) &&
         (selectedColors.length === 0 ||
           selectedColors.some((color) => product.colors.includes(color))) &&
-        (selectedSize.length === 0 ||
-          selectedSize.some((size) =>
-            product.available_sizes.includes(size)
-          )) &&
+        (!selectedSize || product.available_sizes.includes(selectedSize)) &&
         (!minPrice || product.price >= (minPrice as number)) &&
         (!maxPrice || product.price <= (maxPrice as number))
       )
@@ -132,20 +130,19 @@ export default function Filter({ products }: ProductFilterProps) {
           )}
         </button>
         {isCategoryVisible && (
-          <div className='flex flex-col justify-start items-start gap-3 w-full'>
+          <div className='flex flex-wrap justify-start items-start gap-5 w-full'>
             {filterJSON.categories.map((categoryOption, index) => (
               <button
                 key={index}
                 onClick={() => handleCategorySelect(categoryOption)}
                 className={clsx(
-                  'flex justify-between items-center capitalize w-full p-2',
+                  'flex justify-between items-center capitalize p-2 px-5 bg-[#F0F0F0] rounded-full ',
                   selectedCategory === categoryOption
-                    ? 'bg-black text-white rounded-md'
+                    ? 'bg-black text-white'
                     : 'text-[#00000099] '
                 )}
               >
                 {categoryOption}{' '}
-                <MdOutlineKeyboardArrowRight className='text-2xl' />
               </button>
             ))}
           </div>

@@ -40,43 +40,20 @@ import Modal from '@/types/Modal'
 import { UseCounter } from '@/hooks/Counter'
 import { fetchUserProfile, setIsSubmitting } from '@/redux/Slice/UserSlice'
 import useToken from '@/hooks/useToken'
-import { MdOutlineArrowDropDown } from 'react-icons/md'
+import { MdDelete, MdOutlineArrowDropDown } from 'react-icons/md'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import { setCarts } from '@/redux/Slice/ProductSlice'
 
-// export async function getUser() {
-//   const token = localStorage.getItem('token') // get token from the localStorage
-
-//   const headers = new Headers({
-//     Authorization: `Bearer ${token}`,
-//     'Content-Type': 'application/json',
-//   })
-
-//   const options = {
-//     method: 'GET',
-//     headers,
-//   }
-
-//   const res = await fetch(`${process.env.BASE_URL}/user/profile`, options)
-
-//   if (res.ok) {
-//     return res.json()
-//   } else {
-//     const errorData = await res.json()
-//     const errorMessage = errorData.message
-
-//     toast.error(errorMessage, {
-//       position: 'top-right',
-//       autoClose: 5000, // Adjust as needed
-//       hideProgressBar: false,
-//       closeOnClick: true,
-//       pauseOnHover: true,
-//       draggable: true,
-//     })
-
-//     return Promise.reject(errorMessage)
-//   }
-// }
+interface Product {
+  id: string
+  title: string
+  image: string
+  size: string
+  color: []
+  price: number
+  quantity: number
+}
 
 const Navbar = () => {
   const token = useToken()
@@ -95,7 +72,54 @@ const Navbar = () => {
   const profileModal = useAppSelector(
     (state) => state.modalReducer.modal.profileOpen
   )
+  const carts = useAppSelector((state) => state.products.cart)
   const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
+
+  const handleRemoveFromCart = (product: Product) => {
+    // Get the current cart items from localStorage
+    const existingCartItems: Product[] = JSON.parse(
+      localStorage.getItem('cart') || '[]'
+    )
+
+    // Find the index of the product in the cart
+    const productIndex = existingCartItems.findIndex(
+      (item) => item.id === product.id
+    )
+
+    if (productIndex !== -1) {
+      // Remove the product from the cart
+      existingCartItems.splice(productIndex, 1)
+
+      // Update the cart in localStorage
+      localStorage.setItem('cart', JSON.stringify(existingCartItems))
+
+      // Update the cart in your Redux store if needed
+      dispatch(setCarts(product)) // Define a removeFromCart action in your Redux store
+
+      // Optionally, display a success message
+      toast.success('Product removed from the cart')
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
+    }
+  }
+
+  // Call initializeCartFromStorage when the component mounts to initialize the cart
+  useEffect(() => {
+    const initializeCartFromStorage = () => {
+      const storedCart: Product[] = JSON.parse(
+        localStorage.getItem('cart') || '[]'
+      )
+
+      // You can update the state in your Redux store with the items from localStorage
+      dispatch(setCarts(storedCart)) // Define an initCart action in your Redux store
+
+      // Optionally, you can return the storedCart if needed
+      return storedCart
+    }
+
+    initializeCartFromStorage()
+  }, [])
 
   useEffect(() => {
     const tl = gsap.timeline()
@@ -157,7 +181,7 @@ const Navbar = () => {
     } else {
       return
     }
-  }, [token])
+  }, [dispatch, token])
 
   // handling the user logout request
   const handleLogout = async () => {
@@ -265,11 +289,15 @@ const Navbar = () => {
             <button
               type='button'
               onClick={handleCartOpen}
-              className='flex justify-center items-center gap-2 hover:text-[red] '
+              className='flex justify-center items-center gap-2 relative hover:text-[red] '
             >
-              <BiCartAdd className='xl:text-base md:text-2xl sm:text-2xl' />
-              <span className='xl:flex md:flex sm:hidden'>Cart</span>
-              {/* <span className='carts bg-[red] p-2 rounded-full '>cart</span> */}
+              <BiCartAdd className='xl:text-2xl md:text-2xl sm:text-2xl' />
+              <span className='xl:flex md:flex sm:hidden '>Cart</span>
+              {carts.length > 0 && (
+                <span className='flex justify-center items-center bg-[red] h-[17px] w-[17px] rounded-full text-white text-[11px] absolute -top-1 -left-1 '>
+                  {carts.length}
+                </span>
+              )}
             </button>
 
             <button
@@ -354,92 +382,106 @@ const Navbar = () => {
         >
           <h1 className='font-extrabold uppercase xl:text-2xl '>Your cart</h1>
 
-          {/* {ProductJSON.products.slice(0, 3).map((item, index) => {
-            return (
-              <div
-                key={index}
-                className={clsx(
-                  'cartItems flex justify-center items-center gap-3 py-3 ',
-                  index === ProductJSON.products.slice(0, 3).length - 1
-                    ? ''
-                    : 'border-b-[1px]'
-                )}
-              >
+          {carts.length > 0 ? (
+            carts?.slice(0, 3).map((item, index) => {
+              return (
                 <div
+                  key={item.id}
                   className={clsx(
-                    'xl:w-[20%] md:w-[20%] sm:w-[20%] bg-gray-300 '
+                    'cartItems flex justify-center items-center gap-3 py-3 ',
+                    index === carts.slice(0, 3).length - 1
+                      ? ''
+                      : 'border-b-[1px]'
                   )}
                 >
-                  <Image
-                    src={`/${item.productImage}`}
-                    alt={item.title}
-                    width={200}
-                    height={200}
-                    className=' w-full h-auto '
-                  />
-                </div>
-                <div
-                  className={clsx(
-                    'flex flex-col justify-start items-start gap-1 xl:w-[80%] md:w-[80%] sm:w-[80%] '
-                  )}
-                >
-                  <h4 className='text-base font-semibold '>{item.title}</h4>
-                  <span
-                    className={clsx(
-                      'flex justify-start items-center gap-2 text-xs text-gray-400'
-                    )}
-                  >
-                    Size: Large
-                  </span>
-                  <span
-                    className={clsx(
-                      'flex justify-start items-center gap-2 text-xs text-gray-400'
-                    )}
-                  >
-                    Color: White
-                  </span>
                   <div
-                    className={clsx('flex justify-between items-center w-full')}
+                    className={clsx(
+                      'xl:w-[20%] md:w-[20%] sm:w-[20%] bg-gray-300 rounded-xl '
+                    )}
                   >
-                    <h3 className='text-base font-semibold'>${item.price}</h3>
-                    <div
+                    <Image
+                      src={`${item.image}`}
+                      alt={item.title}
+                      width={200}
+                      height={200}
+                      className=' w-full h-[5rem] object-cover rounded-xl  '
+                    />
+                  </div>
+                  <div
+                    className={clsx(
+                      'flex flex-col justify-start items-start gap-1 xl:w-[80%] md:w-[80%] sm:w-[80%] '
+                    )}
+                  >
+                    <div className='flex justify-between items-center w-full'>
+                      <h4 className='text-base font-semibold capitalize '>
+                        {item.title}
+                      </h4>
+                      <Button
+                        type='button'
+                        onClick={() => handleRemoveFromCart(item)}
+                        icon={<MdDelete className='text-xl text-[red] ' />}
+                      />
+                    </div>
+                    <span
                       className={clsx(
-                        'bg-[#F0F0F0] flex justify-between items-center gap-3 rounded-full p-1 '
+                        'flex justify-start items-center gap-2 text-xs text-gray-400'
                       )}
                     >
-                      <Button
-                        type='button'
-                        onClick={decrement}
-                        icon={<BiMinus />}
-                      />
-                      <span className='font-medium '>{count}</span>
-                      <Button
-                        type='button'
-                        onClick={increment}
-                        icon={<BiPlus />}
-                      />
+                      Size: {item.size}
+                    </span>
+                    <span
+                      className={clsx(
+                        'flex justify-start items-center gap-2 text-xs text-gray-400'
+                      )}
+                    >
+                      Color: {item.color.map((c) => c)}
+                    </span>
+                    <div
+                      className={clsx(
+                        'flex justify-between items-center w-full'
+                      )}
+                    >
+                      <h3 className='text-base font-semibold'>${item.price}</h3>
+                      <div className='flex justify-start items-center gap-2 text-gray-400 text-xs'>
+                        Quantity: <span className=''>{item.quantity}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )
-          })} */}
+              )
+            })
+          ) : (
+            <div className='flex flex-col justify-center items-center gap-2 py-5'>
+              <h1 className='text-xl font-medium'>Your cart is empty!</h1>
+              <p className='text-gray-400'>
+                Browse our categories and discover our best deals!
+              </p>
+              <Link
+                href='/casual'
+                className='bg-black capitalize px-5 py-3 rounded-lg text-white'
+              >
+                Start shopping
+              </Link>
+            </div>
+          )}
 
-          <div className='flex justify-between items-center w-full'>
-            <Link
-              href='/cart'
-              onClick={handleCartOpen}
-              className='border-[1px] border-gray-400 rounded-md px-4 py-2 '
-            >
-              View Cart
-            </Link>
+          {carts.length > 0 && (
+            <div className='flex justify-between items-center w-full'>
+              <Link
+                href='/cart'
+                onClick={handleCartOpen}
+                className='border-[1px] border-gray-400 rounded-md px-4 py-2 '
+              >
+                View Cart
+              </Link>
 
-            <Button
-              type='button'
-              title='checkout'
-              buttonClass='bg-black text-white  px-4 py-2 rounded-md '
-            />
-          </div>
+              <Button
+                type='button'
+                title='checkout'
+                buttonClass='bg-black text-white  px-4 py-2 rounded-md '
+              />
+            </div>
+          )}
         </div>
       )}
 

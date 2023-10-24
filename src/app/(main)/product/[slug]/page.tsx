@@ -24,11 +24,24 @@ import {
   setProductDetailsData,
 } from '@/redux/Slice/ProductSlice'
 import { toast } from 'react-toastify'
+import Loading from '@/components/Loading'
+import { setSelectedSize } from '@/redux/Slice/Filter'
 
 interface ProductPageProps {
   params: {
     slug: string
   }
+}
+
+interface Product {
+  id: string
+  title: string
+  image: string
+  size: string
+  color: string[]
+  price: number
+  quantity: number
+  discount: number
 }
 
 const tabs: string[] = ['Product Details', 'Ratings and Reviews', 'FAQs']
@@ -40,10 +53,13 @@ export default function Product_Details({ params }: ProductPageProps) {
   )
   const isLoading = useAppSelector((state) => state.products.isSubmitting)
   const [selectedImage, setSelectedImage] = useState<string>('')
-  const [selectedSize, setSelectedSize] = useState<string | null>(null)
+  // const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<string>('Product Details')
   const [isReview, setIsReview] = useState<string | null>(null)
 
+  const selectedSize = useAppSelector(
+    (state) => state.filterReducer.filters.selectedSize
+  )
   const averageRating = CalculateAverageRating(
     productDetailsData?.reviews || []
   )
@@ -93,7 +109,8 @@ export default function Product_Details({ params }: ProductPageProps) {
   }, [dispatch, params])
 
   const handleSizeClick = (size: string) => {
-    setSelectedSize(size)
+    // setSelectedSize(size)
+    dispatch(setSelectedSize(size))
   }
 
   const handleImageClick = (img: string) => {
@@ -118,10 +135,42 @@ export default function Product_Details({ params }: ProductPageProps) {
   const roundedDiscountedPrice =
     discountedPrice !== null ? calculateRoundedPrice(discountedPrice) : null
 
+  // handling add to cart functionality
+  const handleAddToCart = (product: Product) => {
+    const existingCartItems: Product[] = JSON.parse(
+      localStorage.getItem('cart') || '[]'
+    )
+
+    // Check if the product is already in the cart
+    const existingItemIndex = existingCartItems.findIndex(
+      (item) => item.id === product.id
+    )
+
+    if (existingItemIndex !== -1) {
+      // If the product is already in the cart, update its quantity
+      existingCartItems[existingItemIndex].quantity += product.quantity
+    } else {
+      // If the product is not in the cart, add it
+      existingCartItems.push(product)
+    }
+
+    // Store the updated cart items in localStorage
+    localStorage.setItem('cart', JSON.stringify(existingCartItems))
+
+    // You can also update the state in your Redux store if needed
+    // dispatch(addToCart(product)) // Make sure to define this action
+
+    // Display a success message
+    toast.success('Product added to the cart')
+    setTimeout(() => {
+      window.location.reload()
+    }, 2000)
+  }
+
   return (
     <>
       {isLoading ? (
-        <p className='xl:p-14 md:p-10 sm:p-5'>Loading...</p>
+        <Loading />
       ) : (
         <>
           <header
@@ -280,6 +329,28 @@ export default function Product_Details({ params }: ProductPageProps) {
                 <Button
                   type='button'
                   title='Add to cart'
+                  onClick={() => {
+                    if (productDetailsData) {
+                      const price = productDetailsData.discount
+                        ? parseFloat(
+                            roundedDiscountedPrice ??
+                              String(productDetailsData.price)
+                          )
+                        : parseFloat(String(productDetailsData.price))
+
+                      const productToAdd: Product = {
+                        id: productDetailsData._id,
+                        title: productDetailsData.title,
+                        price: price,
+                        quantity: count,
+                        size: selectedSize,
+                        color: selectedColors,
+                        image: productDetailsData.images[0],
+                        discount: productDetailsData.discount,
+                      }
+                      handleAddToCart(productToAdd)
+                    }
+                  }}
                   buttonClass='bg-black text-white rounded-full w-full h-[50px] xl:w-[20rem] '
                 />
               </div>
@@ -313,7 +384,7 @@ export default function Product_Details({ params }: ProductPageProps) {
             </div>
 
             {activeTab === 'Product Details' && (
-              <section className='2xl:w-[60%] xl:w-[80%] md:w-full sm:w-full my-[2rem] ml-0 flex flex-col justify-start items-start gap-5 '>
+              <section className='2xl:w-[60%] xl:w-[80%] xl:px-0 md:w-full md:px-5 sm:w-full sm:px-5 my-[2rem] ml-0 flex flex-col justify-start items-start gap-5 '>
                 <h1 className='2xl:text-2xl font-semibold capitalize'>
                   product details
                 </h1>
