@@ -75,18 +75,6 @@ const Navbar = () => {
   const carts = useAppSelector((state) => state.products.cart)
   const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
 
-  const initializeCartFromStorage = () => {
-    const storedCart: Product[] = JSON.parse(
-      localStorage.getItem('cart') || '[]'
-    )
-
-    // You can update the state in your Redux store with the items from localStorage
-    dispatch(setCarts(storedCart)) // Define an initCart action in your Redux store
-
-    // Optionally, you can return the storedCart if needed
-    return storedCart
-  }
-
   const handleRemoveFromCart = (product: Product) => {
     // Get the current cart items from localStorage
     const existingCartItems: Product[] = JSON.parse(
@@ -118,8 +106,20 @@ const Navbar = () => {
 
   // Call initializeCartFromStorage when the component mounts to initialize the cart
   useEffect(() => {
+    const initializeCartFromStorage = () => {
+      const storedCart: Product[] = JSON.parse(
+        localStorage.getItem('cart') || '[]'
+      )
+
+      // You can update the state in your Redux store with the items from localStorage
+      dispatch(setCarts(storedCart)) // Define an initCart action in your Redux store
+
+      // Optionally, you can return the storedCart if needed
+      return storedCart
+    }
+
     initializeCartFromStorage()
-  }, [initializeCartFromStorage])
+  }, [])
 
   useEffect(() => {
     const tl = gsap.timeline()
