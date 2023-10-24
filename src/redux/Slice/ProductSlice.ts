@@ -23,6 +23,19 @@ type InitialState = {
   isSubmitting: boolean
   filteredProducts: productDetails[]
   productDetailsData: productDetails | null
+  cart:
+    | [
+        {
+          id: string
+          title: string
+          image: string
+          size: string
+          color: []
+          price: number
+          quantity: number
+          discount: number
+        }
+      ]
 }
 
 const initialState: InitialState = {
@@ -31,6 +44,18 @@ const initialState: InitialState = {
   isSubmitting: false,
   filteredProducts: [],
   productDetailsData: null,
+  cart: [
+    {
+      id: '',
+      title: '',
+      image: '',
+      size: '',
+      color: [],
+      price: 0,
+      quantity: 0,
+      discount: 0,
+    },
+  ],
 }
 
 // Create an async thunk to fetch products data
@@ -88,6 +113,9 @@ const ProductSlice = createSlice({
     setProductDetailsData: (state, action: PayloadAction<productDetails>) => {
       state.productDetailsData = action.payload
     },
+    setCarts: (state, action) => {
+      state.cart = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -111,5 +139,6 @@ export const {
   setIsSubmitting,
   setFilteredProducts,
   setProductDetailsData,
+  setCarts,
 } = ProductSlice.actions
 export default ProductSlice.reducer

@@ -4,16 +4,31 @@ import React, { useEffect } from 'react'
 import clsx from 'clsx'
 import Image from 'next/image'
 import gsap from 'gsap'
-import { BiMinus, BiPlus } from 'react-icons/bi'
+import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
 import { BsTag } from 'react-icons/bs'
 import { MdDelete } from 'react-icons/md'
 
 import Button from '@/types/Button'
-import { UseCounter } from '@/hooks/Counter'
 import InputField from '@/types/InputField'
+import { AppDispatch, useAppSelector } from '@/redux/Store'
+import { setCarts } from '@/redux/Slice/ProductSlice'
+import Link from 'next/link'
+
+interface Product {
+  id: string
+  title: string
+  image: string
+  size: string
+  color: []
+  price: number
+  quantity: number
+  discount: number
+}
 
 export default function Cart() {
-  const { increment, decrement, count } = UseCounter()
+  const dispatch = useDispatch<AppDispatch>()
+  const carts = useAppSelector((state) => state.products.cart)
 
   useEffect(() => {
     const tl = gsap.timeline()
@@ -27,6 +42,59 @@ export default function Cart() {
       { opacity: 1, x: 0, duration: 1, ease: 'power3.inOut', delay: 0.2 }
     )
   }, [])
+
+  const handleRemoveFromCart = (product: Product) => {
+    // Get the current cart items from localStorage
+    const existingCartItems: Product[] = JSON.parse(
+      localStorage.getItem('cart') || '[]'
+    )
+
+    // Find the index of the product in the cart
+    const productIndex = existingCartItems.findIndex(
+      (item) => item.id === product.id
+    )
+
+    if (productIndex !== -1) {
+      // Remove the product from the cart
+      existingCartItems.splice(productIndex, 1)
+
+      // Update the cart in localStorage
+      localStorage.setItem('cart', JSON.stringify(existingCartItems))
+
+      // Update the cart in your Redux store if needed
+      dispatch(setCarts(product)) // Define a removeFromCart action in your Redux store
+
+      // Optionally, display a success message
+      toast.success('Product removed from the cart')
+      setTimeout(() => {
+        window.location.reload()
+      }, 3000)
+    }
+  }
+
+  // Calculate subtotal
+  const subtotal = carts.reduce(
+    (total, product) => total + product.price * product.quantity,
+    0
+  )
+
+  // Calculate total savings
+  const totalSavings = carts.reduce((total, product) => {
+    if (product.discount) {
+      // Calculate the total savings for each product
+      const productSavings =
+        (product.discount / 100) * product.price * product.quantity
+      return total + productSavings
+    }
+    return total
+  }, 0)
+
+  // Calculate the total amount after removing discounts and adding the delivery fee
+  const deliveryFee = 20 // You mentioned the delivery fee is $20
+  const totalAmount = subtotal + deliveryFee
+
+  // Calculate the discount percentage
+  const discountPercentage = (totalSavings / subtotal) * 100
 
   return (
     <main
@@ -45,128 +113,143 @@ export default function Cart() {
             'cart xl:w-[70%] md:w-full sm:w-full flex flex-col justify-center items-center gap-5 border-[1px] rounded-md p-5  '
           )}
         >
-          {/* {ProductJSON.products.slice(0, 3).map((item, index) => {
-            return (
-              <div
-                key={index}
-                className={clsx(
-                  'flex justify-center items-center gap-3  py-3 w-full ',
-                  index === ProductJSON.products.slice(0, 3).length - 1
-                    ? ''
-                    : 'border-b-[1px]'
-                )}
-              >
+          {carts.length > 0 ? (
+            carts?.map((item, index) => {
+              return (
                 <div
+                  key={index}
                   className={clsx(
-                    'xl:w-[20%] md:w-[20%] sm:w-[20%] bg-gray-300 '
+                    'flex justify-center items-center gap-3  py-3 w-full ',
+                    index === carts.length - 1 ? '' : 'border-b-[1px]'
                   )}
                 >
-                  <Image
-                    src={`/${item.productImage}`}
-                    alt={item.title}
-                    width={200}
-                    height={200}
-                    className=' w-full h-auto '
-                  />
-                </div>
-                <div
-                  className={clsx(
-                    'flex flex-col justify-start items-start gap-1 xl:w-[80%] md:w-[80%] sm:w-[80%] '
-                  )}
-                >
-                  <div className='flex justify-between items-center w-full'>
-                    <h4 className='text-base font-semibold '>{item.title}</h4>
-                    <Button
-                      type='button'
-                      onClick={decrement}
-                      icon={<MdDelete className='text-xl text-[red] ' />}
+                  <div
+                    className={clsx(
+                      'xl:w-[20%] md:w-[20%] sm:w-[20%] rounded-xl '
+                    )}
+                  >
+                    <Image
+                      src={`${item.image}`}
+                      alt={item.title}
+                      width={200}
+                      height={200}
+                      className='w-full xl:h-[12rem] rounded-xl object-cover object-top '
                     />
                   </div>
-                  <span
-                    className={clsx(
-                      'flex justify-start items-center gap-2 text-xs text-gray-400'
-                    )}
-                  >
-                    Size: Large
-                  </span>
-                  <span
-                    className={clsx(
-                      'flex justify-start items-center gap-2 text-xs text-gray-400'
-                    )}
-                  >
-                    Color: White
-                  </span>
                   <div
-                    className={clsx('flex justify-between items-center w-full')}
+                    className={clsx(
+                      'flex flex-col justify-start items-start gap-2 xl:w-[80%] md:w-[80%] sm:w-[80%] '
+                    )}
                   >
-                    <h3 className='text-base font-semibold'>${item.price}</h3>
-                    <div
+                    <div className='flex justify-between items-center w-full'>
+                      <h4 className='text-base font-semibold capitalize '>
+                        {item.title}
+                      </h4>
+                      <Button
+                        type='button'
+                        onClick={() => handleRemoveFromCart(item)}
+                        icon={<MdDelete className='text-xl text-[red] ' />}
+                      />
+                    </div>
+                    <span
                       className={clsx(
-                        'bg-[#F0F0F0] flex justify-between items-center gap-3 rounded-full p-2 '
+                        'flex justify-start items-center gap-2 text-xs text-gray-400'
                       )}
                     >
-                      <Button
-                        type='button'
-                        onClick={decrement}
-                        icon={<BiMinus />}
-                      />
-                      <span className='font-medium '>{count}</span>
-                      <Button
-                        type='button'
-                        onClick={increment}
-                        icon={<BiPlus />}
-                      />
+                      Size: {item.size}
+                    </span>
+                    <span
+                      className={clsx(
+                        'flex justify-start items-center gap-2 text-xs text-gray-400'
+                      )}
+                    >
+                      Color: {item.color.map((c) => c)}
+                    </span>
+                    <div
+                      className={clsx(
+                        'flex justify-between items-center w-full'
+                      )}
+                    >
+                      <h3 className='text-base font-semibold'>
+                        ${item.price}{' '}
+                      </h3>
+                      <div className='flex justify-start items-center gap-2 text-gray-400 text-xs'>
+                        Quantity: <span className=''>{item.quantity}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )
-          })} */}
+              )
+            })
+          ) : (
+            <div className='flex flex-col justify-center items-center gap-2 py-5'>
+              <h1 className='text-xl font-medium'>Your cart is empty!</h1>
+              <p className='text-gray-400'>
+                Browse our categories and discover our best deals!
+              </p>
+              <Link
+                href='/casual'
+                className='bg-black capitalize px-5 py-3 rounded-lg text-white'
+              >
+                Start shopping
+              </Link>
+            </div>
+          )}
         </div>
 
-        <div
-          className={clsx(
-            'checkout xl:w-[40%] md:w-full sm:w-full flex flex-col justify-start items-start gap-5 border-[1px] rounded-md p-5 '
-          )}
-        >
-          <h1 className='text-xl font-medium capitalize'>order summary</h1>
-          <div className='text-gray-400 flex justify-between items-center w-full'>
-            <p className='capitalize'>subtotal</p>
-            <h3 className='font-medium text-black'> $333 </h3>
-          </div>
-          <div className='text-gray-400 flex justify-between items-center w-full'>
-            <p className='capitalize'>discount (-20%) </p>
-            <h3 className='font-medium text-[red]  '> -$333 </h3>
-          </div>
-          <div className='text-gray-400 flex justify-between items-center w-full'>
-            <p className='capitalize'>delivery fee</p>
-            <h3 className='font-medium  text-black'> $15 </h3>
-          </div>
-          <hr className='w-full' />
-          <div className='text-gray-400 flex justify-between items-center w-full'>
-            <p className='capitalize text-black'>total</p>
-            <h3 className='font-medium  text-black'> $333 </h3>
-          </div>
-          <div className='text-gray-400 flex justify-start items-center gap-5 w-full'>
-            <InputField
-              type='text'
-              icon={<BsTag className='text-xl' />}
-              placeholder='Add promo code'
-              inputClass='w-full indent-6'
-              inputWrapper='w-full flex justify-start items-center gap-5'
-            />
+        {carts.length > 0 && (
+          <div
+            className={clsx(
+              'checkout xl:w-[40%] md:w-full sm:w-full flex flex-col justify-start items-start gap-5 border-[1px] rounded-md p-5 '
+            )}
+          >
+            <h1 className='text-xl font-medium capitalize'>order summary</h1>
+            <div className='text-gray-400 flex justify-between items-center w-full'>
+              <p className='capitalize'>subtotal</p>
+              <h3 className='font-medium text-black'>
+                $ {subtotal.toFixed(2)}
+              </h3>
+            </div>
+            <div className='text-gray-400 flex justify-between items-center w-full'>
+              <p className='capitalize'>
+                discount (-{discountPercentage.toFixed(0)}%)
+              </p>
+              <h3 className='font-medium text-[red]'>
+                - $ {totalSavings.toFixed(2)}
+              </h3>
+            </div>
+            <div className='text-gray-400 flex justify-between items-center w-full'>
+              <p className='capitalize'>delivery fee</p>
+              <h3 className='font-medium text-black'>$20</h3>
+            </div>
+            <hr className='w-full' />
+            <div className='text-gray-400 flex justify-between items-center w-full'>
+              <p className='capitalize text-black'>total</p>
+              <h3 className='font-medium text-black'>
+                $ {totalAmount.toFixed(2)}
+              </h3>
+            </div>
+            <div className='text-gray-400 flex justify-start items-center gap-5 w-full'>
+              <InputField
+                type='text'
+                icon={<BsTag className='text-xl' />}
+                placeholder='Add promo code'
+                inputClass='w-full indent-6'
+                inputWrapper='w-full flex justify-start items-center gap-5'
+              />
+              <Button
+                type='button'
+                title='apply'
+                buttonClass='bg-black text-white px-5 py-2 rounded-full '
+              />
+            </div>
             <Button
               type='button'
-              title='apply'
-              buttonClass='bg-black text-white px-5 py-2 rounded-full '
+              title='checkout'
+              buttonClass='bg-black text-white px-5 py-3 rounded-full w-full '
             />
           </div>
-          <Button
-            type='button'
-            title='checkout'
-            buttonClass='bg-black text-white px-5 py-3 rounded-full w-full '
-          />
-        </div>
+        )}
       </section>
     </main>
   )

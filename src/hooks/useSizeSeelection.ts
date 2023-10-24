@@ -9,17 +9,12 @@ const useSizeSelection = () => {
   )
 
   const handleSizeClick = (size: string) => {
-    if (selectedSize.includes(size)) {
-      dispatch(setSelectedSize(selectedSize.filter((s) => s !== size)))
-    } else {
-      dispatch(setSelectedSize([...selectedSize, size]))
-    }
+    dispatch(setSelectedSize(size))
   }
 
   return {
     selectedSize,
     handleSizeClick,
-    setSelectedSize,
   }
 }
 

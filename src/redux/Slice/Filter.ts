@@ -6,7 +6,7 @@ type InitialState = {
 
 type FilterState = {
   selectedColors: string[]
-  selectedSize: string[]
+  selectedSize: string
   selectedCategory: string | ''
   isColorVisible: boolean
   isSizeVisible: boolean
@@ -16,7 +16,7 @@ type FilterState = {
 const initialState = {
   filters: {
     selectedCategory: '',
-    selectedSize: [],
+    selectedSize: '',
     selectedColors: [],
     isColorVisible: false,
     isSizeVisible: false,
