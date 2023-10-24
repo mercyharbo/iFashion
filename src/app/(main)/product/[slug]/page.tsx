@@ -24,6 +24,7 @@ import {
   setProductDetailsData,
 } from '@/redux/Slice/ProductSlice'
 import { toast } from 'react-toastify'
+import Loading from '@/components/Loading'
 
 interface ProductPageProps {
   params: {
@@ -121,7 +122,7 @@ export default function Product_Details({ params }: ProductPageProps) {
   return (
     <>
       {isLoading ? (
-        <p className='xl:p-14 md:p-10 sm:p-5'>Loading...</p>
+        <Loading />
       ) : (
         <>
           <header
@@ -313,7 +314,7 @@ export default function Product_Details({ params }: ProductPageProps) {
             </div>
 
             {activeTab === 'Product Details' && (
-              <section className='2xl:w-[60%] xl:w-[80%] md:w-full sm:w-full my-[2rem] ml-0 flex flex-col justify-start items-start gap-5 '>
+              <section className='2xl:w-[60%] xl:w-[80%] xl:px-0 md:w-full md:px-5 sm:w-full sm:px-5 my-[2rem] ml-0 flex flex-col justify-start items-start gap-5 '>
                 <h1 className='2xl:text-2xl font-semibold capitalize'>
                   product details
                 </h1>
