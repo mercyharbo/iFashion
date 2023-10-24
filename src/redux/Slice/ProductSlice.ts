@@ -1,5 +1,4 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { toast } from 'react-toastify'
 
 type productDetails = {
   _id: string
@@ -80,17 +79,6 @@ export const fetchProducts = createAsyncThunk('/products', async () => {
     } else {
       const errorData = await response.json()
       const errorMessage = errorData.message
-
-      toast.error(errorMessage, {
-        position: 'top-right',
-        autoClose: 5000, // Adjust as needed
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      })
-
-      return toast.error(errorMessage)
     }
   } catch (error) {
     return 'An error occurred whe=ile trying to fetch products'
@@ -128,7 +116,9 @@ const ProductSlice = createSlice({
         state.isSubmitting = false
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.error = action.payload as string
+        state.error =
+          action.error.message ||
+          'An error occurred while trying to fetch products'
         state.isSubmitting = false
       })
   },

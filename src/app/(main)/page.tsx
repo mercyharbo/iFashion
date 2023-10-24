@@ -16,6 +16,8 @@ import clsx from 'clsx'
 import { AppDispatch, useAppSelector } from '@/redux/Store'
 import { useDispatch } from 'react-redux'
 import { fetchProducts } from '@/redux/Slice/ProductSlice'
+import useToken from '@/hooks/useToken'
+import Error from './error'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -23,8 +25,11 @@ export default function Home() {
   const dispatch = useDispatch<AppDispatch>()
   const revealRefs = useRef<any[]>([])
   revealRefs.current = []
+  const token = useToken()
+
   const productData = useAppSelector((state) => state.products)
   const isLoading = useAppSelector((state) => state.products.isSubmitting)
+  const isError = useAppSelector((state) => state.products.error)
 
   const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
   const browseStyle = [
@@ -35,7 +40,11 @@ export default function Home() {
   ]
 
   useEffect(() => {
-    dispatch(fetchProducts())
+    if (token) {
+      dispatch(fetchProducts())
+    } else {
+      return
+    }
 
     revealRefs.current.forEach((el, index) => {
       gsap.fromTo(
@@ -71,7 +80,7 @@ export default function Home() {
         scale: 0,
         ease: 'back',
       })
-  }, [dispatch])
+  }, [dispatch, token, revealRefs])
 
   const addToRefs = (el: HTMLElement | null) => {
     if (el && !revealRefs.current.includes(el)) {
@@ -86,6 +95,14 @@ export default function Home() {
     const productDate = new Date(item.createdDate)
     return productDate >= currentDate
   })
+
+  if (isError)
+    return (
+      <Error
+        error={'An error occurred while trying to fetch this route.'}
+        reset={() => window.location.reload()}
+      />
+    )
 
   return (
     <>

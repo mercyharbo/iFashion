@@ -30,6 +30,7 @@ import useColorSelection from '../../../hooks/ColorSelector'
 import { closeFilterModal, openFilterModal } from '@/redux/Slice/ModalSlice'
 import { fetchProducts, setFilteredProducts } from '@/redux/Slice/ProductSlice'
 import Loading from '@/components/Loading'
+import Error from '../error'
 
 function CasualCategory() {
   const dispatch = useDispatch<AppDispatch>()
@@ -43,6 +44,8 @@ function CasualCategory() {
   const [sortBy, setSortBy] = useState<'newest' | 'price' | 'oldest'>('newest')
 
   const isLoading = useAppSelector((state) => state.products.isSubmitting)
+  const isError = useAppSelector((state) => state.products.error)
+
   const filterOpen = useAppSelector(
     (state) => state.modalReducer.modal.filterModal
   )
@@ -143,6 +146,14 @@ function CasualCategory() {
 
   if (isLoading) return <Loading />
 
+  if (isError)
+    return (
+      <Error
+        error={'An error occurred while trying to fetch this route.'}
+        reset={() => window.location.reload()}
+      />
+    )
+
   return (
     <main
       className={clsx(
@@ -167,7 +178,9 @@ function CasualCategory() {
               'flex xl:justify-center xl:items-center md:justify-start md:items-start sm:justify-between sm:items-start gap-5'
             )}
           >
-            <span className='text-sm'>Showing 1-10 of 100 Products</span>
+            <span className='text-sm'>
+              Showing 1- {productData.products.length} Products
+            </span>
             <button
               type='button'
               onClick={handleOpenModal}
