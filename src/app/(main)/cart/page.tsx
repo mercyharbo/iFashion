@@ -68,7 +68,7 @@ export default function Cart() {
       toast.success('Product removed from the cart')
       setTimeout(() => {
         window.location.reload()
-      }, 3000)
+      }, 6000)
     }
   }
 

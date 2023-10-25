@@ -59,7 +59,6 @@ const Navbar = () => {
   const token = useToken()
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
-  const { increment, decrement, count } = UseCounter()
   const isOpen = useAppSelector((state) => state.modalReducer.modal.isOpen)
   const isSearchOpen = useAppSelector(
     (state) => state.searchModalReducer.modal.isOpen
@@ -100,7 +99,7 @@ const Navbar = () => {
       toast.success('Product removed from the cart')
       setTimeout(() => {
         window.location.reload()
-      }, 2000)
+      }, 6000)
     }
   }
 
@@ -179,7 +178,7 @@ const Navbar = () => {
     if (token) {
       dispatch(fetchUserProfile())
     } else {
-      return
+      return;
     }
   }, [dispatch, token])
 

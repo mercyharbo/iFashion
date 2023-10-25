@@ -137,6 +137,13 @@ export default function Product_Details({ params }: ProductPageProps) {
 
   // handling add to cart functionality
   const handleAddToCart = (product: Product) => {
+    // Check if color, size, and quantity are selected
+    if (!product.color || !product.size || product.quantity <= 0) {
+      // Display an error message if any of them is missing
+      toast.error('Please select color, size, and a valid quantity')
+      return
+    }
+
     const existingCartItems: Product[] = JSON.parse(
       localStorage.getItem('cart') || '[]'
     )
@@ -164,7 +171,7 @@ export default function Product_Details({ params }: ProductPageProps) {
     toast.success('Product added to the cart')
     setTimeout(() => {
       window.location.reload()
-    }, 2000)
+    }, 6000)
   }
 
   return (
