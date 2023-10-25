@@ -62,7 +62,7 @@ export default function Cart() {
       localStorage.setItem('cart', JSON.stringify(existingCartItems))
 
       // Update the cart in your Redux store if needed
-      dispatch(setCarts(product)) // Define a removeFromCart action in your Redux store
+      // dispatch(setCarts(product)) // Define a removeFromCart action in your Redux store
 
       // Optionally, display a success message
       toast.success('Product removed from the cart')
