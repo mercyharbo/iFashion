@@ -6,13 +6,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import gsap from 'gsap'
 import clsx from 'clsx'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 import {
   BiCartAdd,
   BiHeart,
   BiHistory,
   BiLogOut,
-  BiMinus,
-  BiPlus,
   BiSearch,
   BiUser,
   BiUserCircle,
@@ -37,12 +37,9 @@ import {
   setSearchQuercy,
 } from '@/redux/Slice/SearchModalSlice'
 import Modal from '@/types/Modal'
-import { UseCounter } from '@/hooks/Counter'
 import { fetchUserProfile, setIsSubmitting } from '@/redux/Slice/UserSlice'
 import useToken from '@/hooks/useToken'
 import { MdDelete, MdOutlineArrowDropDown } from 'react-icons/md'
-import { toast } from 'react-toastify'
-import { useRouter } from 'next/navigation'
 import { setCarts } from '@/redux/Slice/ProductSlice'
 
 interface Product {
@@ -54,6 +51,40 @@ interface Product {
   price: number
   quantity: number
 }
+
+// export async function getUser() {
+//   const token = localStorage.getItem('token') // get token from the localStorage
+
+//   const headers = new Headers({
+//     Authorization: `Bearer ${token}`,
+//     'Content-Type': 'application/json',
+//   })
+
+//   const options = {
+//     method: 'GET',
+//     headers,
+//   }
+
+//   const res = await fetch(`${process.env.BASE_URL}/user/profile`, options)
+
+//   if (res.ok) {
+//     return res.json()
+//   } else {
+//     const errorData = await res.json()
+//     const errorMessage = errorData.message
+
+//     toast.error(errorMessage, {
+//       position: 'top-right',
+//       autoClose: 5000, // Adjust as needed
+//       hideProgressBar: false,
+//       closeOnClick: true,
+//       pauseOnHover: true,
+//       draggable: true,
+//     })
+
+//     return Promise.reject(errorMessage)
+//   }
+// }
 
 const Navbar = () => {
   const token = useToken()
@@ -175,12 +206,8 @@ const Navbar = () => {
   }, [isSearchOpen, cartOpen, isOpen])
 
   useEffect(() => {
-    if (token) {
-      dispatch(fetchUserProfile())
-    } else {
-      return;
-    }
-  }, [dispatch, token])
+    dispatch(fetchUserProfile())
+  }, [dispatch])
 
   // handling the user logout request
   const handleLogout = async () => {
@@ -274,7 +301,7 @@ const Navbar = () => {
           inputClass='3xl:w-[30rem] 2xl:w-[25rem] xl:flex xl:w-[20rem] lg:w-[20%] md:hidden sm:hidden  '
         />
 
-        {token ? (
+        {user ? (
           <div
             className={clsx('flex justify-center items-center gap-5 relative')}
           >
@@ -343,7 +370,7 @@ const Navbar = () => {
             )
           })}
           <hr className='w-full' />
-          {!token && (
+          {!user && (
             <div className='flex flex-col justify-center items-center gap-5'>
               <Link href='/login' className='nav-link underline font-medium'>
                 Sign in
