@@ -6,11 +6,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import gsap from 'gsap'
 import { BiHeart, BiHistory, BiUser } from 'react-icons/bi'
+import { MdSettings } from 'react-icons/md'
 
 const navLinks = [
   { id: 1, name: 'my account', href: '/profile', icon: <BiUser /> },
   { id: 2, name: 'history', href: '/profile/history', icon: <BiHistory /> },
   { id: 3, name: 'wishlist', href: '/profile/wishlist', icon: <BiHeart /> },
+  // { id: 4, name: 'password', href: '/profile/password', icon: <MdSettings /> },
 ]
 
 export default function ProfileNav() {

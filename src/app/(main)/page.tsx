@@ -171,10 +171,6 @@ export default function Home() {
               )
             })}
           </div>
-          <Button
-            title='view all'
-            buttonClass={clsx('border-[1px] rounded-full w-[150px] py-2 ')}
-          />
         </section>
       )}
 
@@ -223,10 +219,6 @@ export default function Home() {
                 )
               })}
           </div>
-          <Button
-            title='view all'
-            buttonClass='border-[1px] rounded-full w-[150px] py-2 '
-          />
         </section>
       )}
 
