@@ -46,7 +46,7 @@ const Product = ({
         height={500}
         alt={title}
         className='rounded-xl object-cover'
-        style={{ height: '250px' }}
+        style={{ height: '300px' }}
       />
       <div className='flex flex-col justify-start items-start gap-2 p-3'>
         <h3 className='text-base font-semibold capitalize'>{title}</h3>

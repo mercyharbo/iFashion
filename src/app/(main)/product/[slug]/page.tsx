@@ -198,7 +198,10 @@ export default function Product_Details({ params }: ProductPageProps) {
                       type='button'
                       onClick={() => handleImageClick(img)}
                       className={clsx(
-                        'flex-shrink-0 h-auto flex items-start justify-start gap-5 xl:my-2 sm:mx-2'
+                        'flex-shrink-0 h-auto p-1 flex items-start justify-start gap-5 xl:my-2 sm:mx-2',
+                        selectedImage === img
+                          ? 'border-2 border-black rounded-2xl '
+                          : ''
                       )}
                     >
                       <Image
@@ -219,7 +222,7 @@ export default function Product_Details({ params }: ProductPageProps) {
                 height={1000}
                 alt='selected product image'
                 className={clsx(
-                  'rounded-2xl object-cover 3xl:h-[45rem] 2xl:h-[35rem] xl:w-[80%] xl:h-[30rem] md:w-[60%] md:h-[25rem] sm:w-full sm:h-[25rem] '
+                  'rounded-2xl object-cover 3xl:h-[45rem] 2xl:h-[35rem] xl:w-[80%] xl:h-[35rem] md:w-[80%] md:h-[40rem] sm:w-full sm:h-[25rem] '
                 )}
               />
             </div>
