@@ -103,7 +103,12 @@ const Navbar = () => {
     (state) => state.modalReducer.modal.profileOpen
   )
   const carts = useAppSelector((state) => state.products.cart)
-  const NavItems = ['shop', 'on sale', 'new arrivals', 'brands']
+  const NavItems = [
+    { id: 1, name: 'casual', href: '/casual' },
+    { id: 2, name: 'on sale', href: '#' },
+    { id: 3, name: 'new arrivals', href: '#' },
+    { id: 4, name: 'brands', href: '#' },
+  ]
 
   const handleRemoveFromCart = (product: Product) => {
     // Get the current cart items from localStorage
@@ -284,10 +289,10 @@ const Navbar = () => {
             'xl:flex md:flex sm:hidden justify-center items-center gap-5 capitalize'
           )}
         >
-          {NavItems.map((items, key) => {
+          {NavItems.map((items) => {
             return (
-              <Link href={`/${items.replace(/\s+/g, '-')}`} key={key}>
-                {items}
+              <Link href={items.href} key={items.id}>
+                {items.name}
               </Link>
             )
           })}
@@ -358,14 +363,10 @@ const Navbar = () => {
           modalClass=' nav-container w-[80%] mx-auto top-0 left-0 p-5 z-20 rounded-r-xl h-screen absolute bg-white '
           contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold pt-10 text-lg'
         >
-          {NavItems.map((items, key) => {
+          {NavItems.map((items) => {
             return (
-              <Link
-                href={`/${items.replace(/\s+/g, '-')}`}
-                key={key}
-                className='nav-link'
-              >
-                {items}
+              <Link href={items.href} key={items.id} className='nav-link'>
+                {items.name}
               </Link>
             )
           })}

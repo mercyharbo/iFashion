@@ -6,11 +6,11 @@ import { AppDispatch, useAppSelector } from '@/redux/Store'
 import clsx from 'clsx'
 import { BiEdit } from 'react-icons/bi'
 import gsap from 'gsap'
-import { setUpdateProfileModal } from '@/redux/Slice/ModalSlice'
 import { MdClose } from 'react-icons/md'
 import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { toast } from 'react-toastify'
 import moment from 'moment'
+import { setUpdateProfileModal } from '@/redux/Slice/ModalSlice'
 
 interface Values {
   email: string
@@ -234,7 +234,6 @@ export default function Profile() {
                 }}
                 onSubmit={(values: Values, {}: FormikHelpers<Values>) => {
                   handleUpdateProfile(values)
-                  // alert('Form submitted with values: ' + JSON.stringify(values))
                 }}
               >
                 <Form className='py-5 flex flex-col justify-start items-start gap-5'>
