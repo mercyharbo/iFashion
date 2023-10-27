@@ -14,6 +14,7 @@ import paypal from '@/assets/paypal_196566.png'
 import visa from '@/assets/cc-visa.png'
 import applepay from '@/assets/cc-apple-pay.png'
 import inbox from '@/assets/envelope.svg'
+import clsx from 'clsx'
 
 function Footer() {
   return (
@@ -24,7 +25,7 @@ function Footer() {
         xl:items-center xl:px-16 md:flex-col md:justify-center md:items-center md:gap-5 md:relative md:top-[5rem] md:z-10 sm:static sm:flex-col sm:justify-center 
         sm:items-center sm:gap-5 sm:mx-5 sm:p-4 '
       >
-        <h1 className='2xl:text-4xl xl:text-4xl xl:w-[50%] md:w-full md:text-4xl sm:w-full sm:text-2xl font-bold uppercase '>
+        <h1 className='2xl:text-4xl 2xl:w-[50%] xl:text-4xl xl:w-[50%] md:w-full md:text-4xl sm:w-full sm:text-2xl font-bold uppercase '>
           STAY UPTO DATE ABOUT OUR LATEST OFFERS
         </h1>
 
@@ -49,8 +50,16 @@ function Footer() {
         // ref={addToRefs}
         className='bg-[#F0F0F0] w-full relative flex flex-col justify-center items-center gap-10 '
       >
-        <div className='xl:w-[90%] xl:pt-[8rem] xl:px-0 md:pt-[8rem] md:w-full md:px-10 sm:w-full sm:py-10 sm:px-5 flex flex-col justify-center items-center gap-10 '>
-          <div className='grid xl:grid-cols-5 xl:content-center xl:place-items-center xl:gap-10 md:grid-cols-3 sm:grid-cols-1 sm:gap-10 '>
+        <div
+          className={clsx(
+            'xl:w-[90%] xl:pt-[8rem] xl:px-0 md:pt-[8rem] md:w-full md:px-10 sm:w-full sm:py-10 sm:px-5 flex flex-col justify-center items-center gap-10 '
+          )}
+        >
+          <div
+            className={clsx(
+              'grid xl:grid-cols-5 xl:content-start xl:place-items-start xl:gap-10 md:grid-cols-3 md:justify-center md:items-center sm:justify-center sm:items-center sm:grid-cols-1 sm:gap-10 '
+            )}
+          >
             <div className='flex flex-col justify-start items-start gap-3 '>
               <h3 className='xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase'>
                 {' '}
@@ -101,8 +110,12 @@ function Footer() {
               <p className='capitalize text-[#858282] '>features</p>
               <p className='capitalize text-[#858282] '>works</p>
               <p className='capitalize text-[#858282] '>career</p>
-              <Link href='/login' className='capitalize text-[#858282] '>Login</Link>
-              <Link href='/signup' className='capitalize text-[#858282] '>Sign up</Link>
+              <Link href='/login' className='capitalize text-[#858282] '>
+                Login
+              </Link>
+              <Link href='/signup' className='capitalize text-[#858282] '>
+                Sign up
+              </Link>
             </div>
             <div className='flex flex-col justify-start items-start gap-3 '>
               <h3 className='xl:text-lg font-medium uppercase'> help </h3>
@@ -128,8 +141,9 @@ function Footer() {
           </div>
           <hr className='w-full' />
           <div
-            className='flex w-full xl:flex-row xl:justify-between xl:items-center md:flex-col-reverse md:justify-center md:items-center sm:flex-col-reverse 
-            sm:justify-center sm:items-center sm:gap-5 '
+            className={clsx(
+              'flex w-full xl:flex-row xl:justify-between xl:items-center md:flex-col-reverse md:justify-center md:items-center sm:flex-col-reverse sm:justify-center sm:items-center sm:gap-5 '
+            )}
           >
             <span className=''>Shop.co © 2000-2023, All Rights Reserved</span>
             <div className='flex justify-center items-center gap-5'>

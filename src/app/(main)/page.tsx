@@ -52,12 +52,14 @@ export default function Home() {
         {
           autoAlpha: 0,
           opacity: 0,
+          y: -100,
         },
         {
           opacity: 1,
           duration: 1,
           autoAlpha: 1,
           ease: 'power2.inOut',
+          y: 0,
           scrollTrigger: {
             id: `section-${index + 1}`,
             trigger: el,

@@ -19,7 +19,7 @@ export default function Password() {
   const user = useAppSelector((state) => state.userProfile.user)
   const isSubmitting = useAppSelector((state) => state.userProfile.isSubmitting)
 
-  const handleUpdateProfile = async (values: Values) => {
+  const handlePasswordUpdate = async (values: Values) => {
     dispatch(setIsSubmitting(true))
     try {
       const token = localStorage.getItem('token')
@@ -62,7 +62,7 @@ export default function Password() {
           newPassword: '',
         }}
         onSubmit={(values: Values, {}: FormikHelpers<Values>) => {
-          handleUpdateProfile(values)
+          handlePasswordUpdate(values)
         }}
       >
         <Form className='py-5 flex flex-col justify-start items-start gap-5 w-full'>
