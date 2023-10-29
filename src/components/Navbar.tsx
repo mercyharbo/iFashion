@@ -267,7 +267,7 @@ const Navbar = () => {
     <>
       <nav
         className={clsx(
-          'relative z-10 overflow-hidden flex flex-row justify-between items-center gap-5 w-full mx-auto 3xl:w-[90%] 3xl:px-0 2xl:px-0 2xl:w-[90%] xl:px-10 xl:py-5 xl:w-full md:w-full md:py-5 md:px-5 sm:w-full sm:px-5 sm:py-5'
+          'relative z-10 overflow-hidden flex flex-row justify-between items-center gap-5 mx-auto 3xl:w-[90%] 3xl:px-0 2xl:px-0 2xl:w-[95%] xl:px-0 xl:py-5 xl:w-full md:w-full md:py-5 md:px-5 sm:w-full sm:px-5 sm:py-5'
         )}
       >
         <div className='flex justify-center items-center gap-3'>
@@ -322,8 +322,8 @@ const Navbar = () => {
               onClick={handleCartOpen}
               className='flex justify-center items-center gap-2 relative hover:text-[red] '
             >
-              <BiCartAdd className='xl:text-2xl md:text-2xl sm:text-2xl' />
-              <span className='xl:flex md:flex sm:hidden '>Cart</span>
+              <BiCartAdd className='xl:text-3xl md:text-2xl sm:text-2xl' />
+
               {carts.length > 0 && (
                 <span className='flex justify-center items-center bg-[red] h-[17px] w-[17px] rounded-full text-white text-[11px] absolute -top-1 -left-1 '>
                   {carts.length}
@@ -336,7 +336,7 @@ const Navbar = () => {
               onClick={() => dispatch(setProfileOpen(!profileModal))}
               className='flex justify-center items-center gap-2 hover:text-[red] '
             >
-              <BiUserCircle className='xl:text-base md:text-2xl sm:text-2xl' />
+              <BiUserCircle className='xl:text-2xl md:text-2xl sm:text-2xl' />
               <span className='xl:flex md:flex sm:hidden'>
                 Hey!, {user?.firstName}
               </span>

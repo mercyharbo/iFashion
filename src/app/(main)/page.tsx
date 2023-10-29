@@ -16,7 +16,6 @@ import clsx from 'clsx'
 import { AppDispatch, useAppSelector } from '@/redux/Store'
 import { useDispatch } from 'react-redux'
 import { fetchProducts } from '@/redux/Slice/ProductSlice'
-import useToken from '@/hooks/useToken'
 import Error from './error'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -25,7 +24,6 @@ export default function Home() {
   const dispatch = useDispatch<AppDispatch>()
   const revealRefs = useRef<any[]>([])
   revealRefs.current = []
-  const token = useToken()
 
   const productData = useAppSelector((state) => state.products)
   const isLoading = useAppSelector((state) => state.products.isSubmitting)
@@ -40,12 +38,6 @@ export default function Home() {
   ]
 
   useEffect(() => {
-    if (token) {
-      dispatch(fetchProducts())
-    } else {
-      return
-    }
-
     revealRefs.current.forEach((el, index) => {
       gsap.fromTo(
         el,
@@ -82,7 +74,11 @@ export default function Home() {
         scale: 0,
         ease: 'back',
       })
-  }, [dispatch, token, revealRefs])
+  }, [revealRefs])
+
+  useEffect(() => {
+    dispatch(fetchProducts())
+  }, [dispatch])
 
   const addToRefs = (el: HTMLElement | null) => {
     if (el && !revealRefs.current.includes(el)) {
@@ -227,7 +223,7 @@ export default function Home() {
       <section
         ref={addToRefs}
         className={clsx(
-          'bg-[#F0F0F0] rounded-xl xl:mx-auto flex flex-col justify-center items-center gap-5 xl:p-10 xl:w-[80%] xl:my-10 md:p-10 md:mx-5 sm:mx-3 sm:p-5  '
+          'bg-[#F0F0F0] rounded-xl flex flex-col justify-center items-center gap-5 2xl:w-[95%] xl:mx-auto xl:p-10 xl:my-10 md:p-10 md:mx-5 sm:mx-3 sm:p-5  '
         )}
       >
         <h1
