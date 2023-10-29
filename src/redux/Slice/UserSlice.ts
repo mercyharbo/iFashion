@@ -15,18 +15,21 @@ type InitialState = {
   user: UserProfile | null
   error: string | null
   isSubmitting: boolean
+  isLoading: boolean
 }
 
 const initialState: InitialState = {
   user: null,
   error: null,
   isSubmitting: false,
+  isLoading: false,
 }
 
 // Create an async thunk to fetch user data
 export const fetchUserProfile = createAsyncThunk(
   'user/fetchUserProfile',
-  async () => {
+  async (_, { dispatch }) => {
+    dispatch(setIsLoading(true))
     try {
       const token = localStorage.getItem('token') // Get the token from localStorage
       const headers = new Headers({
@@ -46,11 +49,12 @@ export const fetchUserProfile = createAsyncThunk(
 
       if (response.ok) {
         const userData = await response.json()
+        dispatch(setIsLoading(false))
         return userData.profile
       } else {
         const errorData = await response.json()
         const errorMessage = errorData.message
-
+        dispatch(setIsLoading(false))
         toast.error(errorMessage, {
           position: 'top-right',
           autoClose: 5000, // Adjust as needed
@@ -78,6 +82,9 @@ const userSlice = createSlice({
     setIsSubmitting: (state, action) => {
       state.isSubmitting = action.payload
     },
+    setIsLoading: (state, action) => {
+      state.isLoading = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -91,5 +98,6 @@ const userSlice = createSlice({
   },
 })
 
-export const { setUserProfile, setIsSubmitting } = userSlice.actions
+export const { setUserProfile, setIsSubmitting, setIsLoading } =
+  userSlice.actions
 export default userSlice.reducer
