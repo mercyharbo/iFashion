@@ -26,8 +26,10 @@ export default function Home() {
   revealRefs.current = []
 
   const productData = useAppSelector((state) => state.products)
-  const isLoading = useAppSelector((state) => state.products.isSubmitting)
+  // const isLoading = useAppSelector((state) => state.products.isSubmitting)
   const isError = useAppSelector((state) => state.products.error)
+  const isLoading = useAppSelector((state) => state.userProfile.isLoading)
+  const user = useAppSelector((state) => state.userProfile.user)
 
   const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
   const browseStyle = [
@@ -76,9 +78,9 @@ export default function Home() {
       })
   }, [revealRefs])
 
-  useEffect(() => {
-    dispatch(fetchProducts())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(fetchProducts())
+  // }, [dispatch])
 
   const addToRefs = (el: HTMLElement | null) => {
     if (el && !revealRefs.current.includes(el)) {
@@ -94,13 +96,21 @@ export default function Home() {
     return productDate >= currentDate
   })
 
-  if (isError)
-    return (
-      <Error
-        error={'An error occurred while trying to fetch this route.'}
-        reset={() => window.location.reload()}
-      />
-    )
+  // if (isError)
+  //   return (
+  //     <Error
+  //       error={'An error occurred while trying to fetch this route.'}
+  //       reset={() => window.location.reload()}
+  //     />
+  //   )
+
+  if (isLoading) {
+    return <div className='text-2xl px-10'>Loading...</div>
+  }
+
+  if (!user) {
+    return <div className='text-2xl px-10'>Error fetching user profile...</div>
+  }
 
   return (
     <>
@@ -130,7 +140,7 @@ export default function Home() {
         </div>
       </section>
 
-      {!isLoading && filteredProducts.length > 0 && (
+      {filteredProducts.length > 0 && (
         <section
           ref={addToRefs}
           className={clsx(
@@ -174,7 +184,7 @@ export default function Home() {
 
       <hr />
 
-      {!isLoading && productData.products.length > 0 && (
+      {productData.products.length > 0 && (
         <section
           ref={addToRefs}
           className={clsx(
