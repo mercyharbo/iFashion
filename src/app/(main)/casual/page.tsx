@@ -68,9 +68,9 @@ function CasualCategory() {
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined)
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined)
 
-  // useEffect(() => {
-  //   dispatch(fetchProducts())
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(fetchProducts())
+  }, [dispatch])
 
   const sortProducts = (criteria: 'newest' | 'price' | 'oldest') => {
     const sortedProducts = [...productData.products]
