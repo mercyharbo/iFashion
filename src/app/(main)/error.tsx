@@ -9,8 +9,13 @@ export default function Error({
 }) {
   return (
     <div className='h-screen w-full flex flex-col justify-center items-center gap-3'>
-      <h2>{error} || Something went wrong!</h2>
-      <button onClick={() => reset()}>Try again</button>
+      <h2>{error}</h2>
+      <button
+        onClick={() => reset()}
+        className='bg-black text-white py-2 px-5 rounded-md '
+      >
+        Try again
+      </button>
     </div>
   )
 }

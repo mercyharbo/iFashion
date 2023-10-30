@@ -38,7 +38,6 @@ import {
 } from '@/redux/Slice/SearchModalSlice'
 import Modal from '@/types/Modal'
 import { fetchUserProfile, setIsSubmitting } from '@/redux/Slice/UserSlice'
-import useToken from '@/hooks/useToken'
 import { MdDelete, MdOutlineArrowDropDown } from 'react-icons/md'
 import { setCarts } from '@/redux/Slice/ProductSlice'
 
@@ -52,63 +51,32 @@ interface Product {
   quantity: number
 }
 
-// export async function getUser() {
-//   const token = localStorage.getItem('token') // get token from the localStorage
-
-//   const headers = new Headers({
-//     Authorization: `Bearer ${token}`,
-//     'Content-Type': 'application/json',
-//   })
-
-//   const options = {
-//     method: 'GET',
-//     headers,
-//   }
-
-//   const res = await fetch(`${process.env.BASE_URL}/user/profile`, options)
-
-//   if (res.ok) {
-//     return res.json()
-//   } else {
-//     const errorData = await res.json()
-//     const errorMessage = errorData.message
-
-//     toast.error(errorMessage, {
-//       position: 'top-right',
-//       autoClose: 5000, // Adjust as needed
-//       hideProgressBar: false,
-//       closeOnClick: true,
-//       pauseOnHover: true,
-//       draggable: true,
-//     })
-
-//     return Promise.reject(errorMessage)
-//   }
-// }
+const NavItems = [
+  { id: 1, name: 'casual', href: '/casual' },
+  { id: 2, name: 'on sale', href: '#' },
+  { id: 3, name: 'new arrivals', href: '#' },
+  { id: 4, name: 'brands', href: '#' },
+]
 
 const Navbar = () => {
-  const token = useToken()
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
+
+  // Modals states
   const isOpen = useAppSelector((state) => state.modalReducer.modal.isOpen)
   const isSearchOpen = useAppSelector(
     (state) => state.searchModalReducer.modal.isOpen
   )
+  const cartOpen = useAppSelector((state) => state.modalReducer.modal.cartOpen)
   const searchQuery = useAppSelector(
     (state) => state.searchModalReducer.modal.searchQuery
   )
-  const user = useAppSelector((state) => state.userProfile.user)
-  const cartOpen = useAppSelector((state) => state.modalReducer.modal.cartOpen)
   const profileModal = useAppSelector(
     (state) => state.modalReducer.modal.profileOpen
   )
+
+  const user = useAppSelector((state) => state.userProfile.user)
   const carts = useAppSelector((state) => state.products.cart)
-  const NavItems = [
-    { id: 1, name: 'casual', href: '/casual' },
-    { id: 2, name: 'on sale', href: '#' },
-    { id: 3, name: 'new arrivals', href: '#' },
-    { id: 4, name: 'brands', href: '#' },
-  ]
 
   const handleRemoveFromCart = (product: Product) => {
     // Get the current cart items from localStorage
@@ -267,7 +235,7 @@ const Navbar = () => {
     <>
       <nav
         className={clsx(
-          'relative z-10 overflow-hidden flex flex-row justify-between items-center gap-5 mx-auto 3xl:w-[90%] 3xl:px-0 2xl:px-0 2xl:w-[95%] xl:px-0 xl:py-5 xl:w-full md:w-full md:py-5 md:px-5 sm:w-full sm:px-5 sm:py-5'
+          'relative z-10 overflow-hidden flex flex-row justify-between items-center gap-5 mx-auto 3xl:w-[95%] 3xl:px-0 2xl:px-0 2xl:w-[95%] xl:px-0 xl:py-5 xl:w-full md:w-full md:py-5 md:px-5 sm:w-full sm:px-5 sm:py-5'
         )}
       >
         <div className='flex justify-center items-center gap-3'>
