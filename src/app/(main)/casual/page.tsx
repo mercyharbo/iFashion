@@ -43,8 +43,7 @@ function CasualCategory() {
 
   const [sortBy, setSortBy] = useState<'newest' | 'price' | 'oldest'>('newest')
 
-  const isLoading = useAppSelector((state) => state.products.isSubmitting)
-  const isError = useAppSelector((state) => state.products.error)
+  const isLoading = useAppSelector((state) => state.products.isLoading)
 
   const filterOpen = useAppSelector(
     (state) => state.modalReducer.modal.filterModal
@@ -69,9 +68,9 @@ function CasualCategory() {
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined)
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined)
 
-  useEffect(() => {
-    dispatch(fetchProducts())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(fetchProducts())
+  // }, [dispatch])
 
   const sortProducts = (criteria: 'newest' | 'price' | 'oldest') => {
     const sortedProducts = [...productData.products]
@@ -146,7 +145,7 @@ function CasualCategory() {
 
   if (isLoading) return <Loading />
 
-  if (isError)
+  if (!products)
     return (
       <Error
         error={'An error occurred while trying to fetch this route.'}
@@ -213,14 +212,16 @@ function CasualCategory() {
         >
           {products.map((item) => {
             const avarageRating = CalculateAverageRating(item?.reviews)
-            console.log(item, 'as item..')
+            const productImage =
+              item?.images?.[0] ||
+              'https://pixabay.com/playlists/chill-beats-17503730/'
             return (
               <Link key={item._id} href={`/product/${item._id}`}>
                 <Product
                   title={item.title}
                   price={item.price}
                   discount={item.discount}
-                  productImage={item?.images?.[0]}
+                  productImage={productImage}
                   ratings={avarageRating}
                   productClass={clsx(
                     ` inline-block 3xl:w-[300px] 2xl:w-[250px] xl:w-[300px] md:w-[250px] sm:w-full border-[1px] rounded-xl cursor-pointer `

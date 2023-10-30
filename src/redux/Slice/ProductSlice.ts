@@ -20,6 +20,7 @@ type InitialState = {
   products: productDetails[]
   error: string | null
   isSubmitting: boolean
+  isLoading: boolean
   filteredProducts: productDetails[]
   productDetailsData: productDetails | null
   cart:
@@ -41,6 +42,7 @@ const initialState: InitialState = {
   products: [],
   error: null,
   isSubmitting: false,
+  isLoading: false,
   filteredProducts: [],
   productDetailsData: null,
   cart: [
@@ -58,32 +60,34 @@ const initialState: InitialState = {
 }
 
 // Create an async thunk to fetch products data
-export const fetchProducts = createAsyncThunk('/products', async () => {
-  try {
-    const token = localStorage.getItem('token') // Get the token from localStorage
-    const headers = new Headers({
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    })
+export const fetchProducts = createAsyncThunk(
+  '/products',
+  async (_, { dispatch }) => {
+    dispatch(setIsLoading(true))
+    try {
+      const token = localStorage.getItem('token') // Get the token from localStorage
+      const headers = new Headers({
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      })
 
-    const options = {
-      method: 'GET',
-      headers,
-    }
+      const options = {
+        method: 'GET',
+        headers,
+      }
 
-    const response = await fetch(`${process.env.BASE_URL}/products`, options)
-
-    if (response.ok) {
+      const response = await fetch(`${process.env.BASE_URL}/products`, options)
       const productData = await response.json()
+      dispatch(setIsLoading(false))
       return productData.products
-    } else {
-      const errorData = await response.json()
-      const errorMessage = errorData.message
+    } catch (error) {
+      // Assert error as an Error object
+      const err = error as Error
+      // Return the error message instead of a string
+      return err.message || 'An error occurred while trying to fetch products'
     }
-  } catch (error) {
-    return 'An error occurred whe=ile trying to fetch products'
   }
-})
+)
 
 const ProductSlice = createSlice({
   name: 'products',
@@ -104,21 +108,22 @@ const ProductSlice = createSlice({
     setCarts: (state, action) => {
       state.cart = action.payload
     },
+    setIsLoading: (state, action) => {
+      state.isLoading = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
-        state.isSubmitting = true
+        state.isLoading = true
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.products = action.payload
         state.error = null
-        state.isSubmitting = false
+        state.isLoading = false
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.error =
-          action.error.message ||
-          'An error occurred while trying to fetch products'
+        state.error = action.payload as string
         state.isSubmitting = false
       })
   },
@@ -130,5 +135,6 @@ export const {
   setFilteredProducts,
   setProductDetailsData,
   setCarts,
+  setIsLoading,
 } = ProductSlice.actions
 export default ProductSlice.reducer

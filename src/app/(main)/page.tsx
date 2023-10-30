@@ -17,6 +17,7 @@ import { AppDispatch, useAppSelector } from '@/redux/Store'
 import { useDispatch } from 'react-redux'
 import { fetchProducts } from '@/redux/Slice/ProductSlice'
 import Error from './error'
+import Loading from '@/components/Loading'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -26,9 +27,9 @@ export default function Home() {
   revealRefs.current = []
 
   const productData = useAppSelector((state) => state.products)
-  // const isLoading = useAppSelector((state) => state.products.isSubmitting)
-  const isError = useAppSelector((state) => state.products.error)
   const isLoading = useAppSelector((state) => state.userProfile.isLoading)
+  const isLoadingProduct = useAppSelector((state) => state.products.isLoading)
+  const isError = useAppSelector((state) => state.products.error)
   const user = useAppSelector((state) => state.userProfile.user)
 
   const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
@@ -78,9 +79,11 @@ export default function Home() {
       })
   }, [revealRefs])
 
-  // useEffect(() => {
-  //   dispatch(fetchProducts())
-  // }, [dispatch])
+  useEffect(() => {
+    if (!isLoading) {
+      dispatch(fetchProducts())
+    }
+  }, [dispatch])
 
   const addToRefs = (el: HTMLElement | null) => {
     if (el && !revealRefs.current.includes(el)) {
@@ -96,21 +99,18 @@ export default function Home() {
     return productDate >= currentDate
   })
 
-  // if (isError)
+  if (isLoading) {
+    return <Loading />
+  }
+
+  // if (!productData) {
   //   return (
   //     <Error
   //       error={'An error occurred while trying to fetch this route.'}
   //       reset={() => window.location.reload()}
   //     />
   //   )
-
-  if (isLoading) {
-    return <div className='text-2xl px-10'>Loading...</div>
-  }
-
-  if (!user) {
-    return <div className='text-2xl px-10'>Error fetching user profile...</div>
-  }
+  // }
 
   return (
     <>
@@ -122,7 +122,7 @@ export default function Home() {
       >
         <div
           className={clsx(
-            'flex xl:gap-10 xl:w-[80%] xl:justify-between xl:items-center md:justify-center md:items-center md:gap-5 sm:justify-center sm:items-center sm:gap-5 flex-wrap '
+            'flex 3xl:w-[90%] 2xl:w-[90%] xl:gap-10 xl:w-[80%] xl:justify-between xl:items-center md:justify-center md:items-center md:gap-5 sm:justify-center sm:items-center sm:gap-5 flex-wrap '
           )}
         >
           {brands.map((brandName, index) => {
@@ -140,7 +140,7 @@ export default function Home() {
         </div>
       </section>
 
-      {filteredProducts.length > 0 && (
+      {filteredProducts && filteredProducts.length > 0 ? (
         <section
           ref={addToRefs}
           className={clsx(
@@ -162,13 +162,17 @@ export default function Home() {
           >
             {filteredProducts.slice(0, 6).map((item) => {
               const avarageRating = CalculateAverageRating(item?.reviews)
+              const productImage =
+                item?.images?.[0] ||
+                'https://pixabay.com/playlists/chill-beats-17503730/'
+
               return (
                 <Link key={item._id} href={`/product/${item._id}`}>
                   <Product
                     title={item.title}
                     price={item.price}
                     discount={item.discount}
-                    productImage={item?.images?.[0]}
+                    productImage={productImage}
                     ratings={avarageRating}
                     starStyling='text-lg'
                     productClass={clsx(
@@ -180,11 +184,15 @@ export default function Home() {
             })}
           </div>
         </section>
+      ) : (
+        <div className='xl:px-10 md:px-10 sm:px-5 py-5 flex justify-center items-center text-2xl'>
+          {isError || 'Error fetching products'}
+        </div>
       )}
 
       <hr />
 
-      {productData.products.length > 0 && (
+      {productData.products && productData.products.length > 0 ? (
         <section
           ref={addToRefs}
           className={clsx(
@@ -209,14 +217,16 @@ export default function Home() {
               .reverse()
               .map((item) => {
                 const avarageRating = CalculateAverageRating(item?.reviews)
-
+                const productImage =
+                  item?.images?.[0] ||
+                  'https://pixabay.com/playlists/chill-beats-17503730/'
                 return (
                   <Link key={item._id} href={`/product/${item._id}`}>
                     <Product
                       title={item.title}
                       price={item.price}
                       discount={item.discount}
-                      productImage={item?.images?.[0]}
+                      productImage={productImage}
                       ratings={avarageRating}
                       productClass={clsx(
                         ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
@@ -228,6 +238,10 @@ export default function Home() {
               })}
           </div>
         </section>
+      ) : (
+        <div className='xl:px-10 md:px-10 sm:px-5 py-5 flex justify-center items-center text-2xl'>
+          Error fetching products
+        </div>
       )}
 
       <section
