@@ -402,7 +402,7 @@ export default function Product_Details({ params }: ProductPageProps) {
         )}
 
         {activeTab === 'Ratings and Reviews' && (
-          <Reviews data={productDetailsData?.reviews} />
+          <Reviews data={productDetailsData?.reviews || []} />
         )}
       </section>
     </>
