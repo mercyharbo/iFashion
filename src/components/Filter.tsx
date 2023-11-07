@@ -70,8 +70,7 @@ export default function Filter({ products }: ProductFilterProps) {
         (!selectedCategory || product.category === selectedCategory) &&
         (selectedColors.length === 0 ||
           selectedColors.some((color) => product.colors.includes(color))) &&
-        (!selectedSize || product.available_sizes.includes(selectedSize)) &&
-   
+        (!selectedSize || product.available_sizes.includes(selectedSize))
       )
     })
 
