@@ -186,7 +186,7 @@ export default function Home() {
         </section>
       ) : (
         <div className='xl:px-10 md:px-10 sm:px-5 py-5 flex justify-center items-center text-2xl'>
-          {isError || 'Error fetching products'}
+          Error fetching products or still fetching products...
         </div>
       )}
 
@@ -240,7 +240,7 @@ export default function Home() {
         </section>
       ) : (
         <div className='xl:px-10 md:px-10 sm:px-5 py-5 flex justify-center items-center text-2xl'>
-          Error fetching products
+          Error fetching products or still fetching products...
         </div>
       )}
 

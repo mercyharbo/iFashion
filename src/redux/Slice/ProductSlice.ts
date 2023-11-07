@@ -14,6 +14,7 @@ type productDetails = {
   related: []
   faq: []
   createdDate: string
+  inStock: number
 }
 
 type InitialState = {

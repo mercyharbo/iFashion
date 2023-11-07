@@ -43,18 +43,6 @@ function Reviews({ data }: reviewsProps) {
         >
           <Button
             type='button'
-            title='btn'
-            buttonClass={clsx('capitalize bg-[] rounded-xl px-2 py-1 ')}
-          />
-          <Button
-            type='button'
-            title='Latest'
-            buttonClass={clsx(
-              'capitalize bg-[] rounded-xl px-2 py-1 xl:flex md:flex sm:hidden '
-            )}
-          />
-          <Button
-            type='button'
             title='write a review'
             buttonClass={clsx(
               'capitalize bg-black text-white rounded-full px-4 h-[45px] xl:text-base md:text-base sm:text-base '
@@ -65,7 +53,7 @@ function Reviews({ data }: reviewsProps) {
 
       <div
         className={clsx(
-          'grid 3xl:grid-cols-4 xl:grid-cols-3 xl:gap-10 xl:py-5 md:px-5 md:grid-cols-2 md:gap-5 sm:grid-cols-1 sm:gap-5 sm:px-5 '
+          'grid 3xl:grid-cols-4 xl:grid-cols-3 xl:gap-10 xl:py-5 md:px-5 md:grid-cols-2 md:gap-5 md:py-10 sm:py-10 sm:grid-cols-1 sm:gap-5 sm:px-5 '
         )}
       >
         {data?.map((review) => {
