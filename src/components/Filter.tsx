@@ -214,30 +214,6 @@ export default function Filter({ products }: ProductFilterProps) {
         )}
       </div>
 
-      {/* <div>
-        <label>Min Price:</label>
-        <input
-          type='number'
-          value={minPrice === undefined ? '' : minPrice}
-          onChange={(e) =>
-            setMinPrice(
-              e.target.value === '' ? undefined : parseFloat(e.target.value)
-            )
-          }
-        />
-      </div>
-      <div>
-        <label>Max Price:</label>
-        <input
-          type='number'
-          value={maxPrice === undefined ? '' : maxPrice}
-          onChange={(e) =>
-            setMaxPrice(
-              e.target.value === '' ? undefined : parseFloat(e.target.value)
-            )
-          }
-        />
-      </div> */}
       <div className='flex justify-between items-center gap-5 w-full py-5'>
         <Button
           type='button'
