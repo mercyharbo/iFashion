@@ -42,6 +42,7 @@ interface Product {
   images: string[]
   related: []
   faq: []
+  inStock: number
   createdDate: string
 }
 
@@ -63,18 +64,13 @@ export default function Filter({ products }: ProductFilterProps) {
     (state) => state.filterReducer.filters.iCategoryVisible
   )
 
-  const [minPrice, setMinPrice] = useState<number | undefined>(undefined)
-  const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined)
-
   const handleFilter = () => {
     const filtered = products.filter((product) => {
       return (
         (!selectedCategory || product.category === selectedCategory) &&
         (selectedColors.length === 0 ||
           selectedColors.some((color) => product.colors.includes(color))) &&
-        (!selectedSize || product.available_sizes.includes(selectedSize)) &&
-        (!minPrice || product.price >= (minPrice as number)) &&
-        (!maxPrice || product.price <= (maxPrice as number))
+        (!selectedSize || product.available_sizes.includes(selectedSize))
       )
     })
 
@@ -85,8 +81,6 @@ export default function Filter({ products }: ProductFilterProps) {
     dispatch(setSelectedColors(''))
     dispatch(setSelectedSize(''))
     dispatch(setSelectedCategory(''))
-    // setMinPrice('')
-    // setMaxPrice('')
     dispatch(setFilteredProducts(products))
   }
 
@@ -220,30 +214,6 @@ export default function Filter({ products }: ProductFilterProps) {
         )}
       </div>
 
-      {/* <div>
-        <label>Min Price:</label>
-        <input
-          type='number'
-          value={minPrice === undefined ? '' : minPrice}
-          onChange={(e) =>
-            setMinPrice(
-              e.target.value === '' ? undefined : parseFloat(e.target.value)
-            )
-          }
-        />
-      </div>
-      <div>
-        <label>Max Price:</label>
-        <input
-          type='number'
-          value={maxPrice === undefined ? '' : maxPrice}
-          onChange={(e) =>
-            setMaxPrice(
-              e.target.value === '' ? undefined : parseFloat(e.target.value)
-            )
-          }
-        />
-      </div> */}
       <div className='flex justify-between items-center gap-5 w-full py-5'>
         <Button
           type='button'
