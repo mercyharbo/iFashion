@@ -42,6 +42,7 @@ interface Product {
   images: string[]
   related: []
   faq: []
+  inStock: number
   createdDate: string
 }
 
@@ -63,9 +64,6 @@ export default function Filter({ products }: ProductFilterProps) {
     (state) => state.filterReducer.filters.iCategoryVisible
   )
 
-  const [minPrice, setMinPrice] = useState<number | undefined>(undefined)
-  const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined)
-
   const handleFilter = () => {
     const filtered = products.filter((product) => {
       return (
@@ -73,8 +71,7 @@ export default function Filter({ products }: ProductFilterProps) {
         (selectedColors.length === 0 ||
           selectedColors.some((color) => product.colors.includes(color))) &&
         (!selectedSize || product.available_sizes.includes(selectedSize)) &&
-        (!minPrice || product.price >= (minPrice as number)) &&
-        (!maxPrice || product.price <= (maxPrice as number))
+   
       )
     })
 
@@ -85,8 +82,6 @@ export default function Filter({ products }: ProductFilterProps) {
     dispatch(setSelectedColors(''))
     dispatch(setSelectedSize(''))
     dispatch(setSelectedCategory(''))
-    // setMinPrice('')
-    // setMaxPrice('')
     dispatch(setFilteredProducts(products))
   }
 
