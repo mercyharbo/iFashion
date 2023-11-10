@@ -25,7 +25,7 @@ export default function DashboardNav() {
 
   return (
     <nav className='3xl:w-[15%] xl:w-[20%] xl:flex xl:flex-col xl:justify-between xl:items-start xl:gap-5 xl:py-10 xl:px-5 md:hidden sm:hidden bg-white shadow-2xl '>
-      <Link href='' className='uppercase text-3xl font-bold'>
+      <Link href='/' className='uppercase text-3xl font-bold'>
         shop.co
       </Link>
       <div className='flex flex-col justify-start items-start gap-5 py-5 w-full'>

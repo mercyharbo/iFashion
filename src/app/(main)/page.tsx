@@ -31,6 +31,8 @@ export default function Home() {
   const isLoadingProduct = useAppSelector((state) => state.products.isLoading)
   const isError = useAppSelector((state) => state.products.error)
   const user = useAppSelector((state) => state.userProfile.user)
+  console.log(user, 'as user')
+  console.log(productData, 'as product data')
 
   const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
   const browseStyle = [
@@ -79,11 +81,9 @@ export default function Home() {
       })
   }, [revealRefs])
 
-  useEffect(() => {
-    if (!isLoading) {
-      dispatch(fetchProducts())
-    }
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(fetchProducts())
+  // }, [dispatch])
 
   const addToRefs = (el: HTMLElement | null) => {
     if (el && !revealRefs.current.includes(el)) {
@@ -94,7 +94,7 @@ export default function Home() {
   const currentDate = new Date() // Get the current date
   currentDate.setDate(currentDate.getDate() - 14)
 
-  const filteredProducts = productData?.products.filter((item) => {
+  const filteredProducts = productData?.products?.filter((item) => {
     const productDate = new Date(item.createdDate)
     return productDate >= currentDate
   })
