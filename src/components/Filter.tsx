@@ -40,7 +40,16 @@ interface Product {
   colors: string[]
   available_sizes: string[]
   images: string[]
-  related: []
+  related: [
+    {
+      _id: string
+      title: string
+      discount: number
+      price: number
+      reviews: []
+      images: string[]
+    }
+  ]
   faq: []
   inStock: number
   createdDate: string
