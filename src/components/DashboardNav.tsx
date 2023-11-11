@@ -8,7 +8,6 @@ import {
   BiHome,
   BiLogOut,
   BiShoppingBag,
-  BiSolidShoppingBag,
   BiStore,
   BiUser,
 } from 'react-icons/bi'

@@ -12,7 +12,6 @@ import { BsEyeFill } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
 import { AppDispatch, useAppSelector } from '@/redux/Store'
 import { setShowPassword } from '@/redux/Slice/SearchModalSlice'
-import { setIsLoggedIn } from '@/redux/Slice/UserSlice'
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()

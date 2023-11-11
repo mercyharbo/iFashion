@@ -11,7 +11,16 @@ type productDetails = {
   available_sizes: string[]
   reviews: []
   images: string[]
-  related: []
+  related: [
+    {
+      _id: string
+      title: string
+      discount: number
+      price: number
+      reviews: []
+      images: string[]
+    }
+  ]
   faq: []
   createdDate: string
   inStock: number
