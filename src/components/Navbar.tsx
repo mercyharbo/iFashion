@@ -37,7 +37,11 @@ import {
   setSearchQuercy,
 } from '@/redux/Slice/SearchModalSlice'
 import Modal from '@/types/Modal'
-import { fetchUserProfile, setIsSubmitting } from '@/redux/Slice/UserSlice'
+import {
+  fetchUserProfile,
+  setIsSubmitting,
+  setToken,
+} from '@/redux/Slice/UserSlice'
 import { MdDelete, MdOutlineArrowDropDown } from 'react-icons/md'
 import { setCarts } from '@/redux/Slice/ProductSlice'
 
@@ -77,6 +81,7 @@ const Navbar = () => {
 
   const user = useAppSelector((state) => state.userProfile.user)
   const carts = useAppSelector((state) => state.products.cart)
+  const token = useAppSelector((state) => state.userProfile.token)
 
   const handleRemoveFromCart = (product: Product) => {
     // Get the current cart items from localStorage
@@ -179,6 +184,9 @@ const Navbar = () => {
   }, [isSearchOpen, cartOpen, isOpen])
 
   useEffect(() => {
+    const tokenGotten = localStorage.getItem('token')
+    dispatch(setToken(tokenGotten))
+
     dispatch(fetchUserProfile())
   }, [dispatch])
 
@@ -274,7 +282,7 @@ const Navbar = () => {
           inputClass='3xl:w-[30rem] 2xl:w-[25rem] xl:flex xl:w-[20rem] lg:w-[20%] md:hidden sm:hidden  '
         />
 
-        {user ? (
+        {token ? (
           <div
             className={clsx('flex justify-center items-center gap-5 relative')}
           >
@@ -339,7 +347,7 @@ const Navbar = () => {
             )
           })}
           <hr className='w-full' />
-          {!user && (
+          {!token && (
             <div className='flex flex-col justify-center items-center gap-5'>
               <Link href='/login' className='nav-link underline font-medium'>
                 Sign in

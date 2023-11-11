@@ -68,7 +68,6 @@ export const fetchProducts = createAsyncThunk(
     try {
       const token = localStorage.getItem('token') // Get the token from localStorage
       const headers = new Headers({
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       })
 
