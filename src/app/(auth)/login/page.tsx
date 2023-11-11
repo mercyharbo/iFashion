@@ -53,6 +53,7 @@ export default function Login() {
         toast.success(`You're logged in successfully...`)
         localStorage.setItem('token', data.token)
         setIsSubmitting(false)
+
         router.push('/')
       } else {
         toast.error(data.message)

@@ -16,13 +16,15 @@ type InitialState = {
   error: string | null
   isSubmitting: boolean
   isLoading: boolean
+  token: string
 }
 
 const initialState: InitialState = {
   user: null,
   error: null,
   isSubmitting: false,
-  isLoading: false,
+  isLoading: true,
+  token: '',
 }
 
 // Create an async thunk to fetch user data
@@ -85,6 +87,9 @@ const userSlice = createSlice({
     setIsLoading: (state, action) => {
       state.isLoading = action.payload
     },
+    setToken: (state, action) => {
+      state.token = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -98,6 +103,6 @@ const userSlice = createSlice({
   },
 })
 
-export const { setUserProfile, setIsSubmitting, setIsLoading } =
+export const { setUserProfile, setIsSubmitting, setIsLoading, setToken } =
   userSlice.actions
 export default userSlice.reducer

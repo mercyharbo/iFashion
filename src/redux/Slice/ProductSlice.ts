@@ -11,7 +11,16 @@ type productDetails = {
   available_sizes: string[]
   reviews: []
   images: string[]
-  related: []
+  related: [
+    {
+      _id: string
+      title: string
+      discount: number
+      price: number
+      reviews: []
+      images: string[]
+    }
+  ]
   faq: []
   createdDate: string
   inStock: number
@@ -68,7 +77,6 @@ export const fetchProducts = createAsyncThunk(
     try {
       const token = localStorage.getItem('token') // Get the token from localStorage
       const headers = new Headers({
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       })
 

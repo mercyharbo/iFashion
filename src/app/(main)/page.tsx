@@ -28,9 +28,6 @@ export default function Home() {
 
   const productData = useAppSelector((state) => state.products)
   const isLoading = useAppSelector((state) => state.userProfile.isLoading)
-  const isLoadingProduct = useAppSelector((state) => state.products.isLoading)
-  const isError = useAppSelector((state) => state.products.error)
-  const user = useAppSelector((state) => state.userProfile.user)
 
   const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
   const browseStyle = [
@@ -80,9 +77,7 @@ export default function Home() {
   }, [revealRefs])
 
   useEffect(() => {
-    if (!isLoading) {
-      dispatch(fetchProducts())
-    }
+    dispatch(fetchProducts())
   }, [dispatch])
 
   const addToRefs = (el: HTMLElement | null) => {
@@ -94,7 +89,7 @@ export default function Home() {
   const currentDate = new Date() // Get the current date
   currentDate.setDate(currentDate.getDate() - 14)
 
-  const filteredProducts = productData?.products.filter((item) => {
+  const filteredProducts = productData?.products?.filter((item) => {
     const productDate = new Date(item.createdDate)
     return productDate >= currentDate
   })
@@ -102,15 +97,6 @@ export default function Home() {
   if (isLoading) {
     return <Loading />
   }
-
-  // if (!productData) {
-  //   return (
-  //     <Error
-  //       error={'An error occurred while trying to fetch this route.'}
-  //       reset={() => window.location.reload()}
-  //     />
-  //   )
-  // }
 
   return (
     <>
@@ -160,7 +146,7 @@ export default function Home() {
               'w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
             )}
           >
-            {filteredProducts.slice(0, 6).map((item) => {
+            {filteredProducts?.slice(0, 6)?.map((item) => {
               const avarageRating = CalculateAverageRating(item?.reviews)
               const productImage =
                 item?.images?.[0] ||
@@ -213,9 +199,9 @@ export default function Home() {
             )}
           >
             {productData?.products
-              .slice(0, 6)
-              .reverse()
-              .map((item) => {
+              ?.slice(0, 6)
+              ?.reverse()
+              ?.map((item) => {
                 const avarageRating = CalculateAverageRating(item?.reviews)
                 const productImage =
                   item?.images?.[0] ||
