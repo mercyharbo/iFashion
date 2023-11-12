@@ -28,34 +28,8 @@ type product = {
 }
 
 type InitialState = {
-  sellerproduct: [
-    {
-      _id: string
-      title: string
-      description: string
-      category: string
-      discount: number
-      price: number
-      colors: string[]
-      available_sizes: string[]
-      reviews: []
-      images: string[]
-      related: [
-        {
-          _id: string
-          title: string
-          discount: number
-          price: number
-          reviews: []
-          images: string[]
-        }
-      ]
-      faq: []
-      createdDate: string
-      inStock: number
-    }
-  ]
-  error: string | null
+  sellerproduct: product[]
+  error: null
   isLoading: boolean
 }
 
