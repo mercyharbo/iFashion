@@ -29,7 +29,7 @@ type product = {
 
 type InitialState = {
   sellerproduct: product[]
-  error: null
+  error: string | null
   isLoading: boolean
 }
 
@@ -102,6 +102,7 @@ const sellerSlice = createSlice({
       })
       .addCase(getSellerProduct.rejected, (state, action) => {
         state.error = action.payload as string
+        state.isLoading = false
       })
   },
 })
