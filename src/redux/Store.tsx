@@ -6,6 +6,7 @@ import searchModalReducer from '@/redux/Slice/SearchModalSlice'
 import filterReducer from '@/redux/Slice/Filter'
 import userProfile from '@/redux/Slice/UserSlice'
 import products from '@/redux/Slice/ProductSlice'
+import sellerSlice from '@/redux/Slice/sellerDashboard'
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     filterReducer,
     userProfile,
     products,
+    sellerSlice,
   },
   devTools: process.env.NODE_ENV !== 'production',
 })

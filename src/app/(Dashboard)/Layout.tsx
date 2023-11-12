@@ -6,9 +6,11 @@ import '@/app/globals.css'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <main className='flex w-full h-screen'>
+    <main className='flex gap-5 w-full h-screen'>
       <DashboardNav />
-      <section className='xl:w-[80%] md:w-full sm:w-full '>{children}</section>
+      <section className='3xl:w-[83%] 3xl:h-[95%] xl:w-[80%] md:w-full sm:w-full my-auto  '>
+        {children}
+      </section>
     </main>
   )
 }
