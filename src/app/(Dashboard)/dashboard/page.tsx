@@ -27,9 +27,9 @@ export default function Dashboard() {
   if (isLoading) return <Loading />
 
   return (
-    <main className=' xl:p-10 rounded-2xl shadow-2xl flex flex-col justify-start items-start gap-5 w-full h-full bg-white '>
-      <header className='flex xl:flex-row xl:justify-between xl:items-center w-full '>
-        <div className='flex justify-start items-center gap-5'>
+    <main className='xl:w-full xl:p-10 md:w-[90%] sm:w-[90%] mx-auto rounded-2xl shadow-2xl flex flex-col justify-start items-start gap-5 h-full bg-white '>
+      <header className='flex xl:flex-row xl:justify-between xl:items-center md:flex-row md:justify-center md:items-center md:gap-5 sm:justify-center sm:items-center sm:gap-5 sm:flex-col sm:p-5 w-full '>
+        <div className='flex xl:justify-start xl:items-center md:justify-center md:items-center sm:justify-center sm:items-center gap-5'>
           <Formik
             initialValues={{
               sort: '',
@@ -40,7 +40,7 @@ export default function Dashboard() {
               console.log(values)
             }}
           >
-            <Form className='flex justify-start items-start gap-5'>
+            <Form className='flex gap-5 xl:justify-start xl:items-start xl:flex-row md:flex-row md:justify-center md:items-center sm:justify-center sm:items-center sm:flex-col'>
               <div className='relative'>
                 <Field
                   type='text'
@@ -61,7 +61,7 @@ export default function Dashboard() {
           </Formik>
         </div>
 
-        <button className='flex justify-center items-center gap-1 bg-black text-white py-3 px-5 rounded-lg'>
+        <button className='flex justify-center items-center gap-1 bg-black text-white py-3 px-5 rounded-lg xl:w-auto md:w-auto sm:w-full'>
           <BiPlus className='text-2xl' />
           Add product
         </button>
@@ -85,8 +85,10 @@ export default function Dashboard() {
               </th>
               <th className='py-2 px-4 font-semibold'>SKU</th>
               <th className='py-2 px-4 font-semibold'>Product</th>
-              <th className='py-2 px-4 font-semibold'>Date</th>
-              <th className='py-2 px-4 font-semibold'></th>
+              <th className='py-2 px-4 font-semibold xl:block md:block sm:hidden'>
+                Date
+              </th>
+              <th className='py-2 px-4 font-semibold xl:block md:block sm:hidden'></th>
               <th className='py-2 px-4 font-semibold'>Action</th>
             </tr>
           </thead>
@@ -122,18 +124,20 @@ export default function Dashboard() {
                         alt={item.title}
                         width={50}
                         height={50}
-                        className='object-cover rounded-xl w-[60px] h-[50px] flex justify-center items-center '
+                        className='object-cover rounded-xl w-[60px] h-[50px] xl:flex md:hidden sm:hidden '
                       />
-                      <span className=' flex justify-center items-center'>
-                        {item.title}
-                      </span>
+                      <span>{item.title}</span>
                     </div>
                   </td>
-                  <td>{moment(item.createdDate).format('ll')}</td>
+                  <td>
+                    <span className='xl:block md:block sm:hidden'>
+                      {moment(item.createdDate).format('ll')}
+                    </span>
+                  </td>
                   <td>
                     <button
                       type='button'
-                      className='bg-black py-2 px-5 text-white rounded-md capitalize '
+                      className='bg-black py-2 px-5 text-white rounded-md capitalize xl:flex mx-auto md:hidden sm:hidden '
                     >
                       download qr code
                     </button>
