@@ -31,12 +31,16 @@ type InitialState = {
   sellerproduct: product[]
   error: string | null
   isLoading: boolean
+  sellerProductDetails: product | null
+  isModalOpen: boolean
 }
 
 const initialState: InitialState = {
   sellerproduct: [],
   error: null,
   isLoading: true,
+  sellerProductDetails: null,
+  isModalOpen: false,
 }
 
 // Create an async thunk to fetch user data
@@ -93,6 +97,12 @@ const sellerSlice = createSlice({
     setIsLoading: (state, action) => {
       state.isLoading = action.payload
     },
+    setSellerProductdetails: (state, action) => {
+      state.sellerProductDetails = action.payload
+    },
+    setIsModalOpen: (state, action) => {
+      state.isModalOpen = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -107,5 +117,6 @@ const sellerSlice = createSlice({
   },
 })
 
-export const { setIsLoading } = sellerSlice.actions
+export const { setIsLoading, setSellerProductdetails, setIsModalOpen } =
+  sellerSlice.actions
 export default sellerSlice.reducer
