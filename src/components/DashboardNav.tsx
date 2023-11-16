@@ -14,9 +14,9 @@ import {
 
 const navItems = [
   { id: 1, title: 'dashboard', href: '/dashboard', icon: <BiHome /> },
-  { id: 1, title: 'products', href: '/products', icon: <BiShoppingBag /> },
-  { id: 1, title: 'stores', href: '/stores', icon: <BiStore /> },
-  { id: 1, title: 'users', href: '/users', icon: <BiUser /> },
+  { id: 2, title: 'products', href: '/products', icon: <BiShoppingBag /> },
+  { id: 3, title: 'stores', href: '/stores', icon: <BiStore /> },
+  { id: 4, title: 'users', href: '/users', icon: <BiUser /> },
 ]
 
 export default function DashboardNav() {
