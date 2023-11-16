@@ -350,6 +350,7 @@ export default function Dashboard() {
                       {productDetails.colors.map((code) => {
                         return (
                           <span
+                            key={code}
                             className={clsx(`rounded-md w-[2rem] h-[2rem] `)}
                             style={{ backgroundColor: code }}
                           ></span>
