@@ -49,23 +49,50 @@ export default function Dashboard() {
     }
   }
 
-  const updateProduct = async (id: string) => {
+  const updateProduct = async () => {
     const token = localStorage.getItem('token')
     setIsSubmitting(true)
     try {
-      const response = await fetch(`${process.env.BASE_URL}/products/${id}`, {
-        method: 'PUT',
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(productDetails),
-      })
+      const response = await fetch(
+        `${process.env.BASE_URL}/products/${productDetails?._id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(productDetails),
+        }
+      )
 
       const data = await response.json()
       if (data?.success === true) {
         toast.success('Product updated successfully')
         setIsSubmitting(false)
         dispatch(setIsModalOpen(false))
+        window.location.reload()
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error, 'An error occurred while fetching update product')
+    }
+  }
+
+  const deleteProduct = async (id: string) => {
+    const token = localStorage.getItem('token')
+    try {
+      const response = await fetch(`${process.env.BASE_URL}/products/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token}`,
+        },
+      })
+
+      const data = await response.json()
+      if (data?.success === true) {
+        toast.success('Product Deleted successfully')
         window.location.reload()
       } else {
         toast.error(data.message)
@@ -156,7 +183,7 @@ export default function Dashboard() {
                   )}
                 >
                   <td>
-                    <div className='flex justify-start items-center gap-3 font-semibold'>
+                    <div className='flex justify-start items-start gap-3 font-semibold'>
                       <Image
                         src={item.images?.[0]}
                         alt={item.title}
@@ -184,7 +211,11 @@ export default function Dashboard() {
                       >
                         <BiEdit />{' '}
                       </button>
-                      <button type='button' className='text-2xl text-gray-500'>
+                      <button
+                        type='button'
+                        onClick={() => deleteProduct(item._id)}
+                        className='text-2xl text-gray-500'
+                      >
                         <MdDelete />{' '}
                       </button>
                     </div>
@@ -216,13 +247,14 @@ export default function Dashboard() {
                 <div className='flex justify-start items-center gap-5'>
                   <button
                     type='button'
+                    onClick={() => deleteProduct(productDetails._id)}
                     className='border py-3 px-5 rounded-lg bg-transparent flex justify-center items-center gap-2 capitalize'
                   >
                     <MdDelete className='text-xl' /> delete
                   </button>
                   <button
                     type='button'
-                    onClick={() => updateProduct(productDetails._id)}
+                    onClick={() => updateProduct()}
                     className='border py-3 px-5 rounded-lg bg-slate-700 text-white flex justify-center items-center gap-2 capitalize'
                   >
                     {isSubmitting ? (
@@ -248,6 +280,7 @@ export default function Dashboard() {
                     {productDetails?.images?.map((img) => {
                       return (
                         <Image
+                          key={img}
                           src={img}
                           alt='Product image'
                           width={200}
