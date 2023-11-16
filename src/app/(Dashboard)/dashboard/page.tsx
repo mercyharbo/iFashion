@@ -1,25 +1,25 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Field, Form, Formik } from 'formik'
-import { BiCheck, BiEdit, BiPlus } from 'react-icons/bi'
 import clsx from 'clsx'
 import { useDispatch } from 'react-redux'
 import { AppDispatch, useAppSelector } from '@/redux/Store'
+import { BiCheck, BiEdit, BiPlus } from 'react-icons/bi'
+import Image from 'next/image'
+import moment from 'moment'
+import { MdClose, MdDelete } from 'react-icons/md'
 import {
   getSellerProduct,
   setIsModalOpen,
   setSellerProductdetails,
 } from '@/redux/Slice/sellerDashboard'
-import Image from 'next/image'
-import moment from 'moment'
-import { MdClose, MdDelete } from 'react-icons/md'
-
 import Loading from '@/components/Loading'
-import { setProductDetailsData } from '@/redux/Slice/ProductSlice'
+import { toast } from 'react-toastify'
 
 export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>()
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const sellerProductData = useAppSelector(
     (state) => state.sellerSlice.sellerproduct
   )
@@ -28,9 +28,8 @@ export default function Dashboard() {
     (state) => state.sellerSlice.sellerProductDetails
   )
   const isModalOpen = useAppSelector((state) => state.sellerSlice.isModalOpen)
-  console.log('product details:', productDetails)
 
-  const updateProduct = async (id: string) => {
+  const getProduct = async (id: string) => {
     const token = localStorage.getItem('token')
     try {
       const response = await fetch(`${process.env.BASE_URL}/products/${id}`, {
@@ -44,6 +43,32 @@ export default function Dashboard() {
       if (data?.success === true) {
         dispatch(setSellerProductdetails(data.product))
         dispatch(setIsModalOpen(true))
+      }
+    } catch (error) {
+      console.log(error, 'An error occurred while fetching update product')
+    }
+  }
+
+  const updateProduct = async (id: string) => {
+    const token = localStorage.getItem('token')
+    setIsSubmitting(true)
+    try {
+      const response = await fetch(`${process.env.BASE_URL}/products/${id}`, {
+        method: 'PUT',
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(productDetails),
+      })
+
+      const data = await response.json()
+      if (data?.success === true) {
+        toast.success('Product updated successfully')
+        setIsSubmitting(false)
+        dispatch(setIsModalOpen(false))
+        window.location.reload()
+      } else {
+        toast.error(data.message)
       }
     } catch (error) {
       console.log(error, 'An error occurred while fetching update product')
@@ -154,7 +179,7 @@ export default function Dashboard() {
                     <div className='flex justify-start items-start gap-3 w-full'>
                       <button
                         type='button'
-                        onClick={() => updateProduct(item._id)}
+                        onClick={() => getProduct(item._id)}
                         className='text-2xl text-gray-500'
                       >
                         <BiEdit />{' '}
@@ -191,15 +216,23 @@ export default function Dashboard() {
                 <div className='flex justify-start items-center gap-5'>
                   <button
                     type='button'
-                    className='border py-3 px-5 rounded-lg bg-transparent flex justify-center items-center gap-2'
+                    className='border py-3 px-5 rounded-lg bg-transparent flex justify-center items-center gap-2 capitalize'
                   >
                     <MdDelete className='text-xl' /> delete
                   </button>
                   <button
                     type='button'
-                    className='border py-3 px-5 rounded-lg bg-slate-700 text-white flex justify-center items-center gap-2'
+                    onClick={() => updateProduct(productDetails._id)}
+                    className='border py-3 px-5 rounded-lg bg-slate-700 text-white flex justify-center items-center gap-2 capitalize'
                   >
-                    <BiCheck className='text-xl' /> save changes
+                    {isSubmitting ? (
+                      'Saving'
+                    ) : (
+                      <div className='flex justify-center items-center gap-2'>
+                        {' '}
+                        <BiCheck className='text-xl' /> save changes
+                      </div>
+                    )}
                   </button>
                 </div>
               </header>
@@ -259,10 +292,10 @@ export default function Dashboard() {
                     <p className='font-medium capitalize '>price</p>
 
                     <input
-                      type='text'
+                      type='number'
                       name='price'
                       id='price'
-                      value={productDetails?.price || 0}
+                      value={productDetails?.price || ''}
                       onChange={handleInputChange}
                       className='py-3 border px-4 rounded-md w-full'
                     />
@@ -301,7 +334,7 @@ export default function Dashboard() {
                       type='number'
                       name='inStock'
                       id='inStock'
-                      value={productDetails.inStock || 0}
+                      value={productDetails.inStock || ''}
                       onChange={handleInputChange}
                       className='py-3 border px-4 rounded-md w-full'
                     />
@@ -314,7 +347,7 @@ export default function Dashboard() {
                       type='number'
                       name='discount'
                       id='discount'
-                      value={productDetails.discount || 0}
+                      value={productDetails.discount || ''}
                       onChange={handleInputChange}
                       className='py-3 border px-4 rounded-md w-full'
                     />
