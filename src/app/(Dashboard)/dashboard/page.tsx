@@ -163,68 +163,65 @@ export default function Dashboard() {
         </button>
       </header>
 
-      <div className='xl:py-10 md:py-10 sm:p-5 w-full'>
-        <table className='3xl:w-[70%] 2xl:w-[80%] xl:w-full md:w-full sm:w-full '>
-          <thead>
-            <tr className='border-b border-gray-300 text-left '>
-              <th className='py-2 font-semibold'>Product</th>
-              <th className='py-2 font-semibold'>Date</th>
+      <div className='p-5 w-full'>
+        <div className='flex justify-between items-center gap-5 border-b py-3'>
+          <span className='font-semibold capitalize 2xl:w-[30%] xl:w-[30%] lg:w-[30%] md:w-[40%] sm:w-[40%] '>
+            product
+          </span>
+          <span className='font-semibold capitalize 2xl:w-[10%] xl:w-[10%] xl:flex lg:w-[10%] md:hidden md:w-[5%] sm:hidden sm:w-[5%] '>
+            in-stock
+          </span>
+          <span className='font-semibold capitalize 2xl:w-[20%] xl:w-[20%] lg:w-[20%]  md:w-[20%] sm:w-[20%] '>
+            date
+          </span>
+          <span className='font-semibold capitalize 2xl:w-[20%] xl:w-[20%] lg:w-[20%] md:w-[20%] sm:w-[20%] '>
+            actions
+          </span>
+        </div>
+        {sellerProductData?.map((item) => {
+          return (
+            <div
+              key={item._id}
+              className='flex justify-between items-center gap-5 w-full py-5'
+            >
+              <div className='2xl:w-[30%] xl:w-[30%] lg:w-[30%] md:w-[40%] sm:w-[40%] flex justify-start items-center gap-3 font-semibold'>
+                <Image
+                  src={item.images?.[0]}
+                  alt={item.title}
+                  width={50}
+                  height={50}
+                  className='object-cover rounded-xl w-[5rem] h-[4rem] xl:flex md:hidden sm:hidden '
+                />
+                <span className='xl:text-lg md:text-xl sm:text-sm'>
+                  {item.title}
+                </span>
+              </div>
 
-              <th className='py-2 font-semibold'>Action</th>
-            </tr>
-          </thead>
-          <tbody className=' w-full'>
-            {sellerProductData?.map((item) => {
-              return (
-                <tr
-                  key={item._id}
-                  className={clsx(
-                    'text-left h-[4rem] border-b hover:bg-[#F5F7F8] cursor-pointer '
-                  )}
+              <span className='2xl:w-[10%] xl:w-[10%] xl:flex lg:w-[10%] md:hidden md:w-[5%] sm:hidden sm:w-[5%] '>
+                {item.inStock}
+              </span>
+              <span className='2xl:w-[20%] xl:w-[20%] lg:w-[20%] md:w-[20%] sm:w-[20%] xl:text-lg md:text-xl sm:text-sm'>
+                {moment(item.createdDate).format('l')}
+              </span>
+              <div className='2xl:w-[20%] xl:w-[20%] lg:w-[20%] md:w-[20%] sm:w-[20%] flex justify-start items-start gap-5 '>
+                <button
+                  type='button'
+                  onClick={() => getProduct(item._id)}
+                  className='text-2xl text-gray-500'
                 >
-                  <td>
-                    <div className='flex justify-start items-start gap-3 font-semibold'>
-                      <Image
-                        src={item.images?.[0]}
-                        alt={item.title}
-                        width={50}
-                        height={50}
-                        className='object-cover rounded-xl w-[60px] h-[50px] xl:flex md:hidden sm:hidden '
-                      />
-                      <span className='xl:text-lg md:text-xl sm:text-sm'>
-                        {item.title}
-                      </span>
-                    </div>
-                  </td>
-                  <td>
-                    <span className='xl:text-lg md:text-xl sm:text-sm'>
-                      {moment(item.createdDate).format('l')}
-                    </span>
-                  </td>
-
-                  <td>
-                    <div className='flex justify-start items-start gap-3 w-full'>
-                      <button
-                        type='button'
-                        onClick={() => getProduct(item._id)}
-                        className='text-2xl text-gray-500'
-                      >
-                        <BiEdit />{' '}
-                      </button>
-                      <button
-                        type='button'
-                        onClick={() => deleteProduct(item._id)}
-                        className='text-2xl text-gray-500'
-                      >
-                        <MdDelete />{' '}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+                  <BiEdit />{' '}
+                </button>
+                <button
+                  type='button'
+                  onClick={() => deleteProduct(item._id)}
+                  className='text-2xl text-gray-500'
+                >
+                  <MdDelete />{' '}
+                </button>
+              </div>
+            </div>
+          )
+        })}
       </div>
 
       {isModalOpen && productDetails && (
@@ -262,7 +259,7 @@ export default function Dashboard() {
                     ) : (
                       <div className='flex justify-center items-center gap-2'>
                         {' '}
-                        <BiCheck className='text-xl' /> save changes
+                        <BiCheck className='text-xl' /> save
                       </div>
                     )}
                   </button>
@@ -286,7 +283,7 @@ export default function Dashboard() {
                           width={200}
                           height={200}
                           className='object-cover rounded-lg 3xl:w-[200px] 3xl:h-[200px] 2xl:w-[150px] 2xl:h-[150px] xl:w-[100px] xl:h-[100px] md:w-[80px] md:h-[80px]
-                          sm:w-[50px] sm:h-[50px] '
+                          sm:w-[80px] sm:h-[80px] '
                         />
                       )
                     })}
@@ -320,7 +317,7 @@ export default function Dashboard() {
                   />
                 </div>
 
-                <div className='flex justify-start items-start gap-5 w-full'>
+                <div className='flex justify-start items-start gap-5 w-full xl:flex-row md:flex-row sm:flex-col'>
                   <div className='flex flex-col justify-start items-start gap-3 w-full '>
                     <p className='font-medium capitalize '>price</p>
 
@@ -360,7 +357,7 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                <div className='flex justify-start items-start gap-5 w-full'>
+                <div className='flex justify-start items-start gap-5 w-full xl:flex-row md:flex-row sm:flex-col'>
                   <div className='flex flex-col justify-start items-start gap-3 w-full '>
                     <p className='font-medium capitalize '>In-Stock</p>
 
@@ -388,7 +385,7 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                <div className='flex flex-col justify-start items-start gap-3 3xl:w-[50%] '>
+                <div className='flex flex-col justify-start items-start gap-3 3xl:w-[50%] 2xl:w-[50%] xl:w-[50%] lg:w-[50%] md:w-full sm:w-full '>
                   <p className='font-medium capitalize '>category</p>
 
                   <input
