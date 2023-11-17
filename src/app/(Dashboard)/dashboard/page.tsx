@@ -180,7 +180,10 @@ export default function Dashboard() {
         </div>
         {sellerProductData?.map((item) => {
           return (
-            <div className='flex justify-between items-center gap-5 w-full py-5'>
+            <div
+              key={item._id}
+              className='flex justify-between items-center gap-5 w-full py-5'
+            >
               <div className='2xl:w-[30%] xl:w-[30%] lg:w-[30%] md:w-[40%] sm:w-[40%] flex justify-start items-center gap-3 font-semibold'>
                 <Image
                   src={item.images?.[0]}
