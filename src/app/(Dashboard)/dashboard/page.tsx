@@ -28,6 +28,7 @@ export default function Dashboard() {
     (state) => state.sellerSlice.sellerProductDetails
   )
   const isModalOpen = useAppSelector((state) => state.sellerSlice.isModalOpen)
+  const openAddProductModal = useAppSelector((state) => state.sellerSlice.openAddProductModal)
 
   const getProduct = async (id: string) => {
     const token = localStorage.getItem('token')
