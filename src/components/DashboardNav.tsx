@@ -23,7 +23,7 @@ export default function DashboardNav() {
   const pathname = usePathname()
 
   return (
-    <nav className='3xl:w-[15%] xl:w-[20%] xl:flex xl:flex-col xl:justify-between xl:items-start xl:gap-5 xl:py-10 xl:px-5 md:hidden sm:hidden bg-white shadow-2xl '>
+    <nav className='3xl:w-[20%] xl:w-[25%] xl:flex xl:flex-col xl:justify-between xl:items-start xl:gap-5 xl:py-10 xl:px-5 md:hidden sm:hidden bg-white shadow-2xl '>
       <Link href='/' className='uppercase text-3xl font-bold'>
         shop.co
       </Link>

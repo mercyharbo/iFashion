@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <DashboardNav />
       <section className='w-full flex flex-col justify-start items-center gap-3 '>
         <DashboardHeader />
-        <div className='3xl:w-[83%] 3xl:h-[90%] 2xl:w-[95%] 2xl:h-[85%] xl:w-[95%] my-auto md:h-[90%] md:w-full sm:h-[90%] sm:w-full '>
+        <div className='3xl:w-[95%] 3xl:h-[90%] 2xl:w-[95%] 2xl:h-[85%] xl:w-[95%] my-auto md:h-[90%] md:w-full sm:h-[90%] sm:w-full '>
           {' '}
           {children}
         </div>
