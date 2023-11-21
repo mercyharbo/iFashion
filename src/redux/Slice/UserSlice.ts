@@ -9,6 +9,7 @@ type UserProfile = {
   address: string
   gender: string
   dateOfBirth: any
+  profile_picture: string
 }
 
 type InitialState = {

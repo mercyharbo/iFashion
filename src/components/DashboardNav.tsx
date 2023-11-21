@@ -23,7 +23,7 @@ export default function DashboardNav() {
   const pathname = usePathname()
 
   return (
-    <nav className='3xl:w-[15%] xl:w-[20%] xl:flex xl:flex-col xl:justify-between xl:items-start xl:gap-5 xl:py-10 xl:px-5 md:hidden sm:hidden bg-white shadow-2xl '>
+    <nav className='3xl:w-[20%] xl:w-[25%] xl:flex xl:flex-col xl:justify-between xl:items-start xl:gap-5 xl:py-10 xl:px-5 md:hidden sm:hidden bg-white shadow-2xl '>
       <Link href='/' className='uppercase text-3xl font-bold'>
         shop.co
       </Link>
@@ -35,7 +35,7 @@ export default function DashboardNav() {
               href={item.href}
               className={clsx(
                 'py-3 w-full capitalize pl-2 flex justify-start items-center gap-2 rounded-md',
-                pathname === item.href ? 'bg-blue-300  ' : ''
+                pathname === item.href ? 'bg-black text-white  ' : ''
               )}
             >
               <span className='text-2xl'> {item.icon}</span>

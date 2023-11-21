@@ -2,10 +2,10 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ToastContainer } from 'react-toastify'
 
+import clsx from 'clsx'
 import { Providers } from '@/redux/Provider'
 import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
-import clsx from 'clsx'
 
 const inter = Inter({ subsets: ['latin'] })
 
