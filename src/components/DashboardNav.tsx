@@ -35,7 +35,7 @@ export default function DashboardNav() {
               href={item.href}
               className={clsx(
                 'py-3 w-full capitalize pl-2 flex justify-start items-center gap-2 rounded-md',
-                pathname === item.href ? 'bg-blue-300  ' : ''
+                pathname === item.href ? 'bg-black text-white  ' : ''
               )}
             >
               <span className='text-2xl'> {item.icon}</span>

@@ -34,6 +34,7 @@ type InitialState = {
   sellerProductDetails: product | null
   isModalOpen: boolean
   openAddProductModal: boolean
+  uploadedFiles: string[]
 }
 
 const initialState: InitialState = {
@@ -43,6 +44,7 @@ const initialState: InitialState = {
   sellerProductDetails: null,
   isModalOpen: false,
   openAddProductModal: false,
+  uploadedFiles: [],
 }
 
 // Create an async thunk to fetch user data
@@ -108,6 +110,9 @@ const sellerSlice = createSlice({
     setOpenAddProductModal: (state, action) => {
       state.openAddProductModal = action.payload
     },
+    setUploadedFiles: (state, action) => {
+      state.uploadedFiles = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -122,6 +127,11 @@ const sellerSlice = createSlice({
   },
 })
 
-export const { setIsLoading, setSellerProductdetails, setIsModalOpen } =
-  sellerSlice.actions
+export const {
+  setIsLoading,
+  setSellerProductdetails,
+  setIsModalOpen,
+  setOpenAddProductModal,
+  setUploadedFiles,
+} = sellerSlice.actions
 export default sellerSlice.reducer

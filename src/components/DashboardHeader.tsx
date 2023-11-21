@@ -34,6 +34,8 @@ export default function DashboardHeader() {
   const token = useAppSelector((state) => state.userProfile.token)
   const user = useAppSelector((state) => state.userProfile.user)
 
+  console.log(pathname, 'as pathname')
+
   useEffect(() => {
     const tokenGotten = localStorage.getItem('token')
     dispatch(setToken(tokenGotten))
@@ -90,8 +92,10 @@ export default function DashboardHeader() {
                     key={item.id}
                     href={item.href}
                     className={clsx(
-                      'flex justify-start items-center gap-2 py-3 px-2 w-full rounded-xl text-white capitalize',
-                      pathname === item.href ? 'bg-white text-[black] ' : ''
+                      'flex justify-start items-center gap-2 py-3 px-2 w-full rounded-xl capitalize hover:bg-white hover:text-black',
+                      pathname === item.href
+                        ? 'bg-white text-black '
+                        : ' text-white'
                     )}
                   >
                     <span className='text-2xl'> {item.icon}</span>
