@@ -47,8 +47,9 @@ export default function DashboardHeader() {
     <nav className='relative flex justify-between items-center bg-white shadow-lg h-[4rem] w-full xl:px-10 md:px-10 sm:px-5 '>
       <h1 className='font-semibold capitalize text-2xl '>Dashboard</h1>
 
-      <div className='xl:flex md:flex sm:hidden justify-start items-center gap-5'>
-        {/* <Image
+      <div className='flex justify-start items-start gap-5'>
+        <div className='xl:flex md:flex sm:hidden justify-start items-center gap-5'>
+          {/* <Image
           src={user?.profile_picture || ''}
           alt={user?.firstName || ''}
           width={100}
@@ -56,27 +57,28 @@ export default function DashboardHeader() {
           className='object-cover object-top rounded-full'
         /> */}
 
-        <button type='button' className='text-2xl'>
-          <HiMagnifyingGlass />
-        </button>
-        <button type='button' className='text-2xl'>
-          <BiBell />
-        </button>
-        <Link
-          href='/profile'
-          className='font-semibold flex justify-start items-center gap-2'
+          <button type='button' className='text-2xl'>
+            <HiMagnifyingGlass />
+          </button>
+          <button type='button' className='text-2xl'>
+            <BiBell />
+          </button>
+          <Link
+            href='/profile'
+            className='font-semibold flex justify-start items-center gap-2'
+          >
+            {user ? `Welcome, ${user?.firstName}` : ''}
+            <IoIosArrowDown />
+          </Link>
+        </div>
+        <button
+          type='button'
+          onClick={() => setIsNavModal(true)}
+          className='xl:hidden md:flex sm:flex text-2xl'
         >
-          {user ? `Welcome, ${user?.firstName}` : ''}
-          <IoIosArrowDown />
-        </Link>
+          <HiOutlineBars3BottomRight />
+        </button>
       </div>
-      <button
-        type='button'
-        onClick={() => setIsNavModal(true)}
-        className='xl:hidden md:hidden sm:flex text-2xl'
-      >
-        <HiOutlineBars3BottomRight />
-      </button>
 
       {isNavOpen && (
         <>
