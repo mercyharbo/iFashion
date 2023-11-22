@@ -167,7 +167,7 @@ export default function Dashboard() {
       className='xl:w-full xl:p-10 xl:justify-start xl:items-start md:justify-start md:items-start md:w-[90%] sm:w-[90%] mx-auto rounded-2xl shadow-2xl flex flex-col 
      gap-5 h-full bg-white '
     >
-      <header className='flex xl:flex-row xl:justify-between xl:items-center md:flex-row md:justify-center md:items-center md:gap-5 sm:justify-center sm:items-center sm:gap-5 sm:flex-col sm:p-5 w-full '>
+      <header className='flex xl:flex-row xl:justify-between xl:items-center md:flex-row md:justify-between md:items-center md:gap-5 sm:justify-center sm:items-center sm:gap-5 sm:flex-col sm:p-5 w-full '>
         <div className='flex xl:justify-start xl:items-center md:justify-center md:items-center sm:justify-center sm:items-center gap-5'>
           <Formik
             initialValues={{
@@ -214,10 +214,10 @@ export default function Dashboard() {
           <span className='font-semibold capitalize 2xl:w-[30%] xl:w-[30%] lg:w-[30%] md:w-[40%] sm:w-[40%] '>
             product
           </span>
-          <span className='font-semibold capitalize 2xl:w-[10%] xl:w-[10%] xl:flex lg:w-[10%] md:hidden md:w-[5%] sm:hidden sm:w-[5%] '>
+          <span className='font-semibold capitalize 2xl:w-[10%] xl:w-[10%] xl:flex lg:w-[10%] md:flex md:w-[10%] sm:hidden sm:w-[5%] '>
             in-stock
           </span>
-          <span className='font-semibold capitalize 2xl:w-[20%] xl:w-[20%] lg:w-[20%]  md:w-[20%] sm:w-[20%] '>
+          <span className='font-semibold capitalize 2xl:w-[20%] xl:w-[20%] lg:w-[20%] md:w-[15%] sm:w-[20%] '>
             date
           </span>
           <span className='font-semibold capitalize 2xl:w-[20%] xl:w-[20%] lg:w-[20%] md:w-[20%] sm:w-[20%] '>
@@ -238,15 +238,15 @@ export default function Dashboard() {
                   height={50}
                   className='object-cover rounded-xl w-[5rem] h-[4rem] xl:flex md:hidden sm:hidden '
                 />
-                <span className='xl:text-lg md:text-xl sm:text-sm'>
+                <span className='xl:text-lg md:text-base sm:text-sm'>
                   {item.title}
                 </span>
               </div>
 
-              <span className='2xl:w-[10%] xl:w-[10%] xl:flex lg:w-[10%] md:hidden md:w-[5%] sm:hidden sm:w-[5%] '>
+              <span className='2xl:w-[10%] xl:w-[10%] xl:flex lg:w-[10%] lg:text-base md:flex md:w-[10%] md:text-base sm:text-sm sm:hidden sm:w-[5%] '>
                 {item.inStock}
               </span>
-              <span className='2xl:w-[20%] xl:w-[20%] lg:w-[20%] md:w-[20%] sm:w-[20%] xl:text-lg md:text-xl sm:text-sm'>
+              <span className='2xl:w-[20%] xl:w-[20%] xl:text-base lg:w-[20%] lg:text-base md:text-base md:w-[15%] sm:w-[20%] sm:text-sm'>
                 {moment(item.createdDate).format('l')}
               </span>
               <div className='2xl:w-[20%] xl:w-[20%] lg:w-[20%] md:w-[20%] sm:w-[20%] flex justify-start items-start gap-5 '>
