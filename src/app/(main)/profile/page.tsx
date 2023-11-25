@@ -11,6 +11,8 @@ import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { toast } from 'react-toastify'
 import moment from 'moment'
 import { setUpdateProfileModal } from '@/redux/Slice/ModalSlice'
+import SelectField from '@/components/FieldSelect'
+import Loading from '@/components/Loading'
 
 interface Values {
   email: string
@@ -20,7 +22,19 @@ interface Values {
   dateOfBirth: any
   firstName: string
   lastName: string
+  accountType: string
 }
+
+const genderOptions = [
+  { value: 'Male', label: 'Male' },
+  { value: 'Female', label: 'Female' },
+  { value: 'other', label: 'Other' },
+]
+
+const accountType = [
+  { value: 'buyer', label: 'Buyer' },
+  { value: 'seller', label: 'Seller' },
+]
 
 export default function Profile() {
   const dispatch = useDispatch<AppDispatch>()
@@ -85,6 +99,8 @@ export default function Profile() {
   const userDateOfBirth = user?.dateOfBirth
     ? moment(user.dateOfBirth).format('YYYY-MM-DD')
     : ''
+
+  if (!user) return <Loading />
 
   return (
     <>
@@ -169,6 +185,14 @@ export default function Profile() {
                 ? moment(user.dateOfBirth).format('LL')
                 : 'Not filled'}
             </p>
+            <p
+              className={clsx(
+                'flex flex-col justify-start items-start gap-2 font-medium capitalize'
+              )}
+            >
+              <span className='text-gray-400 font-normal '>Account Type</span>{' '}
+              {user?.accountType ? user?.accountType : 'Not filled'}
+            </p>
           </div>
 
           <div
@@ -231,6 +255,7 @@ export default function Profile() {
                   firstName: user?.firstName || '',
                   lastName: user?.lastName || '',
                   phoneNumber: user?.phoneNumber || '',
+                  accountType: user?.accountType || '',
                 }}
                 onSubmit={(values: Values, {}: FormikHelpers<Values>) => {
                   handleUpdateProfile(values)
@@ -296,17 +321,19 @@ export default function Profile() {
                     />
                   </div>
 
-                  <div className='flex flex-col justify-start items-start gap-2 w-full'>
-                    <label htmlFor='gender' className='capitalize font-medium'>
-                      Gender
-                    </label>
-                    <Field
-                      id='gender'
-                      name='gender'
-                      type='text'
-                      className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none '
-                    />
-                  </div>
+                  <SelectField
+                    label='Gender'
+                    name='gender'
+                    options={genderOptions}
+                    defaultValue={user?.gender || ''}
+                  />
+
+                  <SelectField
+                    label='Account type:'
+                    name='accountType'
+                    options={accountType}
+                    defaultValue={user?.accountType || ''}
+                  />
 
                   <div className='flex flex-col justify-start items-start gap-2 w-full'>
                     <label

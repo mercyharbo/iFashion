@@ -10,6 +10,7 @@ type UserProfile = {
   gender: string
   dateOfBirth: any
   profile_picture: string
+  accountType: string
 }
 
 type InitialState = {

@@ -22,10 +22,12 @@ import Loading from '@/components/Loading'
 import FormikField from '@/components/FormikField'
 import FormikTextarea from '@/components/FormikTextarea'
 import DropzoneComponent from '@/components/ImageUploader'
+import AddField from '@/components/AddField'
 
 export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [valuesArray, setValuesArray] = useState<string[]>([])
 
   const sellerProductData = useAppSelector(
     (state) => state.sellerSlice.sellerproduct
@@ -313,150 +315,95 @@ export default function Dashboard() {
               </header>
 
               <article
-                className='flex flex-col justify-start items-start 3xl:gap-10 3xl:w-[70%] 2xl:w-[80%] xl:w-full xl:py-[4rem] lg:w-full lg:gap-10 md:w-full 
+                className='flex flex-col justify-start items-start 3xl:gap-10 3xl:w-[70%] 2xl:w-[100%] xl:w-full xl:py-[4rem] lg:w-full lg:gap-10 md:w-full 
               md:py-[2rem] md:gap-5 sm:py-[2rem] sm:w-full sm:gap-5 '
               >
-                <div className='flex flex-col justify-start items-start gap-3 w-full '>
-                  <p className='font-medium capitalize '>photos</p>
+                <Formik
+                  initialValues={{
+                    title: productDetails.title || '',
+                    description: productDetails.description || '',
+                    price: productDetails.price || '',
+                    colors: '',
+                    inStock: productDetails.inStock || '',
+                    discount: productDetails.discount || '',
+                    category: productDetails.category || '',
+                    size: '',
+                  }}
+                  onSubmit={(values) => {
+                    console.log(values)
+                  }}
+                >
+                  <Form className='flex flex-col justify-start items-start gap-5 w-full'>
+                    <div className='flex flex-col justify-start items-start gap-3 w-full '>
+                      <p className='font-medium capitalize '>photos</p>
 
-                  {productDetails?.images.length > 0 ? (
-                    <div className='flex justify-start items-start gap-5 flex-wrap'>
-                      {productDetails?.images?.map((img) => {
-                        return (
-                          <Image
-                            key={img}
-                            src={img}
-                            alt='Product image'
-                            width={200}
-                            height={200}
-                            className='object-cover rounded-lg 3xl:w-[200px] 3xl:h-[200px] 2xl:w-[150px] 2xl:h-[150px] xl:w-[100px] xl:h-[100px] md:w-[80px] md:h-[80px]
+                      {productDetails?.images.length > 0 ? (
+                        <div className='flex justify-start items-start gap-5 flex-wrap'>
+                          {productDetails?.images?.map((img) => {
+                            return (
+                              <Image
+                                key={img}
+                                src={img}
+                                alt='Product image'
+                                width={200}
+                                height={200}
+                                className='object-cover rounded-lg 3xl:w-[200px] 3xl:h-[200px] 2xl:w-[150px] 2xl:h-[150px] xl:w-[100px] xl:h-[100px] md:w-[80px] md:h-[80px]
                           sm:w-[80px] sm:h-[80px] '
-                          />
-                        )
-                      })}
+                              />
+                            )
+                          })}
+                        </div>
+                      ) : (
+                        <div className='flex flex-col justify-center items-center gap-3 w-full'>
+                          <h1 className='font-semibold'>
+                            Images is empty, try and upload some images of your
+                            product
+                          </h1>
+                          <span className='text-sm'>
+                            Click or drag and drop your images into the box
+                            below.
+                          </span>
+                        </div>
+                      )}
+
+                      <DropzoneComponent />
                     </div>
-                  ) : (
-                    <div className='flex flex-col justify-center items-center gap-3 w-full'>
-                      <h1 className='font-semibold'>
-                        Images is empty, try and upload some images of your
-                        product
-                      </h1>
-                      <span className='text-sm'>
-                        Click or drag and drop your images into the box below.
-                      </span>
+
+                    <FormikField type='text' name='title' label='title' />
+
+                    <FormikTextarea name='description' label='description' />
+
+                    <div className='flex justify-start items-start gap-5 w-full xl:flex-row md:flex-row sm:flex-col'>
+                      <FormikField type='text' name='price' label='price' />
+                      <FormikField type='text' name='colors' label='colors' />
                     </div>
-                  )}
 
-                  <DropzoneComponent />
-                </div>
-
-                <div className='flex flex-col justify-start items-start gap-3 w-full '>
-                  <p className='font-medium capitalize '>name</p>
-
-                  <input
-                    type='text'
-                    name='title'
-                    id='title'
-                    value={productDetails?.title || ''}
-                    onChange={handleInputChange}
-                    className='py-3 border px-4 rounded-md w-full'
-                  />
-                </div>
-
-                <div className='flex flex-col justify-start items-start gap-3 w-full '>
-                  <p className='font-medium capitalize '>description</p>
-
-                  <textarea
-                    rows={4}
-                    cols={4}
-                    name='description'
-                    id='description'
-                    value={productDetails?.description || ''}
-                    onChange={handleInputChange}
-                    className='p-4 border rounded-md w-full'
-                  />
-                </div>
-
-                <div className='flex justify-start items-start gap-5 w-full xl:flex-row md:flex-row sm:flex-col'>
-                  <div className='flex flex-col justify-start items-start gap-3 w-full '>
-                    <p className='font-medium capitalize '>price</p>
-
-                    <input
-                      type='number'
-                      name='price'
-                      id='price'
-                      value={productDetails?.price || ''}
-                      onChange={handleInputChange}
-                      className='py-3 border px-4 rounded-md w-full'
-                    />
-                  </div>
-
-                  <div className='flex flex-col justify-start items-start gap-3 w-full '>
-                    <p className='font-medium capitalize '>colors</p>
-
-                    <input
-                      type='text'
-                      name='colors'
-                      id='colors'
-                      // onChange={handleInputChange}
-                      placeholder='Enter your color code'
-                      className='py-3 border px-4 rounded-md w-full'
-                    />
-
-                    <div className='flex justify-start items-start gap-5'>
-                      {productDetails.colors.map((code) => {
-                        return (
-                          <span
-                            key={code}
-                            className={clsx(`rounded-md w-[2rem] h-[2rem] `)}
-                            style={{ backgroundColor: code }}
-                          ></span>
-                        )
-                      })}
+                    <div className='flex justify-start items-start gap-5 w-full xl:flex-row md:flex-row sm:flex-col'>
+                      <FormikField type='text' name='inStock' label='inStock' />
+                      <FormikField
+                        type='text'
+                        name='discount'
+                        label='discount'
+                      />
                     </div>
-                  </div>
-                </div>
 
-                <div className='flex justify-start items-start gap-5 w-full xl:flex-row md:flex-row sm:flex-col'>
-                  <div className='flex flex-col justify-start items-start gap-3 w-full '>
-                    <p className='font-medium capitalize '>In-Stock</p>
+                    <div className='grid w-full gap-5 xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1'>
+                      <FormikField
+                        type='text'
+                        name='category'
+                        label='category'
+                      />
 
-                    <input
-                      type='number'
-                      name='inStock'
-                      id='inStock'
-                      value={productDetails.inStock || ''}
-                      onChange={handleInputChange}
-                      className='py-3 border px-4 rounded-md w-full'
-                    />
-                  </div>
-
-                  <div className='flex flex-col justify-start items-start gap-3 w-full '>
-                    <p className='font-medium capitalize '>discount</p>
-
-                    <input
-                      type='number'
-                      name='discount'
-                      id='discount'
-                      value={productDetails.discount || ''}
-                      onChange={handleInputChange}
-                      className='py-3 border px-4 rounded-md w-full'
-                    />
-                  </div>
-                </div>
-
-                <div className='flex flex-col justify-start items-start gap-3 3xl:w-[50%] 2xl:w-[50%] xl:w-[50%] lg:w-[50%] md:w-full sm:w-full '>
-                  <p className='font-medium capitalize '>category</p>
-
-                  <input
-                    type='text'
-                    name='category'
-                    id='category'
-                    value={productDetails.category || ''}
-                    onChange={handleInputChange}
-                    className='py-3 border px-4 rounded-md w-full'
-                  />
-                </div>
+                      <AddField
+                        label='Sizes'
+                        name='sizes'
+                        placeholder='Enter the sizes and enter key'
+                        valuesArray={valuesArray}
+                        setValuesArray={setValuesArray}
+                      />
+                    </div>
+                  </Form>
+                </Formik>
               </article>
             </div>
           </section>
