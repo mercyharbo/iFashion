@@ -337,7 +337,7 @@ const Navbar = () => {
           showLogo={true}
           showHeader={true}
           modalClass=' nav-container w-[80%] mx-auto top-0 left-0 p-5 z-20 rounded-r-xl h-screen absolute bg-white '
-          contentClass='flex flex-col justify-start items-start gap-5 capitalize font-semibold pt-10 text-lg'
+          contentClass='flex flex-col justify-start items-start gap-5 capitalize font-normal pt-10 text-lg'
         >
           {NavItems.map((items) => {
             return (

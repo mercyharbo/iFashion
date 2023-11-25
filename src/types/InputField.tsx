@@ -31,8 +31,6 @@ const InputField = ({
         type={type}
         placeholder={placeholder}
         value={value}
-        name=''
-        id=''
         onChange={onChange}
         className={clsx(
           'rounded-full px-3 text-sm bg-[#F0F0F0] outline-none border-2 h-[45px] w-full',

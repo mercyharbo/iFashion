@@ -46,7 +46,7 @@ const Modal = ({
         )}
       >
         {showHeader && (
-          <div className='flex justify-between items-center mr-auto '>
+          <div className='flex justify-between items-center mr-auto w-full '>
             {showLogo && (
               <h1 className='text-2xl font-normal capitalize'>{headerTitle}</h1>
             )}
