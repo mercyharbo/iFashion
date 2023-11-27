@@ -16,8 +16,9 @@ const AddField: React.FC<AddFieldProps> = ({
   label,
   placeholder,
 }) => {
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault() // Prevent form submission on Enter key
       const newValue = e.currentTarget.value.trim()
       if (newValue !== '') {
         setValuesArray((prevValues) => [...prevValues, newValue])
@@ -31,10 +32,10 @@ const AddField: React.FC<AddFieldProps> = ({
       <label htmlFor={name} className='font-medium capitalize '>
         {label}
       </label>
-      <Field
+      <input
         name={name}
         type='text'
-        onKeyPress={handleKeyPress}
+        onKeyDown={handleKeyDown}
         placeholder={placeholder}
         className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none'
       />

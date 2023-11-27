@@ -23,9 +23,14 @@ import FormikField from '@/components/FormikField'
 import FormikTextarea from '@/components/FormikTextarea'
 import DropzoneComponent from '@/components/ImageUploader'
 import AddField from '@/components/AddField'
+import useColorPicker from '@/components/ColorPicker'
+import { setProductDetailsData } from '@/redux/Slice/ProductSlice'
 
 export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>()
+  const { selectedColors, addColor, removeColor, resetColors } =
+    useColorPicker()
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [valuesArray, setValuesArray] = useState<string[]>([])
 
@@ -36,6 +41,8 @@ export default function Dashboard() {
   const productDetails = useAppSelector(
     (state) => state.sellerSlice.sellerProductDetails
   )
+  console.log(productDetails, 'as product details')
+
   const isModalOpen = useAppSelector((state) => state.sellerSlice.isModalOpen)
   const openAddProductModal = useAppSelector(
     (state) => state.sellerSlice.openAddProductModal
@@ -64,15 +71,47 @@ export default function Dashboard() {
     }
   }
 
-  const updateProduct = async () => {
+  const updateProduct = async (selectedColors, valuesArray) => {
     const token = localStorage.getItem('token')
     setIsSubmitting(true)
+
     try {
       // Prepare the request body
-      const body =
-        uploadedFiles.length > 0
-          ? { ...productDetails, images: uploadedFiles }
-          : productDetails
+      let body = {
+        ...productDetails,
+      }
+
+      // Check if there are changes to colors
+      if (
+        selectedColors.length > 0 &&
+        JSON.stringify(selectedColors) !==
+          JSON.stringify(productDetails?.colors || [])
+      ) {
+        body = {
+          ...body,
+          colors: [...(productDetails?.colors || []), ...selectedColors],
+        }
+      }
+
+      // Check if there are changes to available_sizes
+      if (
+        valuesArray.length > 0 &&
+        JSON.stringify(valuesArray) !==
+          JSON.stringify(productDetails?.available_sizes || [])
+      ) {
+        body = {
+          ...body,
+          available_sizes: [
+            ...(productDetails?.available_sizes || []),
+            ...valuesArray,
+          ],
+        }
+      }
+
+      // Only include images if uploadedFiles is not empty
+      if (uploadedFiles.length > 0) {
+        body = { ...body, images: uploadedFiles }
+      }
 
       const response = await fetch(
         `${process.env.BASE_URL}/products/${productDetails?._id}`,
@@ -280,131 +319,206 @@ export default function Dashboard() {
           ></div>
           <section className='fixed top-0 left-0 w-full h-full flex justify-center items-center'>
             <div className='xl:w-[70%] xl:h-[90%] xl:p-10 md:w-full md:h-[90%] md:p-10 sm:w-full sm:h-full sm:p-5 rounded-xl shadow-2xl bg-white overflow-y-auto '>
-              <header className='flex justify-between items-center w-full'>
-                <button
-                  type='button'
-                  onClick={() => dispatch(setIsModalOpen(false))}
-                  className='p-3 rounded-md shadow-2xl bg-slate-400'
-                >
-                  <MdClose />
-                </button>
-
-                <div className='flex justify-start items-center gap-5'>
-                  <button
-                    type='button'
-                    onClick={() => deleteProduct(productDetails._id)}
-                    className='border py-3 px-5 rounded-lg bg-transparent flex justify-center items-center gap-2 capitalize xl:text-base md:text-base sm:text-sm'
-                  >
-                    <MdDelete className='text-xl' /> delete
-                  </button>
-                  <button
-                    type='button'
-                    onClick={() => updateProduct()}
-                    className='border py-3 px-5 rounded-lg bg-slate-700 text-white flex justify-center items-center gap-2 capitalize xl:text-base md:text-base sm:text-sm'
-                  >
-                    {isSubmitting ? (
-                      'Saving'
-                    ) : (
-                      <div className='flex justify-center items-center gap-2'>
-                        {' '}
-                        <BiCheck className='text-xl' /> save
-                      </div>
-                    )}
-                  </button>
-                </div>
-              </header>
-
-              <article
-                className='flex flex-col justify-start items-start 3xl:gap-10 3xl:w-[70%] 2xl:w-[100%] xl:w-full xl:py-[4rem] lg:w-full lg:gap-10 md:w-full 
-              md:py-[2rem] md:gap-5 sm:py-[2rem] sm:w-full sm:gap-5 '
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  updateProduct()
+                  console.log('Form submitted')
+                }}
+                className='flex flex-col justify-start items-start gap-5 w-full'
               >
-                <Formik
-                  initialValues={{
-                    title: productDetails.title || '',
-                    description: productDetails.description || '',
-                    price: productDetails.price || '',
-                    colors: '',
-                    inStock: productDetails.inStock || '',
-                    discount: productDetails.discount || '',
-                    category: productDetails.category || '',
-                    size: '',
-                  }}
-                  onSubmit={(values) => {
-                    console.log(values)
-                  }}
-                >
-                  <Form className='flex flex-col justify-start items-start gap-5 w-full'>
-                    <div className='flex flex-col justify-start items-start gap-3 w-full '>
-                      <p className='font-medium capitalize '>photos</p>
+                <header className='flex justify-between items-center w-full'>
+                  <button
+                    type='button'
+                    onClick={() => dispatch(setIsModalOpen(false))}
+                    className='p-3 rounded-md shadow-2xl bg-slate-400'
+                  >
+                    <MdClose />
+                  </button>
 
-                      {productDetails?.images.length > 0 ? (
-                        <div className='flex justify-start items-start gap-5 flex-wrap'>
-                          {productDetails?.images?.map((img) => {
-                            return (
-                              <Image
-                                key={img}
-                                src={img}
-                                alt='Product image'
-                                width={200}
-                                height={200}
-                                className='object-cover rounded-lg 3xl:w-[200px] 3xl:h-[200px] 2xl:w-[150px] 2xl:h-[150px] xl:w-[100px] xl:h-[100px] md:w-[80px] md:h-[80px]
-                          sm:w-[80px] sm:h-[80px] '
-                              />
-                            )
-                          })}
-                        </div>
+                  <div className='flex justify-start items-center gap-5'>
+                    <button
+                      type='button'
+                      onClick={() => deleteProduct(productDetails._id)}
+                      className='border py-3 px-5 rounded-lg bg-transparent flex justify-center items-center gap-2 capitalize xl:text-base md:text-base sm:text-sm'
+                    >
+                      <MdDelete className='text-xl' /> delete
+                    </button>
+                    <button
+                      type='submit'
+                      className='border py-3 px-5 rounded-lg bg-slate-700 text-white flex justify-center items-center gap-2 capitalize xl:text-base md:text-base sm:text-sm'
+                    >
+                      {isSubmitting ? (
+                        'Saving'
                       ) : (
-                        <div className='flex flex-col justify-center items-center gap-3 w-full'>
-                          <h1 className='font-semibold'>
-                            Images is empty, try and upload some images of your
-                            product
-                          </h1>
-                          <span className='text-sm'>
-                            Click or drag and drop your images into the box
-                            below.
-                          </span>
+                        <div className='flex justify-center items-center gap-2'>
+                          {' '}
+                          <BiCheck className='text-xl' /> save
                         </div>
                       )}
+                    </button>
+                  </div>
+                </header>
 
-                      <DropzoneComponent />
+                <div className='flex flex-col justify-start items-start gap-3 w-full '>
+                  <p className='font-medium capitalize '>photos</p>
+
+                  {productDetails?.images.length > 0 ? (
+                    <div className='flex justify-start items-start gap-5 flex-wrap'>
+                      {productDetails?.images?.map((img) => {
+                        return (
+                          <Image
+                            key={img}
+                            src={img}
+                            alt='Product image'
+                            width={200}
+                            height={200}
+                            className='object-cover rounded-lg 3xl:w-[200px] 3xl:h-[200px] 2xl:w-[150px] 2xl:h-[150px] xl:w-[100px] xl:h-[100px] md:w-[80px] md:h-[80px]
+                          sm:w-[80px] sm:h-[80px] '
+                          />
+                        )
+                      })}
                     </div>
-
-                    <FormikField type='text' name='title' label='title' />
-
-                    <FormikTextarea name='description' label='description' />
-
-                    <div className='flex justify-start items-start gap-5 w-full xl:flex-row md:flex-row sm:flex-col'>
-                      <FormikField type='text' name='price' label='price' />
-                      <FormikField type='text' name='colors' label='colors' />
+                  ) : (
+                    <div className='flex flex-col justify-center items-center gap-3 w-full'>
+                      <h1 className='font-semibold'>
+                        Images is empty, try and upload some images of your
+                        product
+                      </h1>
+                      <span className='text-sm'>
+                        Click or drag and drop your images into the box below.
+                      </span>
                     </div>
+                  )}
 
-                    <div className='flex justify-start items-start gap-5 w-full xl:flex-row md:flex-row sm:flex-col'>
-                      <FormikField type='text' name='inStock' label='inStock' />
-                      <FormikField
-                        type='text'
-                        name='discount'
-                        label='discount'
-                      />
+                  <DropzoneComponent />
+                </div>
+
+                <div className='flex flex-col justify-start items-start gap-3 w-full '>
+                  <p className='font-medium capitalize '>name</p>
+
+                  <input
+                    type='text'
+                    name='title'
+                    id='title'
+                    value={productDetails?.title || ''}
+                    onChange={handleInputChange}
+                    className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none'
+                  />
+                </div>
+
+                <div className='flex flex-col justify-start items-start gap-3 w-full '>
+                  <p className='font-medium capitalize '>description</p>
+
+                  <textarea
+                    rows={4}
+                    cols={4}
+                    name='description'
+                    id='description'
+                    value={productDetails?.description || ''}
+                    onChange={handleInputChange}
+                    className='border-[1px] rounded-md p-2 w-full outline-none'
+                  />
+                </div>
+
+                <div className='flex justify-start items-start gap-5 w-full xl:flex-row md:flex-row sm:flex-col'>
+                  <div className='flex flex-col justify-start items-start gap-3 w-full '>
+                    <p className='font-medium capitalize '>price</p>
+
+                    <input
+                      type='number'
+                      name='price'
+                      id='price'
+                      value={productDetails?.price || ''}
+                      onChange={handleInputChange}
+                      className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none'
+                    />
+                  </div>
+
+                  <div className='flex flex-col justify-start items-start gap-3 w-full'>
+                    <label htmlFor='colors'>Colors:</label>
+                    <input
+                      type='color'
+                      name='colors'
+                      onChange={(e) => {
+                        addColor(e.target.value)
+                      }}
+                      className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none'
+                    />
+                    <div className='flex justify-start items-start gap-5 flex-wrap'>
+                      {/* Display selected colors */}
+                      {selectedColors.map((color) => (
+                        <span
+                          key={color}
+                          className='p-5 rounded-md relative '
+                          style={{
+                            backgroundColor: color,
+                          }}
+                        >
+                          {/* {color} */}
+                          <button
+                            onClick={() => removeColor(color)}
+                            className='absolute -top-2 -right-2 text-black text-2xl'
+                          >
+                            <MdClose />
+                          </button>
+                        </span>
+                      ))}
                     </div>
+                  </div>
+                </div>
 
-                    <div className='grid w-full gap-5 xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1'>
-                      <FormikField
-                        type='text'
-                        name='category'
-                        label='category'
-                      />
+                <div className='flex justify-start items-start gap-5 w-full xl:flex-row md:flex-row sm:flex-col'>
+                  <div className='flex flex-col justify-start items-start gap-3 w-full '>
+                    <p className='font-medium capitalize '>In-Stock</p>
 
-                      <AddField
-                        label='Sizes'
-                        name='sizes'
-                        placeholder='Enter the sizes and enter key'
-                        valuesArray={valuesArray}
-                        setValuesArray={setValuesArray}
-                      />
-                    </div>
-                  </Form>
-                </Formik>
-              </article>
+                    <input
+                      type='number'
+                      name='inStock'
+                      id='inStock'
+                      value={productDetails.inStock || ''}
+                      onChange={handleInputChange}
+                      className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none'
+                    />
+                  </div>
+
+                  <div className='flex flex-col justify-start items-start gap-3 w-full '>
+                    <p className='font-medium capitalize '>discount</p>
+
+                    <input
+                      type='number'
+                      name='discount'
+                      id='discount'
+                      value={productDetails.discount || ''}
+                      onChange={handleInputChange}
+                      className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none'
+                    />
+                  </div>
+                </div>
+
+                <div className='grid w-full gap-5 xl:grid-cols-2 md:grid-cols-1 sm:grid-cols-1'>
+                  <div className='flex flex-col justify-start items-start gap-3 w-full '>
+                    <p className='font-medium capitalize '>discount</p>
+
+                    <input
+                      type='text'
+                      name='category'
+                      id='category'
+                      value={productDetails.category || ''}
+                      onChange={handleInputChange}
+                      className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none'
+                    />
+                  </div>
+
+                  <AddField
+                    label='Sizes'
+                    name='available_sizes'
+                    placeholder='Enter the sizes and enter key'
+                    valuesArray={valuesArray}
+                    setValuesArray={setValuesArray}
+                  />
+                </div>
+              </form>
             </div>
           </section>
         </>
