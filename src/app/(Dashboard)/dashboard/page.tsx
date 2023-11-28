@@ -24,7 +24,6 @@ import FormikTextarea from '@/components/FormikTextarea'
 import DropzoneComponent from '@/components/ImageUploader'
 import AddField from '@/components/AddField'
 import useColorPicker from '@/components/ColorPicker'
-import { setProductDetailsData } from '@/redux/Slice/ProductSlice'
 
 export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>()
@@ -71,7 +70,7 @@ export default function Dashboard() {
     }
   }
 
-  const updateProduct = async (selectedColors, valuesArray) => {
+  const updateProduct = async () => {
     const token = localStorage.getItem('token')
     setIsSubmitting(true)
 
