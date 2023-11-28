@@ -34,8 +34,6 @@ export default function DashboardHeader() {
   const token = useAppSelector((state) => state.userProfile.token)
   const user = useAppSelector((state) => state.userProfile.user)
 
-  console.log(pathname, 'as pathname')
-
   useEffect(() => {
     const tokenGotten = localStorage.getItem('token')
     dispatch(setToken(tokenGotten))
