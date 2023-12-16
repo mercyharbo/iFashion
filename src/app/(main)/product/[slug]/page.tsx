@@ -265,7 +265,7 @@ export default function Product_Details({ params }: ProductPageProps) {
           )}
 
           <p className='text-[#5e5e5d] 2xl:w-[70%] '>
-            {productDetailsData?.description}
+            {productDetailsData?.description?.substring(0, 200)}
           </p>
 
           <p className='text-gray-400'>
@@ -408,12 +408,39 @@ export default function Product_Details({ params }: ProductPageProps) {
         )}
 
         {productDetailsData?.related && (
-          <div className='flex flex-col justify-center items-center gap-10 my-14'>
+          <section className='flex flex-col justify-center items-center gap-10 my-14'>
             <h1 className='xl:text-5xl md:text-3xl sm:text-3xl uppercase font-extrabold'>
               you might also like
             </h1>
 
-            <div className='grid 3xl:grid-cols-4 3xl:gap-10 2xl:grid-cols-3 xl:grid-cols-4 xl:gap-5 md:grid-cols-2 md:gap-5 md:px-5 sm:px-14 sm:grid-cols-1 sm:gap-5'>
+            <div className='w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide'>
+              {productDetailsData?.related?.slice(0, 4)?.map((product) => {
+                const avarageRating = CalculateAverageRating(product.reviews)
+                const productImage =
+                  product?.images?.[0] ||
+                  'https://pixabay.com/playlists/chill-beats-17503730/'
+
+                return (
+                  <Link key={product._id} href={`/product/${product._id}`}>
+                    <Product
+                      title={product.title}
+                      price={product.price}
+                      productImage={productImage}
+                      ratings={avarageRating}
+                      discount={product.discount}
+                      productClass={clsx(
+                        ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
+                      )}
+                      starStyling='text-xl'
+                    />
+                  </Link>
+                )
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* <div className='grid 3xl:grid-cols-4 3xl:gap-10 2xl:grid-cols-3 xl:grid-cols-4 xl:gap-5 md:grid-cols-2 md:gap-5 md:px-5 sm:px-14 sm:grid-cols-1 sm:gap-5'>
               {productDetailsData?.related?.slice(0, 4)?.map((product) => {
                 const avarageRating = CalculateAverageRating(product.reviews)
                 const productImage =
@@ -434,9 +461,7 @@ export default function Product_Details({ params }: ProductPageProps) {
                   </Link>
                 )
               })}
-            </div>
-          </div>
-        )}
+            </div> */}
       </section>
     </>
   )

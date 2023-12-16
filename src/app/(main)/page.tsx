@@ -170,11 +170,7 @@ export default function Home() {
             })}
           </div>
         </section>
-      ) : (
-        <div className='xl:px-10 md:px-10 sm:px-5 py-5 flex justify-center items-center text-2xl'>
-          Error fetching products or still fetching products...
-        </div>
-      )}
+      ) : null}
 
       <hr />
 
