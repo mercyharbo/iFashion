@@ -40,7 +40,6 @@ export default function Dashboard() {
   const productDetails = useAppSelector(
     (state) => state.sellerSlice.sellerProductDetails
   )
-  console.log(productDetails, 'as product details')
 
   const isModalOpen = useAppSelector((state) => state.sellerSlice.isModalOpen)
   const openAddProductModal = useAppSelector(
@@ -170,7 +169,11 @@ export default function Dashboard() {
           'Content-Type': 'application/json',
           authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          available_sizes: valuesArray,
+          colors: selectedColors,
+        }),
       })
 
       const data = await response.json()
@@ -249,65 +252,87 @@ export default function Dashboard() {
         </button>
       </header>
 
-      <div className='p-5 w-full'>
-        <div className='flex justify-between items-center gap-5 border-b py-3'>
-          <span className='font-semibold capitalize 2xl:w-[30%] xl:w-[30%] lg:w-[30%] md:w-[40%] sm:w-[40%] '>
-            product
-          </span>
-          <span className='font-semibold capitalize 2xl:w-[10%] xl:w-[10%] xl:flex lg:w-[10%] md:flex md:w-[10%] sm:hidden sm:w-[5%] '>
-            in-stock
-          </span>
-          <span className='font-semibold capitalize 2xl:w-[20%] xl:w-[20%] lg:w-[20%] md:w-[15%] sm:w-[20%] '>
-            date
-          </span>
-          <span className='font-semibold capitalize 2xl:w-[20%] xl:w-[20%] lg:w-[20%] md:w-[20%] sm:w-[20%] '>
-            actions
-          </span>
-        </div>
-        {sellerProductData?.map((item) => {
-          return (
-            <div
-              key={item._id}
-              className='flex justify-between items-center gap-5 w-full py-5 border-b last:border-none '
-            >
-              <div className='2xl:w-[30%] xl:w-[30%] lg:w-[30%] md:w-[40%] sm:w-[40%] flex justify-start items-center gap-3 font-medium'>
-                <Image
-                  src={item.images?.[0]}
-                  alt={item.title}
-                  width={50}
-                  height={50}
-                  className='object-cover rounded-xl w-[5rem] h-[4rem] xl:flex md:hidden sm:hidden '
-                />
-                <span className='xl:text-lg md:text-base sm:text-sm'>
-                  {item.title}
-                </span>
-              </div>
+      <div className='overflow-x-auto p-5 w-full'>
+        <table className='divide-y divide-gray-200 min-w-full'>
+          <thead className='h-[3rem] border-b text-left '>
+            <tr className='text-gray-500 uppercase '>
+              {/* <th>
+                <div className=''>
+                  <input type='checkbox' name='' id='' />
+                </div>
+              </th> */}
 
-              <span className='2xl:w-[10%] xl:w-[10%] xl:flex lg:w-[10%] lg:text-base md:flex md:w-[10%] md:text-base sm:text-sm sm:hidden sm:w-[5%] '>
-                {item.inStock}
-              </span>
-              <span className='2xl:w-[20%] xl:w-[20%] xl:text-base lg:w-[20%] lg:text-base md:text-base md:w-[15%] sm:w-[20%] sm:text-sm'>
-                {moment(item.createdDate).format('l')}
-              </span>
-              <div className='2xl:w-[20%] xl:w-[20%] lg:w-[20%] md:w-[20%] sm:w-[20%] flex justify-start items-start gap-5 '>
-                <button
-                  type='button'
-                  onClick={() => getProduct(item._id)}
-                  className='text-2xl text-gray-500'
-                >
-                  <BiEdit />{' '}
-                </button>
-                <button
-                  type='button'
-                  onClick={() => deleteProduct(item._id)}
-                  className='text-2xl text-gray-500'
-                >
-                  <MdDelete />{' '}
-                </button>
-              </div>
-            </div>
-          )
-        })}
+              <th className='px-5 tracking-wider text-base font-medium'>
+                product
+              </th>
+
+              <th className='px-5 tracking-wider text-base font-medium'>
+                in-stock
+              </th>
+
+              <th className='px-5 tracking-wider text-base font-medium'>
+                date
+              </th>
+
+              <th className='px-5 tracking-wider text-base font-medium'>
+                actions
+              </th>
+            </tr>
+          </thead>
+
+          <tbody className='divide-y divide-gray-200'>
+            {sellerProductData?.map((item) => {
+              return (
+                <tr key={item._id} className='h-[4rem] '>
+                  {/* <td>
+                    <div className='flex justify-center items-center'>
+                      <input type='checkbox' name='' id='' />
+                    </div>
+                  </td> */}
+                  <td className='whitespace-nowrap px-5 '>
+                    <div className='flex justify-start items-center gap-3 font-medium'>
+                      <Image
+                        src={item.images?.[0]}
+                        alt={item.title}
+                        width={50}
+                        height={50}
+                        className='object-cover rounded-xl w-[3rem] h-[3rem] xl:flex md:hidden sm:hidden '
+                      />
+                      <span className='xl:text-lg md:text-base sm:text-sm'>
+                        {item.title}
+                      </span>
+                    </div>
+                  </td>
+
+                  <td className='whitespace-nowrap px-5 '>
+                    <span>{item.inStock}</span>
+                  </td>
+                  <td className='whitespace-nowrap px-5 '>
+                    <span>{moment(item.createdDate).format('l')}</span>
+                  </td>
+                  <td className='whitespace-nowrap px-5 '>
+                    <div className='flex justify-start items-start gap-5 '>
+                      <button
+                        type='button'
+                        onClick={() => getProduct(item._id)}
+                        className='text-2xl text-gray-500'
+                      >
+                        <BiEdit />{' '}
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() => deleteProduct(item._id)}
+                        className='text-2xl text-gray-500'
+                      >
+                        <MdDelete />{' '}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
       </div>
 
       {isModalOpen && productDetails && (
@@ -602,11 +627,18 @@ export default function Dashboard() {
                     'grid w-full xl:grid-cols-2 xl:content-between xl:place-items-center xl:gap-5 md:grid-cols-2 md:content-between md:place-items-center md:gap-5 sm:grid-cols-1 sm:content-center sm:place-items-center sm:gap-5 '
                   )}
                 >
-                  <FormikField
+                  {/* <FormikField
                     type='text'
                     name='available_sizes'
                     label='Enter product sizes:'
                     placeholder='Enter product sizes'
+                  /> */}
+                  <AddField
+                    label='Sizes'
+                    name='available_sizes'
+                    placeholder='Enter the sizes and enter key'
+                    valuesArray={valuesArray}
+                    setValuesArray={setValuesArray}
                   />
 
                   <FormikField
@@ -622,12 +654,43 @@ export default function Dashboard() {
                     'grid w-full xl:grid-cols-2 xl:content-between xl:place-items-center xl:gap-5 md:grid-cols-2 md:content-between md:place-items-center md:gap-5 sm:grid-cols-1 sm:content-center sm:place-items-center sm:gap-5 '
                   )}
                 >
-                  <FormikField
+                  {/* <FormikField
                     type='text'
                     name='colors'
                     label='Enter product available colors:'
                     placeholder='Enter product colors'
-                  />
+                  /> */}
+                  <div className='flex flex-col justify-start items-start gap-3 w-full'>
+                    <label htmlFor='colors'>Colors:</label>
+                    <input
+                      type='color'
+                      name='colors'
+                      onChange={(e) => {
+                        addColor(e.target.value)
+                      }}
+                      className='border-[1px] rounded-md h-[3rem] indent-3 w-full outline-none'
+                    />
+                    <div className='flex justify-start items-start gap-5 flex-wrap'>
+                      {/* Display selected colors */}
+                      {selectedColors.map((color) => (
+                        <span
+                          key={color}
+                          className='p-5 rounded-md relative '
+                          style={{
+                            backgroundColor: color,
+                          }}
+                        >
+                          {/* {color} */}
+                          <button
+                            onClick={() => removeColor(color)}
+                            className='absolute -top-2 -right-2 text-black text-2xl'
+                          >
+                            <MdClose />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
 
                   <FormikField
                     type='text'
