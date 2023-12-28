@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { redirect } from 'next/navigation'
 import { toast } from 'react-toastify'
 
 type UserProfile = {
@@ -51,15 +52,20 @@ export const fetchUserProfile = createAsyncThunk(
         options
       )
 
-      if (response.ok) {
-        const userData = await response.json()
+      const data = await response.json()
+
+      // If the response status is 401, redirect to the login page
+      if (response.status === 401) {
+        redirect('/login')
+      }
+
+      // condition checking the status of the request
+      if (data.success === true) {
         dispatch(setIsLoading(false))
-        return userData.profile
+        return data.profile
       } else {
-        const errorData = await response.json()
-        const errorMessage = errorData.message
         dispatch(setIsLoading(false))
-        toast.error(errorMessage, {
+        toast.error(data.message, {
           position: 'top-right',
           autoClose: 5000, // Adjust as needed
           hideProgressBar: false,
@@ -68,7 +74,7 @@ export const fetchUserProfile = createAsyncThunk(
           draggable: true,
         })
 
-        return toast.error(errorMessage)
+        return toast.error(data.message)
       }
     } catch (error) {
       return 'An error occurred whe=ile trying to fetch user'
