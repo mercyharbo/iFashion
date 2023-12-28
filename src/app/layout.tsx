@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { Providers } from '@/redux/Provider'
 import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
+import ErrorBoundary from './errorBoundaries'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,9 +25,11 @@ export default function RootLayout({
     <html lang='en'>
       <body suppressHydrationWarning={true}>
         <Providers>
-          <main className={clsx('overflow-x-hidden', inter.className)}>
-            {children}
-          </main>
+          <ErrorBoundary>
+            <main className={clsx('overflow-x-hidden', inter.className)}>
+              {children}
+            </main>
+          </ErrorBoundary>
           <ToastContainer />
         </Providers>
       </body>

@@ -1,12 +1,12 @@
 'use client'
 
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { Field, Form, Formik } from 'formik'
 import clsx from 'clsx'
 import { useDispatch } from 'react-redux'
 import { AppDispatch, useAppSelector } from '@/redux/Store'
 import { BiCheck, BiEdit, BiPlus } from 'react-icons/bi'
-import Image from 'next/image'
 import moment from 'moment'
 import { MdClose, MdDelete } from 'react-icons/md'
 import { toast } from 'react-toastify'
@@ -256,12 +256,6 @@ export default function Dashboard() {
         <table className='divide-y divide-gray-200 min-w-full'>
           <thead className='h-[3rem] border-b text-left '>
             <tr className='text-gray-500 uppercase '>
-              {/* <th>
-                <div className=''>
-                  <input type='checkbox' name='' id='' />
-                </div>
-              </th> */}
-
               <th className='px-5 tracking-wider text-base font-medium'>
                 product
               </th>
@@ -284,11 +278,6 @@ export default function Dashboard() {
             {sellerProductData?.map((item) => {
               return (
                 <tr key={item._id} className='h-[4rem] '>
-                  {/* <td>
-                    <div className='flex justify-center items-center'>
-                      <input type='checkbox' name='' id='' />
-                    </div>
-                  </td> */}
                   <td className='whitespace-nowrap px-5 '>
                     <div className='flex justify-start items-center gap-3 font-medium'>
                       <Image
