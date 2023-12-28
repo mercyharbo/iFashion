@@ -5,18 +5,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import clsx from 'clsx'
+import { useDispatch } from 'react-redux'
+
+import { AppDispatch, useAppSelector } from '@/redux/Store'
+
+import { CalculateAverageRating } from '../../utils/avarageRatings'
+import { fetchProducts } from '@/redux/Slice/ProductSlice'
 
 import Hero from '@/components/Hero'
-
 import Button from '@/types/Button'
 import Product from '@/types/Product'
-import { CalculateAverageRating } from '../../utils/avarageRatings'
-
-import clsx from 'clsx'
-import { AppDispatch, useAppSelector } from '@/redux/Store'
-import { useDispatch } from 'react-redux'
-import { fetchProducts } from '@/redux/Slice/ProductSlice'
-import Error from './error'
 import Loading from '@/components/Loading'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -26,7 +25,7 @@ export default function Home() {
   const revealRefs = useRef<any[]>([])
   revealRefs.current = []
 
-  const productData = useAppSelector((state) => state.products)
+  const productData = useAppSelector((state) => state.products.products)
   const isLoading = useAppSelector((state) => state.userProfile.isLoading)
 
   const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
@@ -89,7 +88,7 @@ export default function Home() {
   const currentDate = new Date() // Get the current date
   currentDate.setDate(currentDate.getDate() - 14)
 
-  const filteredProducts = productData?.products?.filter((item) => {
+  const filteredProducts = productData?.filter((item) => {
     const productDate = new Date(item.createdDate)
     return productDate >= currentDate
   })
@@ -126,7 +125,7 @@ export default function Home() {
         </div>
       </section>
 
-      {filteredProducts && filteredProducts.length > 0 ? (
+      {filteredProducts && filteredProducts.length > 0 && (
         <section
           ref={addToRefs}
           className={clsx(
@@ -170,11 +169,11 @@ export default function Home() {
             })}
           </div>
         </section>
-      ) : null}
+      )}
 
       <hr />
 
-      {productData.products && productData.products.length > 0 ? (
+      {productData && (
         <section
           ref={addToRefs}
           className={clsx(
@@ -189,12 +188,13 @@ export default function Home() {
             {' '}
             top selling{' '}
           </h1>
+
           <div
             className={clsx(
               ' w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
             )}
           >
-            {productData?.products
+            {productData
               ?.slice(0, 6)
               ?.reverse()
               ?.map((item) => {
@@ -220,10 +220,6 @@ export default function Home() {
               })}
           </div>
         </section>
-      ) : (
-        <div className='xl:px-10 md:px-10 sm:px-5 py-5 flex justify-center items-center text-2xl'>
-          Error fetching products or still fetching products...
-        </div>
       )}
 
       <section

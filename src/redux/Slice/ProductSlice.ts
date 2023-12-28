@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 type productDetails = {
@@ -76,19 +77,16 @@ export const fetchProducts = createAsyncThunk(
     dispatch(setIsLoading(true))
     try {
       const token = localStorage.getItem('token') // Get the token from localStorage
-      const headers = new Headers({
-        'Content-Type': 'application/json',
+
+      const response = await axios.get(`${process.env.BASE_URL}/products`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       })
 
-      const options = {
-        method: 'GET',
-        headers,
-      }
-
-      const response = await fetch(`${process.env.BASE_URL}/products`, options)
-      const productData = await response.json()
       dispatch(setIsLoading(false))
-      return productData.products
+      return response.data.products
     } catch (error) {
       // Assert error as an Error object
       const err = error as Error
@@ -132,7 +130,9 @@ const ProductSlice = createSlice({
         state.isLoading = false
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.error = action.payload as string
+        state.error =
+          (action.error.message as string) ||
+          'An error occurred while trying to fetch products'
         state.isSubmitting = false
       })
   },
