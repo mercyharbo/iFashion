@@ -24,14 +24,12 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body suppressHydrationWarning={true}>
-        <ErrorBoundary>
-          <Providers>
-            <main className={clsx('overflow-x-hidden', inter.className)}>
-              {children}
-            </main>
-            <ToastContainer />
-          </Providers>
-        </ErrorBoundary>
+        <Providers>
+          <main className={clsx('overflow-x-hidden', inter.className)}>
+            {children}
+          </main>
+          <ToastContainer />
+        </Providers>
       </body>
     </html>
   )
