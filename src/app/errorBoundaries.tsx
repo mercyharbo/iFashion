@@ -24,10 +24,12 @@ const ErrorBoundary: React.FC<Props> = ({ children }) => {
 
   if (hasError) {
     return (
-      <div className='flex flex-col justify-center items-center gap-3 m-auto h-screen'>
-        <h1 className='text-2xl font-semibold'>Something went wrong.</h1>
+      <div className='flex flex-col justify-center items-center gap-5 m-auto h-screen bg-black'>
+        <h1 className='text-4xl font-semibold text-white'>
+          Something went wrong.
+        </h1>
         <Link href='/'>
-          <div className='bg-[red] text-white h-[3rem] rounded-xl px-5 text-xl '>
+          <div className='bg-[red] text-white h-[3rem] rounded-xl px-5 text-xl flex flex-col justify-center items-center '>
             Try again
           </div>
         </Link>
