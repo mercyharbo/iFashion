@@ -88,11 +88,6 @@ export default function Home() {
   const currentDate = new Date() // Get the current date
   currentDate.setDate(currentDate.getDate() - 14)
 
-  const filteredProducts = productData?.filter((item) => {
-    const productDate = new Date(item.createdDate)
-    return productDate >= currentDate
-  })
-
   if (isLoading) {
     return <Loading />
   }
@@ -125,7 +120,7 @@ export default function Home() {
         </div>
       </section>
 
-      {filteredProducts && filteredProducts.length > 0 && (
+      {productData && productData.length > 0 && (
         <section
           ref={addToRefs}
           className={clsx(
@@ -145,35 +140,41 @@ export default function Home() {
               'w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
             )}
           >
-            {filteredProducts?.slice(0, 6)?.map((item) => {
-              const avarageRating = CalculateAverageRating(item?.reviews)
-              const productImage =
-                item?.images?.[0] ||
-                'https://pixabay.com/playlists/chill-beats-17503730/'
+            {productData
+              ?.filter?.((item) => {
+                const productDate = new Date(item.createdDate)
+                return productDate >= currentDate
+              })
+              ?.slice(0, 6)
+              ?.map((item) => {
+                const avarageRating = CalculateAverageRating(item?.reviews)
+                const productImage =
+                  item?.images?.[0] ||
+                  'https://pixabay.com/playlists/chill-beats-17503730/'
 
-              return (
-                <Link key={item._id} href={`/product/${item._id}`}>
-                  <Product
-                    title={item.title}
-                    price={item.price}
-                    discount={item.discount}
-                    productImage={productImage}
-                    ratings={avarageRating}
-                    starStyling='text-lg'
-                    productClass={clsx(
-                      ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
-                    )}
-                  />
-                </Link>
-              )
-            })}
+                return (
+                  <Link key={item._id} href={`/product/${item._id}`}>
+                    <Product
+                      title={item.title}
+                      price={item.price}
+                      discount={item.discount}
+                      productImage={productImage}
+                      ratings={avarageRating}
+                      starStyling='text-lg'
+                      productClass={clsx(
+                        ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
+                      )}
+                    />
+                  </Link>
+                )
+              })}
           </div>
         </section>
       )}
 
       <hr />
 
-      {productData && (
+      {productData && productData.length > 0 && (
         <section
           ref={addToRefs}
           className={clsx(
