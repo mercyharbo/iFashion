@@ -30,7 +30,6 @@ import useColorSelection from '../../../hooks/ColorSelector'
 import { closeFilterModal, openFilterModal } from '@/redux/Slice/ModalSlice'
 import { fetchProducts, setFilteredProducts } from '@/redux/Slice/ProductSlice'
 import Loading from '@/components/Loading'
-import Error from '../error'
 
 function CasualCategory() {
   const dispatch = useDispatch<AppDispatch>()
@@ -144,14 +143,6 @@ function CasualCategory() {
     filteredData.length > 0 ? filteredData : productData?.products // checking if the length of filterData state if greater than zero else display productData
 
   if (isLoading) return <Loading />
-
-  if (!products)
-    return (
-      <Error
-        error={'An error occurred while trying to fetch this route.'}
-        reset={() => window.location.reload()}
-      />
-    )
 
   return (
     <main
