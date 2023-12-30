@@ -58,8 +58,6 @@ export const fetchUserProfile = createAsyncThunk(
       if (data.success === true) {
         dispatch(setIsLoading(false))
         return data.profile
-      } else if (response.status === 401) {
-        redirect('/login')
       } else {
         dispatch(setIsLoading(false))
         toast.error(data.message, {
