@@ -88,10 +88,6 @@ export default function Home() {
   const currentDate = new Date() // Get the current date
   currentDate.setDate(currentDate.getDate() - 14)
 
-  if (isLoading) {
-    return <Loading />
-  }
-
   return (
     <>
       <Hero />
