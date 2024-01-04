@@ -10,13 +10,11 @@ import { useDispatch } from 'react-redux'
 
 import { AppDispatch, useAppSelector } from '@/redux/Store'
 
-import { CalculateAverageRating } from '../../utils/avarageRatings'
-import { fetchProducts } from '@/redux/Slice/ProductSlice'
-
 import Hero from '@/components/Hero'
 import Button from '@/types/Button'
 import Product from '@/types/Product'
 import Loading from '@/components/Loading'
+import ProductsList from './ProductList'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -25,7 +23,6 @@ export default function Home() {
   const revealRefs = useRef<any[]>([])
   revealRefs.current = []
 
-  const productData = useAppSelector((state) => state.products.products)
   const isLoading = useAppSelector((state) => state.userProfile.isLoading)
 
   const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
@@ -75,10 +72,6 @@ export default function Home() {
       })
   }, [revealRefs])
 
-  useEffect(() => {
-    dispatch(fetchProducts())
-  }, [dispatch])
-
   const addToRefs = (el: HTMLElement | null) => {
     if (el && !revealRefs.current.includes(el)) {
       revealRefs.current.push(el)
@@ -116,108 +109,7 @@ export default function Home() {
         </div>
       </section>
 
-      {productData && productData.length > 0 && (
-        <section
-          ref={addToRefs}
-          className={clsx(
-            ' xl:py-10 xl:my-10 md:py-10 md:px-10 sm:py-10 sm:px-2 flex flex-col justify-center items-center gap-10 mx-auto w-full '
-          )}
-        >
-          <h1
-            className={clsx(
-              'xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '
-            )}
-          >
-            {' '}
-            new arrivals{' '}
-          </h1>
-          <div
-            className={clsx(
-              'w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
-            )}
-          >
-            {productData
-              ?.filter?.((item) => {
-                const productDate = new Date(item.createdDate)
-                return productDate >= currentDate
-              })
-              ?.slice(0, 6)
-              ?.map((item) => {
-                const avarageRating = CalculateAverageRating(item?.reviews)
-                const productImage =
-                  item?.images?.[0] ||
-                  'https://pixabay.com/playlists/chill-beats-17503730/'
-
-                return (
-                  <Link key={item._id} href={`/product/${item._id}`}>
-                    <Product
-                      title={item.title}
-                      price={item.price}
-                      discount={item.discount}
-                      productImage={productImage}
-                      ratings={avarageRating}
-                      starStyling='text-lg'
-                      productClass={clsx(
-                        ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
-                      )}
-                    />
-                  </Link>
-                )
-              })}
-          </div>
-        </section>
-      )}
-
-      <hr />
-
-      {productData && productData.length > 0 && (
-        <section
-          ref={addToRefs}
-          className={clsx(
-            'xl:py-10 xl:my-10 md:py-10 md:px-10 sm:py-10 sm:px-2 w-full flex flex-col justify-center items-center gap-10 mx-auto '
-          )}
-        >
-          <h1
-            className={clsx(
-              'xl:text-4xl md:text-3xl sm:text-2xl font-bold uppercase '
-            )}
-          >
-            {' '}
-            top selling{' '}
-          </h1>
-
-          <div
-            className={clsx(
-              ' w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
-            )}
-          >
-            {productData
-              ?.slice(0, 6)
-              ?.reverse()
-              ?.map((item) => {
-                const avarageRating = CalculateAverageRating(item?.reviews)
-                const productImage =
-                  item?.images?.[0] ||
-                  'https://pixabay.com/playlists/chill-beats-17503730/'
-                return (
-                  <Link key={item._id} href={`/product/${item._id}`}>
-                    <Product
-                      title={item.title}
-                      price={item.price}
-                      discount={item.discount}
-                      productImage={productImage}
-                      ratings={avarageRating}
-                      productClass={clsx(
-                        ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
-                      )}
-                      starStyling='text-lg'
-                    />
-                  </Link>
-                )
-              })}
-          </div>
-        </section>
-      )}
+      <ProductsList />
 
       <section
         ref={addToRefs}

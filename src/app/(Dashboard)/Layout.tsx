@@ -1,11 +1,11 @@
 import React from 'react'
+import clsx from 'clsx'
 import { Inter } from 'next/font/google'
 
 import DashboardNav from '@/components/DashboardNav'
+import DashboardHeader from '@/components/DashboardHeader'
 
 import '@/app/globals.css'
-import DashboardHeader from '@/components/DashboardHeader'
-import clsx from 'clsx'
 
 const inter = Inter({ subsets: ['latin'] })
 
