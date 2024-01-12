@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import gsap from 'gsap'
@@ -13,25 +13,37 @@ import { AppDispatch, useAppSelector } from '@/redux/Store'
 import Hero from '@/components/Hero'
 import Button from '@/types/Button'
 import Product from '@/types/Product'
-import Loading from '@/components/Loading'
-import ProductsList from './ProductList'
+import { CalculateAverageRating } from '@/utils/avarageRatings'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
+const browseStyle = [
+  { id: 1, style: 'casual', image: '/casual2.jpg' },
+  { id: 2, style: 'formal', image: '/formal3.jpg' },
+  { id: 3, style: 'party', image: '/party2.jpg' },
+  { id: 4, style: 'gym', image: '/gym.jpg' },
+]
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>()
   const revealRefs = useRef<any[]>([])
   revealRefs.current = []
+  const [products, setProducts] = useState([])
 
   const isLoading = useAppSelector((state) => state.userProfile.isLoading)
 
-  const brands = ['versace', 'zara', 'gucci', 'prada', 'celvin klein']
-  const browseStyle = [
-    { id: 1, style: 'casual', image: '/casual2.jpg' },
-    { id: 2, style: 'formal', image: '/formal3.jpg' },
-    { id: 3, style: 'party', image: '/party2.jpg' },
-    { id: 4, style: 'gym', image: '/gym.jpg' },
-  ]
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch(`${process.env.BASE_URL}/products`, {
+        cache: 'no-store',
+      })
+      const data = await res.json()
+      setProducts(data.products)
+    }
+
+    fetchData()
+  }, [])
 
   useEffect(() => {
     revealRefs.current.forEach((el, index) => {
@@ -109,7 +121,33 @@ export default function Home() {
         </div>
       </section>
 
-      <ProductsList />
+      <div
+        className={clsx(
+          ' w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
+        )}
+      >
+        {products
+          .slice(0, 10)
+          .reverse()
+          .map((item: { [key: string]: any }) => {
+            const avarageRating = CalculateAverageRating(item?.reviews)
+            return (
+              <Link key={item._id} href={`/product/${item._id}`}>
+                <Product
+                  title={item.title}
+                  price={item.price}
+                  discount={item.discount}
+                  productImage={item.images?.[0]}
+                  ratings={avarageRating}
+                  productClass={clsx(
+                    ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
+                  )}
+                  starStyling='text-lg'
+                />
+              </Link>
+            )
+          })}
+      </div>
 
       <section
         ref={addToRefs}
