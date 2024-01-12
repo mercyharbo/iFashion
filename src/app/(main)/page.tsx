@@ -13,8 +13,6 @@ import { AppDispatch, useAppSelector } from '@/redux/Store'
 import Hero from '@/components/Hero'
 import Button from '@/types/Button'
 import Product from '@/types/Product'
-import Loading from '@/components/Loading'
-import ProductsList from './ProductList'
 import { CalculateAverageRating } from '@/utils/avarageRatings'
 
 gsap.registerPlugin(ScrollTrigger)
