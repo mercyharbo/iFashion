@@ -74,7 +74,7 @@ export default function Product_Details({ params }: ProductPageProps) {
       try {
         const token = localStorage.getItem('token') // Get the token from localStorage
         const headers = new Headers({
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         })
 
@@ -136,6 +136,15 @@ export default function Product_Details({ params }: ProductPageProps) {
 
   // handling add to cart functionality
   const handleAddToCart = (product: Product) => {
+    // Check if the user is logged in
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      // Display a toast message indicating the user needs to be logged in
+      toast.error('You need to be logged in to add a product to the cart')
+      return
+    }
+
     // Check if color, size, and quantity are selected
     if (!product.color || !product.size || product.quantity <= 0) {
       // Display an error message if any of them is missing

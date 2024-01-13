@@ -29,17 +29,30 @@ export default function Home() {
   const dispatch = useDispatch<AppDispatch>()
   const revealRefs = useRef<any[]>([])
   revealRefs.current = []
+
   const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [failure, setFailure] = useState(false)
 
   const isLoading = useAppSelector((state) => state.userProfile.isLoading)
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true)
       const res = await fetch(`${process.env.BASE_URL}/products`, {
-        cache: 'no-store',
+        headers: {
+          'Content-type': 'application/json',
+        },
       })
       const data = await res.json()
-      setProducts(data.products)
+      if (data.success === true) {
+        setProducts(data.products)
+        setLoading(false)
+        setFailure(false)
+      } else {
+        setLoading(false)
+        setFailure(true)
+      }
     }
 
     fetchData()
@@ -121,33 +134,45 @@ export default function Home() {
         </div>
       </section>
 
-      <div
-        className={clsx(
-          ' w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
+      <section className='flex flex-col justify-center items-center gap-10 w-full py-10'>
+        <h1 className='xl:text-4xl lg:text-4xl md:text-3xl sm:text-2xl font-semibold uppercase'>
+          recent products
+        </h1>
+
+        {loading ? (
+          <div className='py-10'>
+            <h1 className=''>Loading...</h1>
+          </div>
+        ) : (
+          <div
+            className={clsx(
+              ' w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide '
+            )}
+          >
+            {products
+              .slice(0, 10)
+              .reverse()
+              .map((item: { [key: string]: any }) => {
+                const avarageRating = CalculateAverageRating(item?.reviews)
+                return (
+                  <Link key={item._id} href={`/product/${item._id}`}>
+                    <Product
+                      title={item.title}
+                      price={item.price}
+                      discount={item.discount}
+                      productImage={item.images?.[0]}
+                      ratings={avarageRating}
+                      productClass={clsx(
+                        ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
+                      )}
+                      starStyling='text-lg'
+                    />
+                  </Link>
+                )
+              })}
+          </div>
         )}
-      >
-        {products
-          .slice(0, 10)
-          .reverse()
-          .map((item: { [key: string]: any }) => {
-            const avarageRating = CalculateAverageRating(item?.reviews)
-            return (
-              <Link key={item._id} href={`/product/${item._id}`}>
-                <Product
-                  title={item.title}
-                  price={item.price}
-                  discount={item.discount}
-                  productImage={item.images?.[0]}
-                  ratings={avarageRating}
-                  productClass={clsx(
-                    ` inline-block xl:w-[300px] xl:mx-3 md:w-[250px] md:mx-3 sm:w-[250px] sm:mx-2 border-[1px] rounded-xl cursor-pointer`
-                  )}
-                  starStyling='text-lg'
-                />
-              </Link>
-            )
-          })}
-      </div>
+      </section>
 
       <section
         ref={addToRefs}

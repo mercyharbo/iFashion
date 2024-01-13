@@ -81,7 +81,7 @@ export const fetchProducts = createAsyncThunk(
       const response = await axios.get(`${process.env.BASE_URL}/products`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
         },
       })
 
